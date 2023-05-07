@@ -3,7 +3,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import Home from './Home';
 import Wellcome from './src/screens/Auth/wellcome';
 import Login from './src/screens/Auth/login';
