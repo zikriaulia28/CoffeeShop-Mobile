@@ -1,12 +1,45 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-const image = require('../../assets/login.png');
-const icon = require('../../assets/google.png');
+import { login } from '../../utils/https/auth';
+
 
 const Login = () => {
+  const image = require('../../assets/login.png');
+  const icon = require('../../assets/google.png');
   const navigation = useNavigation();
+  const controller = useMemo(() => new AbortController(), []);
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+
+  const onChangeForm = (name, value) => {
+    // eslint-disable-next-line no-shadow
+    setForm((form) => {
+      return {
+        ...form,
+        [name]: value,
+      };
+    });
+  };
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login(form.email, form.password, controller);
+      console.log(res.data);
+      handleRedirect();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRedirect = () => {
+    navigation.navigate('Profile');
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -14,17 +47,17 @@ const Login = () => {
           <Text style={styles.title}>Login</Text>
           <View style={styles.content}>
             <View style={styles.inputGroup}>
-              <TextInput style={styles.input} inputMode="email" placeholder="Enter your email adress" placeholderTextColor={'#FFFFFF'} />
-              <TextInput style={styles.input} inputMode="text" placeholder="Enter your password" placeholderTextColor={'#FFFFFF'} />
+              <TextInput style={styles.input} value={form.email} inputMode="email" onChangeText={(text) => onChangeForm('email', text)} placeholder="Enter your email address" placeholderTextColor={'#FFFFFF'} />
+              <TextInput style={styles.input} value={form.password} inputMode="text" onChangeText={(text) => onChangeForm('password', text)} placeholder="Enter your password" placeholderTextColor={'#FFFFFF'} secureTextEntry />
               <Text style={styles.textForgot} onPress={() => navigation.navigate('Forgot')}>Forgot password?</Text>
             </View>
             <View style={styles.btnGroup}>
-              <TouchableOpacity style={styles.btnCreate} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.textCreate}>Create New Account</Text>
+              <TouchableOpacity style={styles.btnLogin} onPress={loginHandler}>
+                <Text style={styles.textLogin}>Login</Text>
               </TouchableOpacity>
               <View style={styles.wrapperLogin}>
                 <Text style={styles.rules} />
-                <Text style={styles.textOrLogin}>or login in with</Text>
+                <Text style={styles.textOrLogin} >or login in with</Text>
                 <Text style={styles.rules} />
               </View>
               <TouchableOpacity style={styles.btnGoogle}>
@@ -63,10 +96,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 31,
   },
-  btnCreate: {
+  btnLogin: {
     paddingVertical: 15,
     borderRadius: 10,
-    backgroundColor: '#6A4029',
+    backgroundColor: '#FFBA33',
   },
   btnGoogle: {
     paddingVertical: 15,
@@ -82,8 +115,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
-  textCreate: {
-    color: '#FFFFFF',
+  textLogin: {
+    color: '#000000',
     fontWeight: 700,
     fontSize: 17,
     textAlign: 'center',
