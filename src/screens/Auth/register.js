@@ -1,111 +1,103 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
+import { NativeBaseProvider, Image, Box, ZStack, Text, Center, Input, Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-const image = require('../../assets/register.png');
-const icon = require('../../assets/google.png');
+import { register } from '../../utils/https/auth';
+import React, { useMemo, useState } from 'react';
+
+
 
 const Register = () => {
+  const image = require('../../assets/register.png');
+  const icon = require('../../assets/google.png');
   const navigation = useNavigation();
+  const controller = useMemo(() => new AbortController(), []);
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [invalid, setInvalid] = useState(false);
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    phone_number: '',
+  });
+
+  const onChangeForm = (name, value) => {
+    // eslint-disable-next-line no-shadow
+    setForm((form) => {
+      return {
+        ...form,
+        [name]: value,
+      };
+    });
+    if (value) {
+      setInvalid(false);
+    }
+  };
+
+  const registerHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (form.email === '' || form.password === '' || form.phone_number === '') {
+        setLoading(false);
+        setInvalid(true);
+        setMsg('Input is required!!!');
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(form.email)) {
+        setMsg('Email is invalid!');
+        setInvalid(true);
+        setLoading(false);
+        return;
+      }
+      const res = await register(form.email, form.password, form.phone_number, controller);
+      console.log(res.data);
+      setLoading(false);
+      handleRedirect();
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const handleRedirect = () => {
+    navigation.navigate('Login');
+  };
+
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Sign Up</Text>
-          <View style={styles.content}>
-            <View style={styles.inputGroup}>
-              <TextInput style={styles.input} inputMode="email" placeholder="Enter your email adress" placeholderTextColor={'#FFFFFF'} />
-              <TextInput style={styles.input} inputMode="text" placeholder="Enter your password" placeholderTextColor={'#FFFFFF'} />
-              <TextInput style={styles.input} inputMode="text" placeholder="Enter your phone number" placeholderTextColor={'#FFFFFF'} />
-            </View>
-            <View style={styles.btnGroup}>
-              <TouchableOpacity style={styles.btnCreate} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.textCreate}>Create New Account</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.btnGoogle}>
-                <Image source={icon} style={styles.iconGoogle} />
-                <Text style={styles.textGoogle}>Create with Google</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
+    <NativeBaseProvider>
+      <Box flex={1}>
+        <ZStack flex={1} >
+          <Image flex={1} source={image} resizeMode="contain" alt="background" />
+          <Box flex={1} bg="#000000" opacity="0.3" size="full" />
+          <Center width="full" height="full" paddingX="30px" paddingY="50px" justifyContent="space-between">
+            <Box width="full" mt="100px">
+              <Text color="white" fontWeight="700" fontSize="50px" textAlign="center">Sign Up</Text>
+            </Box>
+            <Box width="full">
+              <Box mb="10px">
+                <Input variant="underlined" size="2xl" color="white" type="text" value={form.email} onChangeText={(text) => onChangeForm('email', text)} placeholder="Enter your email address" placeholderTextColor="white" />
+                <Input variant="underlined" size="2xl" color="white" type="password" value={form.password} onChangeText={(text) => onChangeForm('password', text)} placeholder="Enter your password" placeholderTextColor="white" />
+                <Input variant="underlined" size="2xl" color="white" type="text" inputMode="numeric" value={form.phone_number} onChangeText={(text) => onChangeForm('phone_number', text)} placeholder="Enter your phone number" placeholderTextColor="white" />
+              </Box>
+              <Text color="#FF3333">{invalid && msg}</Text>
+              <Box mt="10px" gap="10px">
+                {loading ? <Button isLoading isLoadingText="Create Account" mt="10px" backgroundColor="#FFBA33" rounded="lg" >
+                  Button
+                </Button> : <Button mt="10px" backgroundColor="#FFBA33" rounded="lg" onPress={registerHandler}><Text color="#6A4029" fontWeight="700" fontSize="18px" >Create Account</Text>
+                </Button>}
+                <Button backgroundColor="#FFFFFF" rounded="lg" onPress={() => console.log('hello world')}>
+                  <Box flexDirection="row" gap="10px">
+                    <Image source={icon} alt="icon-google" />
+                    <Text color="#000000" fontWeight="700" fontSize="18px" >Login with Google</Text>
+                  </Box>
+                </Button>
+              </Box>
+            </Box>
+          </Center>
+        </ZStack>
+      </Box>
+    </NativeBaseProvider >
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    marginTop: 200,
-    marginBottom: 50,
-    width: '100%',
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  title: {
-    color: 'white',
-    fontSize: 60,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  overlay: {
-    backgroundColor: '#000000a0',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 31,
-  },
-  btnCreate: {
-    paddingVertical: 15,
-    borderRadius: 10,
-    backgroundColor: '#6A4029',
-  },
-  btnGoogle: {
-    paddingVertical: 15,
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    gap: 10,
-    justifyContent: 'center',
-  },
-  textGoogle: {
-    color: '#000000',
-    fontWeight: 700,
-    fontSize: 17,
-    textAlign: 'center',
-  },
-  textCreate: {
-    color: '#FFFFFF',
-    fontWeight: 700,
-    fontSize: 17,
-    textAlign: 'center',
-  },
-  btnGroup: {
-    display: 'flex',
-    gap: 17,
-  },
-  input: {
-    borderBottomColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    color: '#FFFFFF',
-    width: '100%',
-    padding: 1,
-    fontSize: 17,
-  },
-  inputGroup: {
-    gap: 17,
-    marginBottom: 40,
-    alignItems: 'center',
-  },
-  iconGoogle: {
-    width: 24,
-    height: 24,
-  },
-});
 
 export default Register;

@@ -13,3 +13,14 @@ export const login = (email, password, controller) => {
   const config = controller ? { signal: controller.signal } : {};
   return axios.post(url, body, config);
 };
+
+export const register = (email, password, phone_number, controller) => {
+  const body = {
+    email,
+    password,
+    phone_number,
+  };
+  const url = `${baseUrl}/auth/new`;
+  const config = controller ? { signal: controller.signal } : {};
+  return axios.post(url, body, config);
+};

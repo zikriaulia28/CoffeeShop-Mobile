@@ -1,60 +1,34 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { NativeBaseProvider, Image, Box, ZStack, Text, Center, Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-const image = require('./src/assets/home.png');
+import React from 'react';
+
+
 
 const Home = () => {
+  const image = require('./src/assets/home.png');
   const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <View style={styles.overlay}>
-          <Text style={styles.text}>Coffee for
-            Everyone</Text>
-          <TouchableOpacity style={styles.btnHome} onPress={() => navigation.navigate('Drawer')}>
-            <Text style={styles.textBtn}>Get started</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </View>
+    <NativeBaseProvider>
+      <Box flex={1}>
+        <ZStack flex={1}>
+          <Image flex={1} source={image} resizeMode="contain" alt="background" />
+          <Box flex={1} bg="#000000" opacity="0.3" size="full" />
+          <Center width="full" height="full" paddingX="30px" paddingY="50px" justifyContent="space-between">
+            <Box width="full" mt="150px">
+              <Text color="white" fontWeight="700" lineHeight="70px" fontSize="65px" textAlign="center">Coffee for
+                Everyone</Text>
+            </Box>
+            <Box width="full">
+              <Button mt="10px" backgroundColor="#FFBA33" rounded="lg" onPress={() => navigation.navigate('Drawer')}><Text color="#6A4029" fontWeight="700" fontSize="18px" >Get started</Text>
+              </Button>
+            </Box>
+          </Center>
+        </ZStack>
+      </Box>
+    </NativeBaseProvider >
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    color: 'white',
-    fontSize: 60,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 100,
-  },
-  overlay: {
-    backgroundColor: '#000000a0',
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  btnHome: {
-    paddingHorizontal: 130,
-    paddingVertical: 15,
-    borderRadius: 10,
-    backgroundColor: '#FFBA33',
-    marginBottom: 50,
-  },
-  textBtn: {
-    color: '#000000',
-    fontWeight: 700,
-    fontSize: 17,
-  },
-});
 
 export default Home;
