@@ -36,10 +36,11 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (form.email === '' || form.password === '') {
+      if (form.email === '' && form.password === '') {
         setLoading(false);
         setInvalid(true);
         setMsg('Input is required!!!');
+        return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(form.email)) {
@@ -63,7 +64,7 @@ const Login = () => {
   };
 
   const handleRedirect = () => {
-    navigation.navigate('Profile');
+    navigation.navigate('Dashboard');
   };
 
   return (

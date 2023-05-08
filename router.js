@@ -9,13 +9,13 @@ import Login from './src/screens/Auth/login';
 import Register from './src/screens/Auth/register';
 import Profile from './src/screens/Content/profile';
 import Forgot from './src/screens/Auth/forgot';
+import Dashboard from './src/screens/Content/dashboard';
 
 const DrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
   return <Drawer.Navigator initialRouteName="Wellcome">
     <Drawer.Screen name="Wellcome" component={Wellcome} options={{ headerShown: false }} />
-    {/* <Drawer.Screen name="Login" component={Login} options={{ headerShown: false }} />
-    <Drawer.Screen name="Register" component={Register} options={{ headerShown: false }} /> */}
+    <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
     <Drawer.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
   </Drawer.Navigator>;
 };
