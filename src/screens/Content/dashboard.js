@@ -18,6 +18,11 @@ const Dashboard = () => {
   const icon1 = require('../../assets/cart.png');
   const icon2 = require('../../assets/humberger.png');
   const icon3 = require('../../assets/search.png');
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabPress = (index) => {
+    setActiveTab(index);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +55,7 @@ const Dashboard = () => {
       <Box flex={1} >
         <Box px={'42px'}>
           <HStack space={2} mt={10} justifyContent={'space-between'} >
-            <Pressable onPress={() => navigation.navigate('Drawer')}>
+            <Pressable onPress={() => navigation.openDrawer()}>
               <Image source={icon2} alt="menu" />
             </Pressable>
             <Image source={icon1} alt="cart" />
@@ -63,15 +68,48 @@ const Dashboard = () => {
         <Box pl={'70px'} h={10} mt={'10px'}>
           <ScrollView horizontal={true} pr={20} showsHorizontalScrollIndicator={false} overScrollMode="always">
             <Box flexDirection={'row'} gap={'29px'}>
-              <Text fontSize={'20px'} >Favorite</Text>
-              <Text fontSize={'20px'} >Promo</Text>
-              <Text fontSize={'20px'} >Coffee</Text>
-              <Text fontSize={'20px'} >Non Coffee</Text>
+              <Text
+                fontSize={'20px'}
+                fontWeight={activeTab === 0 ? 'bold' : 'normal'}
+                onPress={() => handleTabPress(0)}
+              >
+                Favorite
+              </Text>
+              <Text
+                fontSize={'20px'}
+                fontWeight={activeTab === 1 ? 'bold' : 'normal'}
+                onPress={() => handleTabPress(1)}
+              >
+                Coffee
+              </Text>
+              <Text
+                fontSize={'20px'}
+                fontWeight={activeTab === 2 ? 'bold' : 'normal'}
+                onPress={() => handleTabPress(2)}
+              >
+                Non Coffee
+              </Text>
+              <Text
+                fontSize={'20px'}
+                fontWeight={activeTab === 3 ? 'bold' : 'normal'}
+                onPress={() => handleTabPress(3)}
+              >
+                Food
+              </Text>
+              <Text
+                fontSize={'20px'}
+                fontWeight={activeTab === 4 ? 'bold' : 'normal'}
+                onPress={() => handleTabPress(4)}
+              >
+                Add-on
+              </Text>
             </Box>
           </ScrollView>
         </Box>
         <Box px={'42px'} alignItems={'flex-end'} mb={'10px'}>
-          <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
+          <Pressable onPress={() => navigation.navigate('Product')}>
+            <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
+          </Pressable>
         </Box>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
           <Box flexDirection={'row'} ml={'42'} mt={10} gap={10} h={'270px'}>

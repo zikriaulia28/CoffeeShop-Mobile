@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -5,8 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { Provider } from 'react-redux';
-// import { PersistGate } from 'redux-persist/integration/react';
 
 
 import Home from './Home';
@@ -16,16 +15,19 @@ import Register from './src/screens/Auth/register';
 import Profile from './src/screens/Content/profile';
 import Forgot from './src/screens/Auth/forgot';
 import Dashboard from './src/screens/Content/dashboard';
+import Product from './src/screens/Content/product';
+import Chat from './src/screens/Content/chat';
+import CustomDrawer from './src/components/customDrawer';
+import Cart from './src/screens/Content/cart';
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Dashboard" component={Dashboard} options={{
+      <Tab.Screen name="DashboardTab" component={DrawerNavigator} options={{
         headerShown: false,
         tabBarLabel: '',
-        // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: ({ color, size }) => (
           <Icon name="home" color={color} size={size} />
         ),
@@ -37,7 +39,6 @@ function MyTabs() {
       <Tab.Screen name="Profile" component={Profile} options={{
         headerShown: false,
         tabBarLabel: '',
-        // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: ({ color, size }) => (
           <Icon name="account" color={color} size={size} />
         ),
@@ -45,8 +46,15 @@ function MyTabs() {
         tabBarIconStyle: { marginTop: 10, marginLeft: 80 },
         tabBarStyle: { height: 55 },
       }} />
-      <Tab.Screen name="Drawer" component={DrawerNavigator} options={{
+      <Tab.Screen name="Chat" component={Chat} options={{
         headerShown: false,
+        tabBarLabel: '',
+        tabBarIcon: ({ color, size }) => (
+          <Icon name="chat" color={color} size={size} />
+        ),
+        tabBarActiveTintColor: 'brown',
+        tabBarIconStyle: { marginTop: 10, marginLeft: 10 },
+        tabBarStyle: { height: 55 },
       }} />
     </Tab.Navigator>
   );
@@ -54,18 +62,9 @@ function MyTabs() {
 
 const DrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
-  return <Drawer.Navigator initialRouteName="Dashboard">
+  return <Drawer.Navigator initialRouteName="Dashboard" drawerContent={props => <CustomDrawer {...props} />}>
     <Drawer.Screen name="Dashboard" component={Dashboard} options={{
       headerShown: false,
-      // tabBarLabel: '',
-      // // eslint-disable-next-line react/no-unstable-nested-components
-      // tabBarIcon: ({ color, size }) => (
-      //   <Icon name="home" color={color} size={size} />
-      // ),
-      // tabBarActiveTintColor: 'brown',
-      // tabBarIconStyle: { marginTop: 20 },
-      // tabBarItemStyle: { paddingLeft: 5 },
-      // tabBarStyle: { height: 55 },
     }} />
     <Drawer.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
   </Drawer.Navigator>;
@@ -91,6 +90,12 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="Wellcome" component={Wellcome} options={{
+        headerShown: false,
+      }} />
+      <Screen name="Product" component={Product} options={{
+        headerShown: true,
+      }} />
+      <Screen name="Cart" component={Cart} options={{
         headerShown: false,
       }} />
     </Navigator>

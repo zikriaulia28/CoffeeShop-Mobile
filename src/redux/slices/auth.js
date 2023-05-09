@@ -72,7 +72,7 @@ const userSlice = createSlice({
       };
     },
     authLogout: () => {
-      return initialState;
+      return initialState.token;
     },
   },
   extraReducers: {
