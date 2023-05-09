@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
+import Config from 'react-native-config';
 
-// const baseUrl = `${process.env.REACT_APP_SERVER_HOST}`;
-const baseUrl = 'https://webcoffee-api.vercel.app';
+const baseUrl = Config.SERVER_HOST;
 
 export const getProduct = (
   // params, meta

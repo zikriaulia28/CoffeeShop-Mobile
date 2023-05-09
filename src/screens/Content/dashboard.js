@@ -7,8 +7,11 @@ import CardProduct from '../../components/cardProduct';
 import { getProduct } from '../../utils/https/product';
 import React, { useEffect, useState } from 'react';
 import Skeletons from '../../components/skeleton';
+// import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
+  // const token = useSelector((state) => state.user.token);
+  // console.log(token);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
@@ -32,13 +35,15 @@ const Dashboard = () => {
         setData(result.data.data);
         // setMeta(result.data.meta);
         setIsLoading(false);
-        console.log(result.data);
+        // console.log(result.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
   }, []);
+
+  // console.log(data[0].image);
 
   return (
     <NativeBaseProvider>
@@ -50,13 +55,13 @@ const Dashboard = () => {
             </Pressable>
             <Image source={icon1} alt="cart" />
           </HStack>
-          <Heading fontSize={'50px'} fontWeight={'900'} marginX={'auto'} mt={'40px'}>A good coffee is a good day</Heading>
+          <Heading fontSize={'40px'} fontWeight={'900'} marginX={'auto'} mt={'40px'}>A good coffee is a good day</Heading>
           <VStack w="100%" alignSelf="center" mt={'10px'}>
             <Input placeholder="Search" size={'2xl'} inputMode={'text'} backgroundColor={'#FFFFFF'} width="100%" borderRadius="20px" py="1" px="2" InputLeftElement={<Image source={icon3} alt="menu" ml="7" />} />
           </VStack>
         </Box>
         <Box pl={'70px'} h={10} mt={'10px'}>
-          <ScrollView horizontal={true} pr={20} >
+          <ScrollView horizontal={true} pr={20} showsHorizontalScrollIndicator={false} overScrollMode="always">
             <Box flexDirection={'row'} gap={'29px'}>
               <Text fontSize={'20px'} >Favorite</Text>
               <Text fontSize={'20px'} >Promo</Text>
@@ -68,7 +73,7 @@ const Dashboard = () => {
         <Box px={'42px'} alignItems={'flex-end'} mb={'10px'}>
           <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
         </Box>
-        <ScrollView horizontal={true} >
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
           <Box flexDirection={'row'} ml={'42'} mt={10} gap={10} h={'270px'}>
             {isLoading ? Array('', '', '', '', '', '', '', '').map((item, idx) => (
               <Skeletons key={idx} />

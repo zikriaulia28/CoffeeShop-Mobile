@@ -36,9 +36,9 @@ const userSlice = createSlice({
       return {
         ...prevState,
         // isLogin: true,
-        id: action.payload.dataUser.id,
-        image: action.payload.dataUser.profile_picture,
-        role: action.payload.dataUser.role_id,
+        // id: action.payload.dataUser.id,
+        // image: action.payload.dataUser.profile_picture,
+        // role: action.payload.dataUser.role_id,
         token: action.payload.token,
       };
     },

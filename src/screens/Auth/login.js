@@ -3,12 +3,15 @@ import { NativeBaseProvider, Image, Box, ZStack, Text, Center, Input, Button } f
 import { useNavigation } from '@react-navigation/native';
 import { login } from '../../utils/https/auth';
 import React, { useMemo, useState } from 'react';
+import { userAction } from '../../redux/slices/auth';
+import { useDispatch } from 'react-redux';
 
 
 
 const Login = () => {
   const image = require('../../assets/login.png');
   const icon = require('../../assets/google.png');
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const controller = useMemo(() => new AbortController(), []);
   const [loading, setLoading] = useState(false);
@@ -50,21 +53,24 @@ const Login = () => {
         return;
       }
       const res = await login(form.email, form.password, controller);
-      console.log(res.data);
+      // console.log(res.data.token);
+      const token = res.data.token;
+      dispatch(userAction.authLogin({ token }));
       setLoading(false);
       handleRedirect();
     } catch (error) {
       setLoading(false);
-      if (error.response.status === '401') {
-        setMsg('Email/Password is Wrong');
+      if (error.response?.status === '401') {
+        setMsg(error.response.data);
         setInvalid(true);
+        return;
       }
-
+      console.log(error.response.data);
     }
   };
 
   const handleRedirect = () => {
-    navigation.navigate('Dashboard');
+    navigation.navigate('MyTabs');
   };
 
   return (
