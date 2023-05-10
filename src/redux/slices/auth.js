@@ -5,9 +5,12 @@ import { login } from '../../utils/https/auth';
 
 const initialState = {
   // isLogin: false,
-  // id: null,
+  id: null,
   // image: null,
   // role: null,
+  name: null,
+  email: null,
+  image: null,
   token: null,
   data: null,
   isLoading: false,
@@ -36,10 +39,18 @@ const userSlice = createSlice({
       return {
         ...prevState,
         // isLogin: true,
-        // id: action.payload.dataUser.id,
+        id: action.payload.id,
         // image: action.payload.dataUser.profile_picture,
         // role: action.payload.dataUser.role_id,
         token: action.payload.token,
+      };
+    },
+    dataUser: (prevState, action) => {
+      return {
+        ...prevState,
+        name: action.payload.name,
+        email: action.payload.email,
+        image: action.payload.image,
       };
     },
     updateImage: (prevState, action) => {
@@ -75,42 +86,24 @@ const userSlice = createSlice({
       return initialState.token;
     },
   },
-  extraReducers: {
-    [loginThunk.pending]: (prevState) => {
-      return {
-        ...prevState,
-        isLoading: true,
-        isRejected: false,
-        isFulfilled: false,
-      };
-    },
-    [loginThunk.fulfilled]: (prevState, action) => {
-      // const wrong = action.payload.response.status;
-      // return {
-      //   ...prevState,
-      //   isLoading: false,
-      //   isFulfilled: true,
-      //   token: wrong ? null : action.payload.token,
-      //   data: wrong ? null : action.payload.dataUser,
-      //   isLogin: wrong ? false : true,
-      // };
-      return {
-        ...prevState,
-        isLoading: false,
-        isFulfilled: true,
-        token: action.payload.token || null,
-        data: action.payload.dataUser || null,
-        // isLogin: true,
-      };
-    },
-    [loginThunk.rejected]: (prevState, action) => {
-      return {
-        ...prevState,
-        isLoading: false,
-        isRejected: true,
-        err: action.payload,
-      };
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginThunk.pending, (state) => {
+        state.isLoading = true;
+        state.isRejected = false;
+        state.isFulfilled = false;
+      })
+      .addCase(loginThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isFulfilled = true;
+        state.token = action.payload.token || null;
+        state.data = action.payload.dataUser || null;
+      })
+      .addCase(loginThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.err = action.payload;
+      });
   },
 });
 

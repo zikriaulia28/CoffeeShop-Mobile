@@ -53,9 +53,10 @@ const Login = () => {
         return;
       }
       const res = await login(form.email, form.password, controller);
-      // console.log(res.data.token);
+      // console.log(res.data.id);
       const token = res.data.token;
-      dispatch(userAction.authLogin({ token }));
+      const id = res.data.id;
+      dispatch(userAction.authLogin({ id, token }));
       setLoading(false);
       handleRedirect();
     } catch (error) {

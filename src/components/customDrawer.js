@@ -1,15 +1,18 @@
 /* eslint-disable prettier/prettier */
-import { NativeBaseProvider, Box, Text, Avatar, Divider, Pressable, Center, Button, Modal } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, Divider, Pressable, Center, Button, Modal } from 'native-base';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { userAction } from '../redux/slices/auth';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const CustomDrawer = () => {
-  // const token = useSelector((state) => state.user.token);
-  // console.log(token);
+  const storeUser = useSelector((state) => state.user);
+  const email = storeUser?.email;
+  const name = storeUser?.name;
+  const image = storeUser.image;
+  // console.log(image);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,15 +27,27 @@ const CustomDrawer = () => {
     return;
   };
 
+  const setImg = () => {
+    if (image !== null) {
+      return { uri: image };
+    }
+    return placeholder;
+  };
+
   return (
     <NativeBaseProvider >
       <Box w="full" h="288px" alignItems="center" gap="10px" roundedTopRight="30px" roundedBottomRight="30px" pt="47px" backgroundColor="#6A4029" shadow={9}>
-        <Avatar source={placeholder} alt="Profile" w="142px" h="142px" rounded="full" resizeMode="cover" />
-        <Text fontSize="17px" fontWeight="600" color="#FFFFFF">Zulaikha</Text>
-        <Text color="#FFFFFF">zulaikha17@gmail.com</Text>
+        {/* <Box w="142px" h="142px" rounded="full" bgColor="#FFFFFF"> */}
+
+        <Image source={setImg()} alt="Profile" w="142px" h="142px" rounded="full" resizeMode="cover" />
+
+        {/* </Box> */}
+        {/* <Image source={{ uri: image !== null ? image : placeholder }} alt="Profile" w="142px" h="142px" rounded="full" resizeMode="cover" /> */}
+        <Text fontSize="17px" fontWeight="600" color="#FFFFFF">{name ? name : 'No set name'}</Text>
+        <Text color="#FFFFFF">{email}</Text>
       </Box>
       <Box pt="39px" px="40px">
-        <Pressable onPress={() => navigation.navigate('Profile')} flexDirection="row" alignItems="center" gap="13px">
+        <Pressable onPress={() => navigation.navigate('EditProfile')} flexDirection="row" alignItems="center" gap="13px">
           <Icon name="account-circle-outline" color="#6A4029" size={30} />
           <Text fontSize="17px" fontWeigt="600" color="#6A4029">Edit Pofile</Text>
         </Pressable>

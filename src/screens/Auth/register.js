@@ -54,7 +54,7 @@ const Register = () => {
       setLoading(false);
       handleRedirect();
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       setLoading(false);
     }
   };

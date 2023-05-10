@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import { useEffect } from 'react';
 
 
 import Home from './Home';
@@ -21,6 +22,8 @@ import CustomDrawer from './src/components/customDrawer';
 import Cart from './src/screens/Content/cart';
 import SplashScreen from './src/components/splashScreen';
 import ProductDetail from './src/screens/Content/productDetail';
+import History from './src/screens/Content/history';
+import EditProfile from './src/screens/Content/editProfile';
 
 const Tab = createBottomTabNavigator();
 
@@ -104,6 +107,12 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="ProductDetail" component={ProductDetail} options={{
+        headerShown: false,
+      }} />
+      <Screen name="History" component={History} options={{
+        headerShown: false,
+      }} />
+      <Screen name="EditProfile" component={EditProfile} options={{
         headerShown: false,
       }} />
     </Navigator>
