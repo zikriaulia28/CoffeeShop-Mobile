@@ -24,3 +24,12 @@ export const getProduct = (
     },
   });
 };
+
+export const getProductDetail = (id) => {
+  const url = `${baseUrl}/products/${id}`;
+  return axios.get(url, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+};

@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-array-constructor */
-/* eslint-disable prettier/prettier */
 import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import CardProduct from '../../components/cardProduct';
 import { getProduct } from '../../utils/https/product';
 import React, { useEffect, useState } from 'react';
 import Skeletons from '../../components/skeleton';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
@@ -15,7 +15,6 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  const icon1 = require('../../assets/cart.png');
   const icon2 = require('../../assets/humberger.png');
   const icon3 = require('../../assets/search.png');
   const [activeTab, setActiveTab] = useState(0);
@@ -58,7 +57,9 @@ const Dashboard = () => {
             <Pressable onPress={() => navigation.openDrawer()}>
               <Image source={icon2} alt="menu" />
             </Pressable>
-            <Image source={icon1} alt="cart" />
+            <Pressable onPress={() => navigation.navigate('Cart')} >
+              <Icon name="cart-outline" color="#000000" size={30} />
+            </Pressable>
           </HStack>
           <Heading fontSize={'40px'} fontWeight={'900'} marginX={'auto'} mt={'40px'}>A good coffee is a good day</Heading>
           <VStack w="100%" alignSelf="center" mt={'10px'}>
@@ -113,7 +114,7 @@ const Dashboard = () => {
         </Box>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
           <Box flexDirection={'row'} ml={'42'} mt={10} gap={10} h={'270px'}>
-            {isLoading ? Array('', '', '', '', '', '', '', '').map((item, idx) => (
+            {isLoading ? Array('', '', '', '', '').map((item, idx) => (
               <Skeletons key={idx} />
             ))
               :

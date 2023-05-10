@@ -20,6 +20,7 @@ import Chat from './src/screens/Content/chat';
 import CustomDrawer from './src/components/customDrawer';
 import Cart from './src/screens/Content/cart';
 import SplashScreen from './src/components/splashScreen';
+import ProductDetail from './src/screens/Content/productDetail';
 
 const Tab = createBottomTabNavigator();
 
@@ -100,6 +101,9 @@ const StackNavigator = () => {
         headerShown: true,
       }} />
       <Screen name="Cart" component={Cart} options={{
+        headerShown: false,
+      }} />
+      <Screen name="ProductDetail" component={ProductDetail} options={{
         headerShown: false,
       }} />
     </Navigator>
