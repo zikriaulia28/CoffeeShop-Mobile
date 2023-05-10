@@ -1,29 +1,30 @@
 /* eslint-disable prettier/prettier */
 import { NativeBaseProvider, Image, Box, ZStack, Text, Center, Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+// import React, { useEffect } from 'react';
+// import { useSelector } from 'react-redux';
 
 
 
 const Home = () => {
   const image = require('./src/assets/home.png');
   const navigation = useNavigation();
-  const token = useSelector((state) => state.user?.token);
+  // const token = useSelector((state) => state.user?.token);
 
-  useEffect(() => {
-    if (token) {
-      handleRedirect();
-    }
-    if (token === null) {
-      navigation.navigate('Home');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (token) {
+  //     handleRedirect();
+  //   }
+  //   if (token === null) {
+  //     navigation.navigate('Home');
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  const handleRedirect = () => {
-    navigation.navigate('MyTabs');
-  };
+  // const handleRedirect = () => {
+  //   navigation.navigate('MyTabs');
+  // };
 
 
   return (

@@ -60,12 +60,8 @@ const Login = () => {
       handleRedirect();
     } catch (error) {
       setLoading(false);
-      if (error.response?.status === '401') {
-        setMsg(error.response.data);
-        setInvalid(true);
-        return;
-      }
-      console.log(error.response.data);
+      setMsg(error.response.data.msg);
+      setInvalid(true);
     }
   };
 

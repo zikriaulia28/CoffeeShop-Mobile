@@ -8,17 +8,19 @@ import { userAction } from '../redux/slices/auth';
 // import { useSelector } from 'react-redux';
 
 const CustomDrawer = () => {
-  const [showModal, setShowModal] = useState(false);
   // const token = useSelector((state) => state.user.token);
   // console.log(token);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
   const placeholder = require('../assets/placeholder-user.jpg');
 
 
   const handleLogout = () => {
+    setIsLoading(false);
     dispatch(userAction.authLogout());
-    navigation.replace('Home');
+    navigation.replace('SplashScreen');
     return;
   };
 
@@ -71,16 +73,17 @@ const CustomDrawer = () => {
                   }}>
                     Cancel
                   </Button>
-                  <Button onPress={handleLogout}>
-                    Save
-                  </Button>
+                  {isLoading ? <Button backgroundColor="#6A4029" px="30px" onPress={handleLogout}>
+                    Logout
+                  </Button> : <Button backgroundColor="#6A4029" isLoading isLoadingText="Logout" />
+                  }
                 </Button.Group>
               </Modal.Footer>
             </Modal.Content>
           </Modal>
         </Center>;
       </Box>
-    </NativeBaseProvider>
+    </NativeBaseProvider >
   );
 };
 

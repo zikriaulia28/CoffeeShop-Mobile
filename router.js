@@ -19,6 +19,7 @@ import Product from './src/screens/Content/product';
 import Chat from './src/screens/Content/chat';
 import CustomDrawer from './src/components/customDrawer';
 import Cart from './src/screens/Content/cart';
+import SplashScreen from './src/components/splashScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -73,7 +74,10 @@ const DrawerNavigator = () => {
 const StackNavigator = () => {
   const { Navigator, Screen } = createStackNavigator();
   return (
-    <Navigator>
+    <Navigator initialRouteName="SplashScreen">
+      <Screen name="SplashScreen" component={SplashScreen} options={{
+        headerShown: false,
+      }} />
       <Screen name="Home" component={Home} options={{
         headerShown: false,
       }} />
