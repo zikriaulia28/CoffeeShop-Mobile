@@ -1,17 +1,26 @@
 /* eslint-disable prettier/prettier */
-import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, useToast, Button } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getProductDetail } from '../../utils/https/product';
+// import { counterAction } from '../../redux/slices/counter';
+import { cartAction } from '../../redux/slices/cart';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const ProductDetail = ({ route }) => {
-  const [selectedValue, setSelectedValue] = useState('');
+  const storeCart = useSelector((state) => state.cart);
+  console.log(storeCart);
+  const dispatch = useDispatch();
+  const [selectedValue, setSelectedValue] = useState([]);
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [active] = useState(true);
   const { id } = route.params;
-  const placeholder = require('../../assets/placehoder-product.png');
+  // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
+  const toast = useToast();
 
   const getProductById = async () => {
     setIsLoading(true);
@@ -34,11 +43,38 @@ const ProductDetail = ({ route }) => {
   }, [id]);
 
   const handleClick = (value) => {
-    setSelectedValue(value);
+    if (value !== '') {
+      setSelectedValue(value);
+    }
     console.log(value);
   };
 
+  const handleAddCart = () => {
+    try {
+      const cart = {
+        product_id: id,
+        prodName: product.name,
+        image: product.image || '',
+        size_id: selectedValue || 1,
+        qty: 1,
+        price: product.price,
+      };
+      dispatch(cartAction.addtoCart(cart));
+      console.log('added to cart');
+    } catch (error) {
+      console.error('Error while adding to cart:', error);
+    }
+  };
 
+  const showToast = () => {
+    toast.show({
+      render: () => (
+        <Box flex={1} bg="emerald.200" borderWidth="1" opacity={30} px="10" py="20" rounded="sm" mb={100}>
+          Hello! Have a nice day
+        </Box>
+      )
+    });
+  };
 
   return (
     <NativeBaseProvider>
@@ -55,7 +91,7 @@ const ProductDetail = ({ route }) => {
           {isLoading ? <Skeleton h="58px" w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" >
             <Skeleton fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</Skeleton>
           </Skeleton> : <Box w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" py="10px">
-            <Text fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</Text>
+            <Text fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID')}</Text>
           </Box>}
 
         </Box>
@@ -67,7 +103,7 @@ const ProductDetail = ({ route }) => {
                 alt="product-img"
                 w="full"
                 h="full"
-                resizeMode="contain"
+                resizeMode="cover"
                 rounded="full"
               />
             )}
@@ -80,21 +116,32 @@ const ProductDetail = ({ route }) => {
             {isLoading ? <Skeleton mt="31px" height="29%" /> : <Box><Text fontWeight={700} mt="31px" color="#6A4029">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.</Text></Box>}
             <Box mt="10px"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>
             <Box justifyContent="center" flexDirection="row" gap="37px" mt="15px">
-              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick('R')} _pressed={{ borderColor: 'brown', borderWidth: '2px' }} >
-                <Text fontSize="20px" fontWeight={700}>R</Text>
+              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick(1)} active={selectedValue === 1}>
+                <Text fontSize="20px" fontWeight={700} position={'absolute'}>R</Text>
+                {selectedValue === 1 && active && (
+                  <Icon name="checkbox-blank-circle-outline" color="#6A4029" size={50} />
+                )}
               </Pressable>
 
-              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick('L')} _pressed={{ borderColor: 'brown', borderWidth: '2px' }}>
-                <Text fontSize="20px" fontWeight={700}>L</Text>
+              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick(2)} active={selectedValue === 2}>
+                <Text fontSize="20px" fontWeight={700} position={'absolute'}>L</Text>
+                {selectedValue === 2 && active && (
+                  <Icon name="checkbox-blank-circle-outline" color="#6A4029" size={50} />
+                )}
               </Pressable>
 
-              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick('XL')} _pressed={{ borderColor: 'brown', borderWidth: '2px' }}>
-                <Text fontSize="20px" fontWeight={700}>XL</Text>
+              <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick(3)} active={selectedValue === 3}>
+                <Text fontSize="20px" fontWeight={700} position={'absolute'}>XL</Text>
+                {selectedValue === 3 && active && (
+                  <Icon name="checkbox-blank-circle-outline" color="#6A4029" size={50} />
+                )}
               </Pressable>
             </Box>
 
-            <Box w="full" py="10px" bg="#6A4029" mt="10px" rounded="20px" alignItems="center">
-              <Pressable><Text color="#FFFFFF">Add to cart</Text></Pressable>
+            <Box>
+              <Button onPress={handleAddCart} w="full" py="10px" bg="#6A4029" mt="20px" rounded="20px" alignItems="center">
+                <Text color="#FFFFFF">Add to cart</Text>
+              </Button>
             </Box>
           </Box>
         </Box>

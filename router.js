@@ -24,6 +24,7 @@ import SplashScreen from './src/components/splashScreen';
 import ProductDetail from './src/screens/Content/productDetail';
 import History from './src/screens/Content/history';
 import EditProfile from './src/screens/Content/editProfile';
+import Delivery from './src/screens/Content/delivery';
 
 const Tab = createBottomTabNavigator();
 
@@ -113,6 +114,9 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="EditProfile" component={EditProfile} options={{
+        headerShown: false,
+      }} />
+      <Screen name="Delivery" component={Delivery} options={{
         headerShown: false,
       }} />
     </Navigator>

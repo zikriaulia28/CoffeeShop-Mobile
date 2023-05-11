@@ -36,7 +36,7 @@ const SplashScreen = () => {
     <NativeBaseProvider>
       <Box flex={1} background="#FFBA33">
         <Center>
-          <Heading mt="40px" fontSize="40px" fontWeight={700} color="#6A4029" borderBottomWidth={4} borderBottomColor="#6A4029" italic>Filosofi Coffe</Heading>
+          <Heading mt="40px" fontSize="40px" fontWeight={700} color="#6A4029" borderBottomWidth={4} borderBottomColor="#6A4029" italic>Filosofi Coffee</Heading>
         </Center>
         <Lottie source={animation} autoPlay loop resizeMode="contain" />
         <Box flex={1}>
