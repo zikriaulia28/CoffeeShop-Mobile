@@ -13,18 +13,19 @@ import Home from './Home';
 import Wellcome from './src/screens/Auth/wellcome';
 import Login from './src/screens/Auth/login';
 import Register from './src/screens/Auth/register';
-import Profile from './src/screens/Content/profile';
+import Profile from './src/screens/Profile/profile';
 import Forgot from './src/screens/Auth/forgot';
 import Dashboard from './src/screens/Content/dashboard';
-import Product from './src/screens/Content/product';
+import Product from './src/screens/Product/product';
 import Chat from './src/screens/Content/chat';
 import CustomDrawer from './src/components/customDrawer';
-import Cart from './src/screens/Content/cart';
+import Cart from './src/screens/Transaction/cart';
 import SplashScreen from './src/components/splashScreen';
-import ProductDetail from './src/screens/Content/productDetail';
-import History from './src/screens/Content/history';
-import EditProfile from './src/screens/Content/editProfile';
-import Delivery from './src/screens/Content/delivery';
+import ProductDetail from './src/screens/Product/productDetail';
+import History from './src/screens/History/history';
+import EditProfile from './src/screens/Profile/editProfile';
+import Delivery from './src/screens/Transaction/delivery';
+import Payment from './src/screens/Transaction/payment';
 
 const Tab = createBottomTabNavigator();
 
@@ -102,7 +103,7 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="Product" component={Product} options={{
-        headerShown: true,
+        headerShown: false,
       }} />
       <Screen name="Cart" component={Cart} options={{
         headerShown: false,
@@ -117,6 +118,9 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="Delivery" component={Delivery} options={{
+        headerShown: false,
+      }} />
+      <Screen name="Payment" component={Payment} options={{
         headerShown: false,
       }} />
     </Navigator>

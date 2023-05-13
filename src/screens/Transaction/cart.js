@@ -1,14 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { NativeBaseProvider, Box, Text, Pressable, ScrollView } from 'native-base';
-import React, { useState } from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import CardCart from '../../components/cardCart';
-// import HiddenIcon from '../../components/hiddenIcon';
-// import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { cartAction } from '../../redux/slices/cart';
 
 
 
@@ -63,8 +59,7 @@ const Cart = () => {
             <Text color="#000000" fontSize="18px" fontWeight={900}>Apply Delivery Coupons</Text>
             <Icon name="arrow-right" color="#000000" size={24} />
           </Pressable>)}
-          <Box w="full" borderBottomWidth={1} borderBottomColor="#E0E0E2" mb={10} />
-          <Box gap="22px">
+          {storeCart.length > 0 && (<><Box w="full" borderBottomWidth={1} borderBottomColor="#E0E0E2" mb={10} /><Box gap="22px">
             <Box flexDir="row" justifyContent="space-between">
               <Text color="#ADADAF" fontWeight={700}>Item Total</Text>
               <Text fontWeight={700}>IDR {subtotal.toLocaleString('id-ID')}</Text>
@@ -77,11 +72,11 @@ const Cart = () => {
               <Text color="#ADADAF" fontWeight={700}>Tax</Text>
               <Text fontWeight={700}>IDR {taxFee.toLocaleString('id-ID')}</Text>
             </Box>
-          </Box>
-          <Box mt="54px" mb="20px" flexDir="row" justifyContent="space-between">
-            <Text fontSize={'20px'} fontWeight={700}>Total :</Text>
-            <Text fontSize={'20px'} fontWeight={700}>IDR {total.toLocaleString('id-ID')}</Text>
-          </Box>
+          </Box><Box mt="54px" mb="20px" flexDir="row" justifyContent="space-between">
+              <Text fontSize={'20px'} fontWeight={700}>Total :</Text>
+              <Text fontSize={'20px'} fontWeight={700}>IDR {total.toLocaleString('id-ID')}</Text>
+            </Box></>)}
+
 
           {storeCart.length > 0 && (<Pressable onPress={() => navigation.navigate('Delivery', { total })} bg="#FFBA33" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'} gap={10} flexDir="row">
             <Icon name="arrow-right" color="#000000" size={24} />

@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, useToast, Button } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, Button } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getProductDetail } from '../../utils/https/product';
-// import { counterAction } from '../../redux/slices/counter';
 import { cartAction } from '../../redux/slices/cart';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -20,7 +19,6 @@ const ProductDetail = ({ route }) => {
   const { id } = route.params;
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
-  const toast = useToast();
 
   const getProductById = async () => {
     setIsLoading(true);
@@ -66,15 +64,6 @@ const ProductDetail = ({ route }) => {
     }
   };
 
-  const showToast = () => {
-    toast.show({
-      render: () => (
-        <Box flex={1} bg="emerald.200" borderWidth="1" opacity={30} px="10" py="20" rounded="sm" mb={100}>
-          Hello! Have a nice day
-        </Box>
-      )
-    });
-  };
 
   return (
     <NativeBaseProvider>

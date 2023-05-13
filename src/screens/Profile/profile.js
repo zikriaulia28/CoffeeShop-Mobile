@@ -16,7 +16,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const controller = useMemo(() => new AbortController(), []);
-  const placeholder = require('../../assets/placeholder-user.jpg');
+  // const placeholder = require('../../assets/placeholder-user.jpg');
   const placeholderHistory = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
 
@@ -30,6 +30,7 @@ const Profile = () => {
         const name = result.display_name;
         const image = result.image;
         setData(result);
+        // console.log(result);
         dispatch(userAction.dataUser({ name, email, image }));
         setIsLoading(false);
       } catch (error) {

@@ -53,8 +53,8 @@ const EditProfile = () => {
                   Male
                 </Radio>
               </Box>
-            </Radio.Group>;
-            <Box mb="21px">
+            </Radio.Group>
+            <Box mb="21px" mt="20px">
               <Text color="#9F9F9F">Email Address :</Text>
               <Input variant="underlined" size="2xl" color="white" _focus={{ borderBottomColor: '#6A4029' }} type="text" placeholder="Enter your email address" />
             </Box>
