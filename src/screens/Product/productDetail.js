@@ -47,6 +47,20 @@ const ProductDetail = ({ route }) => {
     console.log(value);
   };
 
+  const setPrice = () => {
+    if (selectedValue === 1) {
+      return product?.price.toLocaleString('id-ID');
+    }
+    if (selectedValue === 2) {
+      return product?.price.toLocaleString('id-ID') * 1.3;
+    }
+    if (selectedValue === 3) {
+      return product?.price.toLocaleString('id-ID') * 1.65;
+    }
+    return product?.price.toLocaleString('id-ID');
+  };
+
+
   const handleAddCart = () => {
     try {
       const cart = {
@@ -68,7 +82,7 @@ const ProductDetail = ({ route }) => {
   return (
     <NativeBaseProvider>
       <Box bg="#6A4029" flex={1}>
-        <Box mt={10} px={'42px'} >
+        <Box mt={10} px={7} >
           <Box flexDirection="row" alignItems="center" justifyContent="space-between">
             <Pressable onPress={() => navigation.goBack()} >
               <Icon name="arrow-left" color="#FFFFFF" size={30} />
@@ -80,7 +94,7 @@ const ProductDetail = ({ route }) => {
           {isLoading ? <Skeleton h="58px" w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" >
             <Skeleton fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</Skeleton>
           </Skeleton> : <Box w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" py="10px">
-            <Text fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID')}</Text>
+            <Text fontSize="25px" fontWeight={700}>{setPrice()}</Text>
           </Box>}
 
         </Box>
@@ -100,7 +114,7 @@ const ProductDetail = ({ route }) => {
           {isLoading ? <Skeleton px="54px" top="-15%" rounded={'20px'} /> : <Box px="54px" top="-15%" justifyContent="flex-end" alignItems="flex-end">
             <Text fontSize="28px" fontWeight={700} >{product?.name}</Text>
           </Box>}
-          <Box px="54px" top="-10%" >
+          <Box px={7} top="-10%" >
             {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontWeight={700} color="#6A4029">Delivery only on Monday to friday at  1 - 7 pm</Text></Box>}
             {isLoading ? <Skeleton mt="31px" height="29%" /> : <Box><Text fontWeight={700} mt="31px" color="#6A4029">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.</Text></Box>}
             <Box mt="10px"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>

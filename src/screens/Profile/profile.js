@@ -16,7 +16,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const controller = useMemo(() => new AbortController(), []);
-  // const placeholder = require('../../assets/placeholder-user.jpg');
+  const placeholder = require('../../assets/placeholder-user.jpg');
   const placeholderHistory = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
 
@@ -43,28 +43,32 @@ const Profile = () => {
   }, []);
   return (
     <NativeBaseProvider>
+      <Box pt={10} px={7} bg="#FFFFFF">
+        <Box flexDirection="row" alignItems="center" gap="90px">
+          <Pressable onPress={() => navigation.goBack()} >
+            <Icon name="arrow-left" color="#000000" size={30} />
+          </Pressable>
+          <Text color="#6A4029" fontWeight={700} fontSize="20px">My profile</Text>
+        </Box>
+      </Box>
       <ScrollView flex={1}>
         <Box gap="9px">
-          <Box pt={10} px={'42px'} bg="#FFFFFF">
-            <Box flexDirection="row" alignItems="center" gap="90px">
-              <Pressable onPress={() => navigation.goBack()} >
-                <Icon name="arrow-left" color="#000000" size={30} />
-              </Pressable>
-              <Text color="#6A4029" fontWeight={700} fontSize="20px">My profile</Text>
-            </Box>
-            <Box alignItems="center" mt="58px">
+          <Box bg="#FFFFFF">
+            <Box alignItems="center" px={7} mt="58px">
               {isLoading ? <Skeleton w="100px" h="100px" rounded="full" mb="28px" /> : <Box w="100px" h="100px" rounded="full">
-                {data?.image && (
+                {data?.image ? (
                   <Image source={{ uri: data.image }} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
+                ) : (
+                  <Image source={placeholder} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
                 )}
               </Box>}
-              {isLoading ? <Skeleton h="25px" mb="10px" /> : (<Text mt="17px" fontSize="18px" fontWeight={700} color="#6A4029">{data.display_name}</Text>)}
-              {isLoading ? <Skeleton h="25px" mb="10px" /> : (<Text mt="10px" color="#6A4029">{data.email}</Text>)}
-              {isLoading ? <Skeleton h="25px" mb="10px" /> : (<Text color="#6A4029">{data.phone_number}</Text>)}
-              {isLoading ? <Skeleton h="25px" mb="10px" /> : (<Text mb="28px" textAlign="center" color="#6A4029">{data.address}</Text>)}
+              {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="17px" fontSize="18px" fontWeight={700} color="#6A4029">{data.display_name ? data.display_name : 'Please Set Name'}</Text>)}
+              {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="10px" color="#6A4029">{data.email}</Text>)}
+              {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text color="#6A4029">{data.phone_number}</Text>)}
+              {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mb="28px" w="80%" textAlign="center" color="#6A4029">{data.address}</Text>)}
             </Box>
           </Box>
-          <Box pl={'42px'} bg="#FFFFFF" py="24px" >
+          <Box pl={7} bg="#FFFFFF" py="24px" >
             <Box flexDirection="row" justifyContent="space-between" alignItems="center" pr="42px">
               <Text color="#6A4029" fontSize="18px" fontWeight={700}>Order History</Text>
               <Pressable onPress={() => navigation.navigate('History')}>

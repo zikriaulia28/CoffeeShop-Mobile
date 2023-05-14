@@ -16,7 +16,15 @@ const Cart = () => {
 
   let subtotal = 0;
   storeCart.forEach(item => {
-    subtotal += item.price * item.qty;
+    if (item.size_id === 1) {
+      subtotal += item.price * item.qty;
+    }
+    if (item.size_id === 2) {
+      subtotal += (item.price * 1.3) * item.qty;
+    }
+    if (item.size_id === 3) {
+      subtotal += (item.price * 1.65) * item.qty;
+    }
   });
   const taxFee = subtotal * 0.1;
   const total = subtotal + taxFee;
@@ -24,7 +32,7 @@ const Cart = () => {
   return (
     <NativeBaseProvider>
       <ScrollView flex={1}>
-        <Box pt={10} px={'42px'}>
+        <Box pt={10} px={7}>
           <Box flexDirection="row" alignItems="center" gap="110px">
             <Pressable onPress={() => navigation.goBack()} >
               <Icon name="arrow-left" color="#000000" size={30} />
@@ -40,7 +48,7 @@ const Cart = () => {
               <Text fontWeight={900} fontSize="28px">No orders yet</Text>
               <Text w="60%" textAlign="center">Hit the orange button down
                 below to Create an order</Text>
-              <Pressable onPress={() => navigation.navigate('Product')} mt="60%" bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" w="full">
+              <Pressable onPress={() => navigation.navigate('Product')} mt="50%" bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" w="full">
                 <Text color="#FFFFFF" fontWeight={900}>Start odering</Text>
               </Pressable>
             </Box>}
@@ -76,8 +84,6 @@ const Cart = () => {
               <Text fontSize={'20px'} fontWeight={700}>Total :</Text>
               <Text fontSize={'20px'} fontWeight={700}>IDR {total.toLocaleString('id-ID')}</Text>
             </Box></>)}
-
-
           {storeCart.length > 0 && (<Pressable onPress={() => navigation.navigate('Delivery', { total })} bg="#FFBA33" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'} gap={10} flexDir="row">
             <Icon name="arrow-right" color="#000000" size={24} />
             <Text color="#000000" fontSize="18px" fontWeight={900}>Confirm and Checkout</Text>

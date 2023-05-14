@@ -26,6 +26,7 @@ import History from './src/screens/History/history';
 import EditProfile from './src/screens/Profile/editProfile';
 import Delivery from './src/screens/Transaction/delivery';
 import Payment from './src/screens/Transaction/payment';
+import ChatDetail from './src/screens/Content/chatDetail';
 
 const Tab = createBottomTabNavigator();
 
@@ -121,6 +122,9 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="Payment" component={Payment} options={{
+        headerShown: false,
+      }} />
+      <Screen name="ChatDetail" component={ChatDetail} options={{
         headerShown: false,
       }} />
     </Navigator>

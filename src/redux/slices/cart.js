@@ -14,11 +14,11 @@ const cartSlice = createSlice({
   reducers: {
     increment: (prevState, action) => {
       const exsistIdx = prevState.shoppingCart.findIndex(
-        item => item.product_id === action.payload,
+        item => item.product_id === action.payload.product_id && item.size_id === action.payload.size_id,
       );
 
       if (exsistIdx !== -1) {
-        // Jika objek dg nilai id yg sama sudah ada di dalam array,
+        // Jika objek dg nilai id dan size yang sama sudah ada di dalam array,
         // tambahkan nilai qty pada objek tersebut
         const existItem = prevState.shoppingCart[exsistIdx];
         const updatedItem = {
@@ -37,29 +37,42 @@ const cartSlice = createSlice({
       }
     },
     decrement: (prevState, action) => {
-      const exsistIdx = prevState.shoppingCart.findIndex(
-        item => item.product_id === action.payload,
+      const existIdx = prevState.shoppingCart.findIndex(
+        item => item.product_id === action.payload.product_id && item.size_id === action.payload.size_id,
       );
 
-      if (exsistIdx !== -1) {
-        // Jika objek dg nilai id yg sama sudah ada di dalam array,
-        // tambahkan nilai qty pada objek tersebut
-        const existItem = prevState.shoppingCart[exsistIdx];
+      if (existIdx !== -1) {
+        const existItem = prevState.shoppingCart[existIdx];
         const updatedItem = {
           ...existItem,
           qty: existItem.qty - 1,
         };
+
         const updatedCart = [
-          ...prevState.shoppingCart.slice(0, exsistIdx),
+          ...prevState.shoppingCart.slice(0, existIdx),
           updatedItem,
-          ...prevState.shoppingCart.slice(exsistIdx + 1),
+          ...prevState.shoppingCart.slice(existIdx + 1),
         ];
+
+        // Jika qty kurang dari satu, hapus item dari shoppingCart
+        if (updatedItem.qty < 1) {
+          const filteredCart = prevState.shoppingCart.filter(
+            item => item.product_id !== action.payload.product_id || item.size_id !== action.payload.size_id,
+          );
+          return {
+            ...prevState,
+            shoppingCart: filteredCart,
+          };
+        }
+
         return {
           ...prevState,
           shoppingCart: updatedCart,
         };
       }
     },
+
+
     deliveryMethod: (prevState, action) => {
       return { ...prevState, delivery: action.payload };
     },

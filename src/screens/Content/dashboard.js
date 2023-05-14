@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-shadow */
-/* eslint-disable no-array-constructor */
 import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import CardProduct from '../../components/cardProduct';
@@ -34,17 +33,14 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     setIsLoading(true);
-    const params = { limit, page, category, search: searchInput, order };
     try {
+      const params = { limit, page, category, search: searchInput, order };
       const result = await getProduct(params, controller);
-      // console.log(result.data.data);
       setData(result.data.data);
-      // setNoData(false);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 404) {
-        // setNoData(true);
         setIsLoading(false);
       }
     }
@@ -69,9 +65,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+  useEffect(() => {
+    fetchData();
     fetchDataUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, category, searchInput, limit]);
+  }, [page, category, searchInput, limit, order]);
 
   const handleCategory = info => {
     setPage(1);
@@ -91,7 +93,7 @@ const Dashboard = () => {
   return (
     <NativeBaseProvider>
       <Box flex={1} >
-        <Box px={'42px'}>
+        <Box px={7}>
           <HStack space={2} mt={10} alignItems={'center'} justifyContent={'space-between'} >
             <Pressable onPress={() => navigation.openDrawer()}>
               <Icon name="menu" color="#000000" size={40} />
@@ -139,26 +141,26 @@ const Dashboard = () => {
               <Text
                 fontSize={'20px'}
                 fontWeight={activeTab === 4 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(4, '')}
+                onPress={() => handleTabPress(4, 4)}
               >
                 Add-on
               </Text>
             </Box>
           </ScrollView>
         </Box>
-        <Box px={'42px'} alignItems={'flex-end'} mb={'10px'}>
+        <Box px={7} alignItems={'flex-end'} mb={'10px'}>
           <Pressable onPress={() => navigation.navigate('Product')}>
             <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
           </Pressable>
         </Box>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-          <Box flexDirection={'row'} ml={'42'} mt={10} gap={10} h={'270px'}>
-            {isLoading ? Array('', '', '', '', '').map((item, idx) => (
-              <Skeletons key={idx} />
-            ))
-              :
-              data.length > 0 &&
-              data.map((product, idx) => (
+          <Box flexDirection={'row'} ml={7} mt={10} gap={10} h={'270px'}>
+            {isLoading ? (
+              Array.from({ length: 5 }).map((item, idx) => (
+                <Skeletons key={idx} />
+              ))
+            ) : (
+              data?.length > 0 && data.map((product, idx) => (
                 <CardProduct
                   key={idx}
                   id={product.id}
@@ -166,7 +168,9 @@ const Dashboard = () => {
                   name={product.name}
                   price={product.price}
                 />
-              ))}
+              ))
+            )}
+
           </Box>
         </ScrollView>
       </Box >

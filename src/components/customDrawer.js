@@ -11,8 +11,7 @@ const CustomDrawer = () => {
   const storeUser = useSelector((state) => state.user);
   const email = storeUser?.email;
   const name = storeUser?.name;
-  const image = storeUser.image;
-  // console.log(image);
+  const image = storeUser?.image;
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,22 +26,16 @@ const CustomDrawer = () => {
     return;
   };
 
-  const setImg = () => {
-    if (image !== null) {
-      return { uri: image };
-    }
-    return placeholder;
-  };
-
   return (
     <NativeBaseProvider >
-      <Box w="full" h="288px" alignItems="center" gap="10px" roundedTopRight="30px" roundedBottomRight="30px" pt="47px" backgroundColor="#6A4029" shadow={9}>
-        {/* <Box w="142px" h="142px" rounded="full" bgColor="#FFFFFF"> */}
-
-        <Image source={setImg()} alt="Profile" w="142px" h="142px" rounded="full" resizeMode="cover" />
-
-        {/* </Box> */}
-        {/* <Image source={{ uri: image !== null ? image : placeholder }} alt="Profile" w="142px" h="142px" rounded="full" resizeMode="cover" /> */}
+      <Box w="full" h="288px" alignItems="center" gap="10px" roundedBottomRight="30px" pt="47px" backgroundColor="#6A4029" shadow={9}>
+        <Box w="142px" h="142px" rounded="full">
+          {image ? (
+            <Image source={{ uri: image }} alt="Profile" w="full" h="full" rounded="full" resizeMode="cover" />
+          ) : (
+            <Image source={placeholder} alt="Profile" w="full" h="142px" rounded="full" resizeMode="cover" />
+          )}
+        </Box>
         <Text fontSize="17px" fontWeight="600" color="#FFFFFF">{name ? name : 'No set name'}</Text>
         <Text color="#FFFFFF">{email}</Text>
       </Box>
