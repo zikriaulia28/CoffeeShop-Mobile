@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, ScrollView } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, ScrollView, Center, Button, Modal, Input, FormControl } from 'native-base';
 import React, { useState, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../../utils/https/profile';
+import { editPassword } from '../../utils/https/auth';
 import { useSelector } from 'react-redux';
 import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
@@ -15,13 +16,35 @@ const Profile = () => {
   const id = useSelector((state) => state.user?.id);
   const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
-  console.log(token);
+  // console.log(token);
+  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [dataHistory, setDataHistory] = useState([]);
+  const [msg, setMsg] = useState('');
+  const [invalid, setInvalid] = useState(false);
+  const [success, setSuccess] = useState(false);
   const controller = useMemo(() => new AbortController(), []);
   const placeholder = require('../../assets/placeholder-user.jpg');
   const navigation = useNavigation();
+  const [form, setForm] = useState({
+    oldPassword: '',
+    newPassword: '',
+  });
+
+  const onChangeForm = (name, value) => {
+    // eslint-disable-next-line no-shadow
+    setForm((form) => {
+      return {
+        ...form,
+        [name]: value,
+      };
+    });
+    if (value) {
+      setInvalid(false);
+      setSuccess(false);
+    }
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -36,7 +59,7 @@ const Profile = () => {
       dispatch(userAction.dataUser({ name, email, image }));
       const resultHistory = await getHistory(token, controller);
       setDataHistory([...resultHistory.data.data]);
-      console.log('ini history', resultHistory.data.data);
+      // console.log('ini history', resultHistory.data.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -44,14 +67,42 @@ const Profile = () => {
     }
   };
 
-  console.log('ini datahisto', dataHistory);
+  const handleEditPassword = async () => {
+    setIsLoading(true);
+    try {
+      const result = await editPassword(token, form.oldPassword, form.newPassword, controller);
+      setSuccess(true);
+      setMsg(result.data.message);
+      setIsLoading(false);
+      const updatedForm = {
+        ...form,
+        oldPassword: '',
+        newPassword: '',
+      };
+      setForm(updatedForm);
+    } catch (error) {
+      console.log(error.response.data);
+      setInvalid(true);
+      setMsg(error.response.data.msg);
+      setIsLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSuccess(false);
+  };
+
+
+
+  // console.log('ini datahisto', dataHistory);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   useEffect(() => {
-    console.log('Data history updated: ', dataHistory);
+    // console.log('Data history updated: ', dataHistory);
   }, [dataHistory]);
 
   return (
@@ -98,26 +149,11 @@ const Profile = () => {
                     </Box>
                   )))
                 }
-                {/* {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>} */}
               </Box>
             </ScrollView>
           </Box>
           <Box px={'42px'} bg="#FFFFFF" pb="24px">
-            <Pressable flexDirection="row" justifyContent="space-between" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#FFFFFF" shadow={3} rounded="20px">
+            <Pressable onPress={() => setShowModal(true)} flexDirection="row" justifyContent="space-between" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#FFFFFF" shadow={3} rounded="20px">
               <Text color="#6A4029" fontSize="18px" fontWeight={700}>Edit Password</Text>
               <Icon name="arrow-right" color="#6A4029" size={30} />
             </Pressable>
@@ -135,6 +171,55 @@ const Profile = () => {
           </Box>
         </Box>
       </ScrollView>
+      <Box>
+        <Center>
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)} _backdrop={{
+            _dark: {
+              bg: 'coolGray.800',
+            },
+            bg: 'warmGray.50',
+          }}>
+            <Modal.Content maxW="350" maxH="350px">
+              <Modal.CloseButton />
+              <Modal.Header>Edit Password</Modal.Header>
+              <Modal.Body>
+                <FormControl>
+                  <FormControl.Label>Old Password</FormControl.Label>
+                  <Input size="2xl" type="password" value={form.oldPassword} onChangeText={(text) => onChangeForm('oldPassword', text)} placeholder="Enter old password" />
+                </FormControl>
+                <FormControl mt="3">
+                  <FormControl.Label>New Password</FormControl.Label>
+                  <Input size="2xl" type="password" value={form.newPassword} onChangeText={(text) => onChangeForm('newPassword', text)} placeholder="Enter new password" />
+                </FormControl>
+                {invalid && (
+                  <Text mt="10px" color="red.700">
+                    {invalid && msg}
+                  </Text>
+                )}
+                {success && (
+                  <Text mt="10px" color="green.700">
+                    {success && msg}
+                  </Text>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                    setShowModal(false);
+                  }}>
+                    Cancel
+                  </Button>
+                  {isLoading ? <Button backgroundColor="#6A4029" px="17px" py="8px" isLoading isLoadingText="Save" /> : success === true ? <Button px="30px" bg="#6A4029" onPress={handleClose}>
+                    Close
+                  </Button> : <Button onPress={handleEditPassword} bg="#6A4029" px="30px">
+                    Save
+                  </Button>}
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+        </Center>;
+      </Box>
     </NativeBaseProvider>
   );
 };

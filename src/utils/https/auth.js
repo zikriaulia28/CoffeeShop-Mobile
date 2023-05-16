@@ -26,3 +26,16 @@ export const register = (email, password, phone_number, controller) => {
   const config = controller ? { signal: controller.signal } : {};
   return axios.post(url, body, config);
 };
+
+export const editPassword = (token, oldPassword, newPassword, controller) => {
+  const body = {
+    oldPassword,
+    newPassword,
+  };
+  const url = `${baseUrl}/auth`;
+  const config = controller ? {
+    signal: controller.signal,
+    headers: { Authorization: `Bearer ${token}` },
+  } : {};
+  return axios.patch(url, body, config);
+};

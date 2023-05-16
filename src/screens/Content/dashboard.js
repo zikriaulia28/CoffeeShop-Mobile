@@ -18,7 +18,7 @@ const Dashboard = () => {
   const route = useRoute();
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
-  const role = useSelector((state) => state.user);
+  const role = useSelector((state) => state.user?.role_id);
   console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
