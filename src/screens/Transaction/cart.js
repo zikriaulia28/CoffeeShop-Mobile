@@ -7,8 +7,6 @@ import CardCart from '../../components/cardCart';
 import { useSelector } from 'react-redux';
 
 
-
-
 const Cart = () => {
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
@@ -31,15 +29,15 @@ const Cart = () => {
 
   return (
     <NativeBaseProvider>
-      <ScrollView flex={1}>
-        <Box pt={10} px={7}>
-          <Box flexDirection="row" alignItems="center" gap="110px">
-            <Pressable onPress={() => navigation.goBack()} >
-              <Icon name="arrow-left" color="#000000" size={30} />
-            </Pressable>
-            <Text color="#6A4029" fontWeight={700} fontSize="20px">Cart</Text>
-          </Box>
 
+      <Box pt={10} px={7}>
+        <Box flexDirection="row" alignItems="center" gap="120px">
+          <Pressable onPress={() => navigation.goBack()} >
+            <Icon name="arrow-left" color="#000000" size={30} />
+          </Pressable>
+          <Text color="#6A4029" fontWeight={700} fontSize="20px">Cart</Text>
+        </Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box mt="47px" gap="15px">
             {storeCart.length < 1 && <Box flex={1} alignItems="center" mt="40%">
               <Box >
@@ -84,13 +82,12 @@ const Cart = () => {
               <Text fontSize={'20px'} fontWeight={700}>Total :</Text>
               <Text fontSize={'20px'} fontWeight={700}>IDR {total.toLocaleString('id-ID')}</Text>
             </Box></>)}
-          {storeCart.length > 0 && (<Pressable onPress={() => navigation.navigate('Delivery', { total })} bg="#FFBA33" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'} gap={10} flexDir="row">
+          {storeCart.length > 0 && (<Pressable onPress={() => navigation.navigate('Delivery', { total })} bg="#FFBA33" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'} gap={10} flexDir="row" mb={10}>
             <Icon name="arrow-right" color="#000000" size={24} />
             <Text color="#000000" fontSize="18px" fontWeight={900}>Confirm and Checkout</Text>
           </Pressable>)}
-
-        </Box>
-      </ScrollView>
+        </ScrollView>
+      </Box>
     </NativeBaseProvider>
   );
 };

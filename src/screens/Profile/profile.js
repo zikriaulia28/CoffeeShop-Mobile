@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, ScrollView } from 'native-base';
 import React, { useState, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,44 +8,56 @@ import { getUser } from '../../utils/https/profile';
 import { useSelector } from 'react-redux';
 import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
+import { getHistory } from '../../utils/https/transactions';
 
 
 const Profile = () => {
   const id = useSelector((state) => state.user?.id);
+  const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
-  // console.log(id);
+  console.log(token);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [dataHistory, setDataHistory] = useState([]);
   const controller = useMemo(() => new AbortController(), []);
   const placeholder = require('../../assets/placeholder-user.jpg');
-  const placeholderHistory = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
 
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const res = await getUser(id, controller);
+      const result = res.data.data[0];
+      const email = result.email;
+      const name = result.display_name;
+      const image = result.image;
+      setData(result);
+      // console.log(result);
+      dispatch(userAction.dataUser({ name, email, image }));
+      const resultHistory = await getHistory(token, controller);
+      setDataHistory([...resultHistory.data.data]);
+      console.log('ini history', resultHistory.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  console.log('ini datahisto', dataHistory);
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const res = await getUser(id, controller);
-        const result = res.data.data[0];
-        const email = result.email;
-        const name = result.display_name;
-        const image = result.image;
-        setData(result);
-        // console.log(result);
-        dispatch(userAction.dataUser({ name, email, image }));
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false);
-      }
-    };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log('Data history updated: ', dataHistory);
+  }, [dataHistory]);
+
   return (
     <NativeBaseProvider>
       <Box pt={10} px={7} bg="#FFFFFF">
-        <Box flexDirection="row" alignItems="center" gap="90px">
+        <Box flexDirection="row" alignItems="center" gap="100px">
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
@@ -54,7 +67,7 @@ const Profile = () => {
       <ScrollView flex={1}>
         <Box gap="9px">
           <Box bg="#FFFFFF">
-            <Box alignItems="center" px={7} mt="58px">
+            <Box alignItems="center" px={7} mt="28px">
               {isLoading ? <Skeleton w="100px" h="100px" rounded="full" mb="28px" /> : <Box w="100px" h="100px" rounded="full">
                 {data?.image ? (
                   <Image source={{ uri: data.image }} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
@@ -77,7 +90,15 @@ const Profile = () => {
             </Box>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
               <Box mt="16px" flexDirection="row" gap="25px">
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
+                {isLoading ? Array.from({ length: 5 }).map((item, idx) => (
+                  <Skeleton key={idx} w="59px" h="59px" rounded="20px" />)) : (
+                  dataHistory.length > 0 && dataHistory.map((item, idx) => (
+                    <Box key={idx} w="59px" h="59px" rounded="20px" shadow={1}>
+                      <Image source={{ uri: item.image }} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
+                    </Box>
+                  )))
+                }
+                {/* {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
                   <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
                 </Box>}
                 {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
@@ -91,10 +112,7 @@ const Profile = () => {
                 </Box>}
                 {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
                   <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
-                {isLoading ? <Skeleton w="59px" h="59px" rounded="20px" /> : <Box w="59px" h="59px" rounded="20px" shadow={1}>
-                  <Image source={placeholderHistory} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                </Box>}
+                </Box>} */}
               </Box>
             </ScrollView>
           </Box>

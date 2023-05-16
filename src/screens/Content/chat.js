@@ -50,7 +50,7 @@ const Chat = () => {
     <NativeBaseProvider>
       <ScrollView flex={1}>
         <Box pt={10} >
-          <Box px={7} flexDirection="row" alignItems="center" gap="110px">
+          <Box px={7} flexDirection="row" alignItems="center" gap="130px">
             <Pressable onPress={() => navigation.goBack()} >
               <Icon name="arrow-left" color="#000000" size={30} />
             </Pressable>
@@ -76,8 +76,8 @@ const Chat = () => {
           <Text fontWeight={700} fontSize="20px" mt="33px" mb="42px">Message</Text>
           <Box gap="20px">
             {dataChat?.map((item, idx) => (
-              <Pressable onPress={() => navigation.navigate('ChatDetail')}>
-                <Box flexDir="row" key={idx} gap="20px">
+              <Pressable key={idx} onPress={() => navigation.navigate('ChatDetail')}>
+                <Box flexDir="row" gap="20px">
                   <Box w="60px" h="60px" rounded="full">
                     <Image source={{ uri: item.Image }} alt="img-chat" w="full" h="full" rounded="full" resizeMode="cover" />
                   </Box>

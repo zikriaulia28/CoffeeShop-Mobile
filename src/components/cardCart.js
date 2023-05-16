@@ -27,7 +27,6 @@ const CardCart = (props) => {
     if (props.size_id === 3) {
       return 'XL(Extra Large)';
     }
-    return 'No Size Set';
   };
 
   const setPrice = () => {
@@ -42,10 +41,7 @@ const CardCart = (props) => {
     }
     return props.price;
   };
-
-
   const placeholder = require('../assets/placehoder-product.png');
-  console.log(props.idx);
   return (
     <>
       <Box flexDir="row" mb="20px" gap={16}>

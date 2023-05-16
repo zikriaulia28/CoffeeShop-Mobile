@@ -12,6 +12,7 @@ const EditProfile = () => {
   const placeholder = require('../../assets/placeholder-user.jpg');
   const [value, setValue] = useState('');
 
+
   const setImg = () => {
     if (image !== null) {
       return { uri: image };
@@ -20,15 +21,17 @@ const EditProfile = () => {
   };
   return (
     <NativeBaseProvider>
-      <ScrollView flex={1} bg="#FFFFFF">
-        <Box pt={10} px={'42px'}>
-          <Box flexDirection="row" alignItems="center" gap="90px">
-            <Pressable onPress={() => navigation.goBack()} >
-              <Icon name="arrow-left" color="#000000" size={30} />
-            </Pressable>
-            <Text color="#6A4029" fontWeight={700} fontSize="20px">Edit Profile</Text>
-          </Box>
-          <Box alignItems="center" mt="58px">
+
+      <Box pt={10} px={'42px'}>
+        <Box flexDirection="row" alignItems="center" gap="90px">
+          <Pressable onPress={() => navigation.goBack()} >
+            <Icon name="arrow-left" color="#000000" size={30} />
+          </Pressable>
+          <Text color="#6A4029" fontWeight={700} fontSize="20px">Edit Profile</Text>
+        </Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Box alignItems="center" mt="28px">
+            { }
             <Box w="120px" h="120px" rounded="full">
               <Image source={setImg()} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
             </Box>
@@ -70,12 +73,12 @@ const EditProfile = () => {
               <Text color="#9F9F9F">Delivery Adress :</Text>
               <Input variant="underlined" size="2xl" color="white" _focus={{ borderBottomColor: '#6A4029' }} type="text" placeholder="Enter your address" />
             </Box>
-            <Pressable justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="20px">
+            <Pressable justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="40px">
               <Text fontSize="18px" fontWeight={700} color="#FFFFFF">Save</Text>
             </Pressable>
           </Box>
-        </Box>
-      </ScrollView>
+        </ScrollView>
+      </Box>
     </NativeBaseProvider>
   );
 };

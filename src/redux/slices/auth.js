@@ -6,11 +6,10 @@ import { login } from '../../utils/https/auth';
 const initialState = {
   // isLogin: false,
   id: null,
-  // image: null,
-  // role: null,
   name: null,
   email: null,
   image: null,
+  role_id: null,
   token: null,
   data: null,
   isLoading: false,
@@ -41,7 +40,7 @@ const userSlice = createSlice({
         // isLogin: true,
         id: action.payload.id,
         // image: action.payload.dataUser.profile_picture,
-        // role: action.payload.dataUser.role_id,
+        role_id: action.payload.role_id,
         token: action.payload.token,
       };
     },

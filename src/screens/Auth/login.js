@@ -53,10 +53,12 @@ const Login = () => {
         return;
       }
       const res = await login(form.email, form.password, controller);
-      // console.log(res.data.id);
+      console.log('respon login', res.data);
       const token = res.data.token;
       const id = res.data.id;
-      dispatch(userAction.authLogin({ id, token }));
+      const role_id = res.data.role_id;
+      // console.log('cek role', role);
+      dispatch(userAction.authLogin({ id, token, role_id }));
       setLoading(false);
       handleRedirect();
     } catch (error) {

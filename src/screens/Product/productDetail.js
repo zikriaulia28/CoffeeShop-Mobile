@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, Button } from 'native-base';
 import React, { useState, useEffect } from 'react';
+import { ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getProductDetail } from '../../utils/https/product';
@@ -12,7 +13,7 @@ const ProductDetail = ({ route }) => {
   const storeCart = useSelector((state) => state.cart);
   console.log(storeCart);
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState([]);
+  const [selectedValue, setSelectedValue] = useState(1);
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [active] = useState(true);
@@ -72,6 +73,13 @@ const ProductDetail = ({ route }) => {
         price: product.price,
       };
       dispatch(cartAction.addtoCart(cart));
+      ToastAndroid.showWithGravityAndOffset(
+        'Add to cart + ',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        10,
+        50,
+      );
       console.log('added to cart');
     } catch (error) {
       console.error('Error while adding to cart:', error);
