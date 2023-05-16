@@ -152,7 +152,7 @@ const Profile = () => {
               </Box>
             </ScrollView>
           </Box>
-          <Box px={'42px'} bg="#FFFFFF" pb="24px">
+          <Box px={'42px'} bg="#FFFFFF" pb="30px">
             <Pressable onPress={() => setShowModal(true)} flexDirection="row" justifyContent="space-between" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#FFFFFF" shadow={3} rounded="20px">
               <Text color="#6A4029" fontSize="18px" fontWeight={700}>Edit Password</Text>
               <Icon name="arrow-right" color="#6A4029" size={30} />
