@@ -2,8 +2,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 
-// const baseUrl = `${process.env.REACT_APP_SERVER_HOST}`;
-// const baseUrl = 'https://webcoffee-api.vercel.app';
 const baseUrl = Config.SERVER_HOST;
 
 export const login = (email, password, controller) => {
@@ -37,5 +35,25 @@ export const editPassword = (token, oldPassword, newPassword, controller) => {
     signal: controller.signal,
     headers: { Authorization: `Bearer ${token}` },
   } : {};
+  return axios.patch(url, body, config);
+};
+
+export const createOtp = (email, controller) => {
+  const body = {
+    email,
+  };
+  const url = `${baseUrl}/auth/otp`;
+  const config = controller ? { signal: controller.signal } : {};
+  return axios.patch(url, body, config);
+};
+
+export const forgot = (email, otp, password, controller) => {
+  const body = {
+    email,
+    otp,
+    password,
+  };
+  const url = `${baseUrl}/auth/forgot`;
+  const config = controller ? { signal: controller.signal } : {};
   return axios.patch(url, body, config);
 };

@@ -86,7 +86,10 @@ const Login = () => {
               <Box mb="10px">
                 <Input variant="underlined" size="2xl" color="white" type="text" value={form.email} onChangeText={(text) => onChangeForm('email', text)} placeholder="Enter your email address" placeholderTextColor="white" />
                 <Input variant="underlined" size="2xl" color="white" type="password" value={form.password} onChangeText={(text) => onChangeForm('password', text)} placeholder="Enter your password" placeholderTextColor="white" />
-                <Text color="#FFFFFF" mt="5px" onPress={() => navigation.navigate('Forgot')}>Forgot password?</Text>
+                <Text color="#FFFFFF" mt="5px" onPress={() => {
+                  navigation.navigate('Forgot');
+                  setInvalid(false);
+                }}>Forgot password?</Text>
               </Box>
               <Text color="#FF3333">{invalid && msg}</Text>
               <Box mt="10px" gap="10px">
