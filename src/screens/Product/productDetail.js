@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
 import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, Button } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { ToastAndroid } from 'react-native';
@@ -11,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 const ProductDetail = ({ route }) => {
   const storeCart = useSelector((state) => state.cart);
-  console.log(storeCart);
+  const role = useSelector((state) => state.user?.role_id);
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(1);
   const [product, setProduct] = useState(null);
@@ -50,16 +51,17 @@ const ProductDetail = ({ route }) => {
 
   const setPrice = () => {
     if (selectedValue === 1) {
-      return product?.price.toLocaleString('id-ID');
+      return parseInt(product?.price).toLocaleString('id-ID');
     }
     if (selectedValue === 2) {
-      return product?.price.toLocaleString('id-ID') * 1.3;
+      return (parseInt(product?.price) * 1.3).toLocaleString('id-ID');
     }
     if (selectedValue === 3) {
-      return product?.price.toLocaleString('id-ID') * 1.65;
+      return (parseInt(product?.price) * 1.65).toLocaleString('id-ID');
     }
     return product?.price.toLocaleString('id-ID');
   };
+
 
 
   const handleAddCart = () => {
@@ -95,12 +97,14 @@ const ProductDetail = ({ route }) => {
             <Pressable onPress={() => navigation.goBack()} >
               <Icon name="arrow-left" color="#FFFFFF" size={30} />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('Cart')} >
+            {role === 1 ? (<Pressable onPress={() => navigation.navigate('EditProduct', { id })} >
+              <Icon name="pencil-outline" color="#FFFFFF" size={30} />
+            </Pressable>) : (<Pressable onPress={() => navigation.navigate('Cart')} >
               <Icon name="cart-outline" color="#FFFFFF" size={30} />
-            </Pressable>
+            </Pressable>)}
           </Box>
           {isLoading ? <Skeleton h="58px" w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" >
-            <Skeleton fontSize="25px" fontWeight={700}>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</Skeleton>
+            <Skeleton fontSize="25px" fontWeight={700} />
           </Skeleton> : <Box w="140px" mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" py="10px">
             <Text fontSize="25px" fontWeight={700}>{setPrice()}</Text>
           </Box>}
@@ -124,8 +128,8 @@ const ProductDetail = ({ route }) => {
           </Box>}
           <Box px={7} top="-10%" >
             {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontWeight={700} color="#6A4029">Delivery only on Monday to friday at  1 - 7 pm</Text></Box>}
-            {isLoading ? <Skeleton mt="31px" height="29%" /> : <Box><Text fontWeight={700} mt="31px" color="#6A4029">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.</Text></Box>}
-            <Box mt="10px"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>
+            {isLoading ? <Skeleton mt="31px" height="22%" /> : <Box><Text fontWeight={700} fontSize="16px" mt="31px" color="#6A4029">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.</Text></Box>}
+            <Box mt="20%"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>
             <Box justifyContent="center" flexDirection="row" gap="37px" mt="15px">
               <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick(1)} active={selectedValue === 1}>
                 <Text fontSize="20px" fontWeight={700} position={'absolute'}>R</Text>

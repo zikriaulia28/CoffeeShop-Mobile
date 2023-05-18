@@ -51,7 +51,7 @@ const Product = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, searchInput, order]);
 
-  // console.log(data[0].image);
+
   const handleCategory = info => {
     setPage(1);
     setCategory(info);
@@ -98,7 +98,7 @@ const Product = () => {
     <NativeBaseProvider>
       {/* <ScrollView flex={1} > */}
       <Box flex={1}>
-        <Box px={7} flexDirection="row" alignItems="center" gap="60px" mt={10}>
+        <Box px={7} flexDirection="row" alignItems="center" gap="70px" mt={10}>
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
@@ -154,7 +154,7 @@ const Product = () => {
           </ScrollView>
         </Box>
 
-        <Box alignItems="flex-end" mr="42px" mb={5}>
+        <Box alignItems="flex-end" mr="42px" mt={2} mb={5}>
           <Menu
             w="120px"
             alignItems="center"
@@ -199,7 +199,7 @@ const Product = () => {
           </Menu>
         </Box>
 
-        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={5} px={7} pb={4} alignItems={'center'}  >
+        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={10} px={7} pb={2} alignItems={'center'}  >
           {Array('', '', '', '', '', '').map((item, idx) => (
             <SkeletonProduct key={idx} />
           ))}

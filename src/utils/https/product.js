@@ -22,3 +22,14 @@ export const getProductDetail = (id) => {
   });
 };
 
+export const createProduct = (name, price, image, category_id, controller) => {
+  const body = {
+    name,
+    price,
+    image,
+    category_id,
+  };
+  const url = `${baseUrl}/auth/forgot`;
+  const config = controller ? { signal: controller.signal } : {};
+  return axios.patch(url, body, config);
+};

@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable radix */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-shadow */
 import { NativeBaseProvider, Box, Text, Image, Pressable, ScrollView, Checkbox } from 'native-base';
 import React, { useState, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,13 +15,21 @@ const History = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
   const [dataHistory, setDataHistory] = useState([]);
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
   const controller = useMemo(() => new AbortController(), []);
 
+  const handleCheckboxChange = (index) => {
+    const newCheckedItems = [...checkedItems];
+    newCheckedItems[index] = !newCheckedItems[index];
+    setCheckedItems(newCheckedItems);
+  };
+
+  console.log(checkedItems);
   const handleSelect = () => {
-    setSelected(selected => !selected);
+    setSelected((prevSelected) => !prevSelected);
   };
 
   const fetchData = async () => {
@@ -42,7 +49,7 @@ const History = () => {
     fetchData();
   }, []);
 
-  console.log('data history =>', dataHistory);
+  // console.log('data history =>', dataHistory);
 
   const setSize = (size_id) => {
     if (size_id === 1) {
@@ -72,7 +79,7 @@ const History = () => {
         <Box flexDir="row" justifyContent="space-between" mt="40px">
           <Text color="#9A9A9D" fontWeight={700} fontSize="17px">Last Week</Text>
 
-          {isChecked ? (
+          {selected ? (
             <Text>Delete</Text>
           ) : (
             <Pressable onPress={handleSelect}>
@@ -83,12 +90,12 @@ const History = () => {
         <ScrollView  >
           {isLoading ? (
             Array.from({ length: 4 }).map((item, idx) => (
-              <Box gap={10}>
-                <SkeletonHistory key={idx} />
+              <Box key={idx}>
+                <SkeletonHistory />
               </Box>
             ))
           ) : (dataHistory.length > 0 && dataHistory.map((item, idx) => (
-            <Box key={idx} flexDir="row" gap={7} my={5} alignItems="center">
+            <Box key={idx} flexDir="row" gap={7} my={2} alignItems="center">
               <Box flexDir="row" gap={5}>
                 <Box w="98px" h="108px" rounded="20px">
                   <Image source={{ uri: item.image }} alt="img-history" w="full" h="full" rounded="20px" resizeMode="cover" />
@@ -104,9 +111,10 @@ const History = () => {
                 <Checkbox
                   colorScheme="green"
                   aria-hidden="true"
+                  defaultValue={idx}
                   aria-label="Pilih ini untuk menyetujui syarat dan ketentuan"
-                  isChecked={isChecked}
-                  onChange={() => setIsChecked(!isChecked)}
+                  isChecked={checkedItems[idx]}
+                  onChange={() => handleCheckboxChange(idx)}
                 />
               )}
             </Box>

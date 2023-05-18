@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
 import { NativeBaseProvider, Box, Text, Pressable, ScrollView, Image, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -88,7 +89,7 @@ const Payment = () => {
         </Box>
         <ScrollView showsVerticalScrollIndicator={false} >
           <Text fontWeight={700} mt="36px" fontSize="20px">Product</Text>
-          <ScrollView h="250px" nestedScrollEnabled={true} >
+          <ScrollView maxH="250px" nestedScrollEnabled={true} >
             <Box mt="23px" bg="#FFFFFF" rounded="20px" px="20px" pt="25px">
               {storeCart.map((data, idx) => (
                 <CardPayment key={idx}
@@ -189,7 +190,7 @@ const Payment = () => {
 
           <Box mt="42px" flexDir="row" justifyContent="space-between" alignItems="center">
             <Text fontSize="17px">Total</Text>
-            <Text fontWeight={900} fontSize="22px">Rp. {grandTotal ? grandTotal : '0'}</Text>
+            <Text fontWeight={900} fontSize="22px">Rp. {dataShopping !== [] ? parseInt(grandTotal).toLocaleString('id-ID') : 0}</Text>
           </Box>
           {isLoading ? <Button isLoading isLoadingText="Proceed payment" mt="10px" mb={10} backgroundColor="#6A4029" rounded="20px" >
             <Text color="#FFFFFF" fontSize="18px" fontWeight={900}>Proceed payment</Text>

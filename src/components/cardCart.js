@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
 import { Image, Box, Text, Pressable } from 'native-base';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -31,15 +32,14 @@ const CardCart = (props) => {
 
   const setPrice = () => {
     if (props.size_id === 1) {
-      return props.price;
+      return parseInt(props.price).toLocaleString('id-ID');
     }
     if (props.size_id === 2) {
-      return props.price * 1.3;
+      return (parseInt(props.price) * 1.3).toLocaleString('id-ID');
     }
     if (props.size_id === 3) {
-      return props.price * 1.65;
+      return (parseInt(props.price) * 1.65).toLocaleString('id-ID');
     }
-    return props.price;
   };
   const placeholder = require('../assets/placehoder-product.png');
   return (

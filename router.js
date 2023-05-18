@@ -27,6 +27,9 @@ import EditProfile from './src/screens/Profile/editProfile';
 import Delivery from './src/screens/Transaction/delivery';
 import Payment from './src/screens/Transaction/payment';
 import ChatDetail from './src/screens/Content/chatDetail';
+import AddProduct from './src/screens/Product/addProduct';
+import AddPromo from './src/screens/Promo/addPromo';
+import EditProduct from './src/screens/Product/editProduct';
 
 const Tab = createBottomTabNavigator();
 
@@ -125,6 +128,15 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="ChatDetail" component={ChatDetail} options={{
+        headerShown: false,
+      }} />
+      <Screen name="AddProduct" component={AddProduct} options={{
+        headerShown: false,
+      }} />
+      <Screen name="AddPromo" component={AddPromo} options={{
+        headerShown: false,
+      }} />
+      <Screen name="EditProduct" component={EditProduct} options={{
         headerShown: false,
       }} />
     </Navigator>

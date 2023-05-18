@@ -19,7 +19,7 @@ const Dashboard = () => {
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
   const role = useSelector((state) => state.user?.role_id);
-  console.log('cek role in dashboard', role);
+  // console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [limit] = useState(5);
   const [page, setPage] = useState(1);
   const [order] = useState('');
+  const [show, setShow] = useState(false);
 
 
   const fetchData = async () => {
@@ -65,15 +66,19 @@ const Dashboard = () => {
     }
   };
 
+  const handleShow = () => {
+    setShow(prevShow => !prevShow);
+  };
+
   useEffect(() => {
     fetchData();
+    fetchDataUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
   useEffect(() => {
     fetchData();
-    fetchDataUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, category, searchInput, limit, order]);
 
@@ -94,7 +99,7 @@ const Dashboard = () => {
 
   return (
     <NativeBaseProvider>
-      <Box flex={1} >
+      <Box flex={1} position="relative" >
         <Box px={7}>
           <HStack space={2} mt={10} alignItems={'center'} justifyContent={'space-between'} >
             <Pressable onPress={() => navigation.openDrawer()}>
@@ -155,26 +160,54 @@ const Dashboard = () => {
             <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
           </Pressable>
         </Box>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-          <Box flexDirection={'row'} ml={7} mt={10} gap={10} h={'270px'}>
-            {isLoading ? (
-              Array.from({ length: 5 }).map((item, idx) => (
-                <Skeletons key={idx} />
-              ))
-            ) : (
-              data?.length > 0 && data.map((product, idx) => (
-                <CardProduct
-                  key={idx}
-                  id={product.id}
-                  image={product.image}
-                  name={product.name}
-                  price={product.price}
-                />
-              ))
-            )}
-
-          </Box>
+        <ScrollView>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+            <Box flexDirection={'row'} ml={7} mt={8} gap={8} h={'270px'}>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((item, idx) => (
+                  <Skeletons key={idx} />
+                ))
+              ) : (
+                data?.length > 0 && data.map((product, idx) => (
+                  <CardProduct
+                    key={idx}
+                    id={product.id}
+                    image={product.image}
+                    name={product.name}
+                    price={product.price}
+                  />
+                ))
+              )}
+            </Box>
+          </ScrollView>
+          {role === 1 && <Box px={7} my={5}>
+            <Pressable onPress={handleShow} display={show === true ? 'none' : 'flex'} w="50px" h="50px" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
+              <Icon name="plus" color="#FFFFFF" size={30} />
+            </Pressable>
+          </Box>}
+          <Box w="full" flex={1} bg="#000000" size="full" />
         </ScrollView>
+        {show && <Box
+          w="full"
+          h="full"
+          position="absolute"
+          bg="rgba(0, 0, 0, 0.5)" // Menggunakan warna hitam dengan opacity 0.5
+          top={0}
+          left={0}
+          // opacity={isModalVisible ? 1 : 0}
+          transition="opacity 300ms" // Animasi perubahan opacity
+        >
+          <Pressable onPress={handleShow} w="50px" h="50px" top="90%" left="7%" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
+            <Icon name="plus" color="#FFFFFF" size={30} />
+          </Pressable>
+          <Pressable onPress={() => { navigation.navigate('AddProduct'); setShow(false); }} top="81%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
+            <Text color="#6A4029" textAlign="center">New Product</Text>
+          </Pressable>
+          <Pressable onPress={() => { navigation.navigate('AddPromo'); setShow(false); }} top="82%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
+            <Text color="#6A4029" textAlign="center">New Promo</Text>
+          </Pressable>
+        </Box>}
+
       </Box >
     </NativeBaseProvider >
   );

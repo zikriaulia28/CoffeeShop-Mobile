@@ -46,7 +46,7 @@ const Cart = () => {
               <Text fontWeight={900} fontSize="28px">No orders yet</Text>
               <Text w="60%" textAlign="center">Hit the orange button down
                 below to Create an order</Text>
-              <Pressable onPress={() => navigation.navigate('Product')} mt="50%" bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" w="full">
+              <Pressable onPress={() => navigation.navigate('Product')} mt="60%" bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" w="full">
                 <Text color="#FFFFFF" fontWeight={900}>Start odering</Text>
               </Pressable>
             </Box>}

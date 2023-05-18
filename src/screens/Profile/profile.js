@@ -16,7 +16,6 @@ const Profile = () => {
   const id = useSelector((state) => state.user?.id);
   const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
-  // console.log(token);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -59,7 +58,6 @@ const Profile = () => {
       dispatch(userAction.dataUser({ name, email, image }));
       const resultHistory = await getHistory(token, controller);
       setDataHistory([...resultHistory.data.data]);
-      // console.log('ini history', resultHistory.data.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -101,9 +99,9 @@ const Profile = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // console.log('Data history updated: ', dataHistory);
-  }, [dataHistory]);
+  // useEffect(() => {
+  //   // console.log('Data history updated: ', dataHistory);
+  // }, [dataHistory]);
 
   return (
     <NativeBaseProvider>
@@ -119,12 +117,15 @@ const Profile = () => {
         <Box gap="9px">
           <Box bg="#FFFFFF">
             <Box alignItems="center" px={7} mt="28px">
-              {isLoading ? <Skeleton w="100px" h="100px" rounded="full" mb="28px" /> : <Box w="100px" h="100px" rounded="full">
+              {isLoading ? <Skeleton w="100px" h="100px" rounded="full" mb="28px" /> : <Box position="relative" w="100px" h="100px" rounded="full">
                 {data?.image ? (
                   <Image source={{ uri: data.image }} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
                 ) : (
                   <Image source={placeholder} alt="profile-img" w="full" h="full" resizeMode="cover" rounded="full" />
                 )}
+                <Pressable onPress={() => navigation.navigate('EditProfile')} position="absolute" w="35px" h="35px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center" top="50px" right="-10px" >
+                  <Icon name="pencil-outline" color="#FFFFFF" size={24} />
+                </Pressable>
               </Box>}
               {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="17px" fontSize="18px" fontWeight={700} color="#6A4029">{data.display_name ? data.display_name : 'Please Set Name'}</Text>)}
               {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="10px" color="#6A4029">{data.email}</Text>)}

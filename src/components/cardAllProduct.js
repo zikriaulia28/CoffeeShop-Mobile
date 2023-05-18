@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
 import { Image, Box, Text, Pressable } from 'native-base';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +21,7 @@ const CardAllProduct = ({ id, image, name, price }) => {
         </Box>
         <Text fontSize={'25px'} fontWeight={'900'} lineHeight={'30px'} textAlign={'center'} mt={-4} h={'52px'} w={'150px'}>{name}</Text>
         <Box width={'full'} alignItems={'center'} mt={2} mb={2}>
-          <Text textAlign={'center'}>IDR {price.toLocaleString('id-ID')}</Text>
+          <Text textAlign={'center'}>IDR {parseInt(price).toLocaleString('id-ID')}</Text>
         </Box>
       </Box>
     </Pressable>

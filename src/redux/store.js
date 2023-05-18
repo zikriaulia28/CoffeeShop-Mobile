@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -23,13 +23,11 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: defaultMiddleware => {
-    return defaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, REGISTER, PURGE],
-      },
-    });
-  },
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, REGISTER, PURGE],
+    },
+  }),
 });
 
 export const persistor = persistStore(store);

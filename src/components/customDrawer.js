@@ -22,9 +22,7 @@ const CustomDrawer = () => {
   const handleLogout = () => {
     setIsLoading(false);
     dispatch(userAction.authLogout());
-    setTimeout(() => {
-      navigation.replace('SplashScreen');
-    }, 500);
+    navigation.replace('SplashScreen');
     return;
   };
 
