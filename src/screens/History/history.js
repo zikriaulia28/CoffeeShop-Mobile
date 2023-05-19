@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import SkeletonHistory from '../../components/skeletonHistory';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import moment from 'moment';
+import 'moment/locale/en';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { deleteTransaction } from '../../utils/https/transactions';
 
@@ -87,7 +88,7 @@ const History = () => {
       <Box gap={1}>
         <Text fontWeight={900} fontSize="17px">{item.name}</Text>
         <Text color="#6A4029">IDR {parseInt(item.price).toLocaleString('id-ID')}</Text>
-        <Text w="155px" color="#6A4029" >{item.method} [{moment(item.created_at).locale('en-gb').format('MMMM Do YYYY, h A')}]</Text>
+        <Text w="155px" color="#6A4029" >{item.method} [{moment(item.created_at).locale('en-us').format('MMMM Do YYYY, h A')}]</Text>
       </Box>
     </Box>
   );
