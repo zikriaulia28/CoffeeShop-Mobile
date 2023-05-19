@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, ScrollView, Input, Button } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, ScrollView, Input, Button, Center, Modal } from 'native-base';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,20 +23,16 @@ const EditProfile = () => {
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
   const token = useSelector((state) => state.user?.token);
-  const storeUser = useSelector((state) => state.user);
-  // const image = storeUser.image;
   const navigation = useNavigation();
   const placeholder = require('../../assets/placeholder-user.jpg');
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
+  const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
-  const [msg, setMsg] = useState('');
   const [isChanged, setIsChanged] = useState(false);
-  const [isChangeForm, setIsChangedForm] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-  const [invalid, setInvalid] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [form, setForm] = useState({
     image: null,
@@ -58,14 +54,7 @@ const EditProfile = () => {
         [name]: value,
       };
     });
-    setIsChangedForm(true);
-    if (value) {
-      setInvalid(false);
-    }
   };
-
-  console.log(data.gender)
-
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -153,6 +142,29 @@ const EditProfile = () => {
     }
   };
 
+  const takeImage = async () => {
+    try {
+      let result = await ImagePicker.openCamera({
+        mediaType: 'photo',
+        cropping: true,
+        width: 400,
+        height: 300,
+        cropperCircleOverlay: false,
+        freeStyleCropEnabled: true,
+      });
+      if (!result.cancelled) {
+        setShowModal(false);
+        setImagePreview(result.path);
+        setForm({
+          ...form,
+          image: result,
+        });
+      }
+    } catch (error) {
+      console.log('Error taking image:', error);
+    }
+  };
+
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -203,7 +215,7 @@ const EditProfile = () => {
     setIsLoad(true);
     try {
       if (form.gender === '') {
-        setForm({ ...form, gender: data.gender })
+        setForm({ ...form, gender: data.gender });
       }
       const result = await updateUser(id, token, form.display_name, form.address, form.birth_day, form.image, form.gender, controller);
       console.log(result.data.data[0]);
@@ -223,7 +235,7 @@ const EditProfile = () => {
     }
   };
 
-  console.log(form.birth_day);
+  console.log(data.display_name);
 
   return (
     <NativeBaseProvider>
@@ -240,14 +252,14 @@ const EditProfile = () => {
             {isLoading ? <Skeleton w="120px" h="120px" rounded="full" /> : <Box w="120px" h="120px" rounded="full">
               {setImg()}
             </Box>}
-            <Pressable onPress={pickImage} w="40px" h="40px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center" top="-40px" left="40px" >
+            <Pressable onPress={() => setShowModal(true)} w="40px" h="40px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center" top="-40px" left="40px" >
               <Icon name="pencil-outline" color="#FFFFFF" size={24} />
             </Pressable>
           </Box>
           <Box mt="20px">
             <Box mb="27px">
               <Text color="#9F9F9F" fontWeight={700}>Name :</Text>
-              {isLoading ? <Skeleton rounded="20px" mt={2} /> : (<Input defaultValue={isChangeForm === null ? 'Set Name' : data.display_name} onChangeText={(text) => onChangeForm('display_name', text)} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" />)}
+              {isLoading ? <Skeleton rounded="20px" mt={2} /> : (<Input defaultValue={data.dislplay_name === null ? 'Set Name' : data.display_name} onChangeText={(text) => onChangeForm('display_name', text)} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" />)}
 
             </Box>
 
@@ -295,6 +307,38 @@ const EditProfile = () => {
             </Pressable>)}
           </Box>
         </ScrollView>
+        <Box>
+          <Center>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} _backdrop={{
+              _dark: {
+                bg: 'coolGray.800',
+              },
+              bg: 'warmGray.50',
+            }}>
+              <Modal.Content maxWidth="350" maxH="250">
+                <Modal.CloseButton />
+                <Modal.Header>Select Camera Or Galery</Modal.Header>
+                <Modal.Body>
+                  <Button backgroundColor="#6A4029" px="30px" mb={1} onPress={pickImage}>
+                    Open Galery
+                  </Button>
+                  <Button backgroundColor="#6A4029" px="30px" onPress={takeImage}>
+                    Open Camera
+                  </Button>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button.Group space={2}>
+                    <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                      setShowModal(false);
+                    }}>
+                      Cancel
+                    </Button>
+                  </Button.Group>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
+          </Center>;
+        </Box>
       </Box>
     </NativeBaseProvider>
   );

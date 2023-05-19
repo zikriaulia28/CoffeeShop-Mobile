@@ -11,8 +11,10 @@ import { useRoute } from '@react-navigation/native';
 import SkeletonProduct from '../../components/skeletonProduct';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Product = () => {
+  const role = useSelector((state) => state.user?.role_id);
   const route = useRoute();
   const navigation = useNavigation();
   const controller = useMemo(() => new AbortController(), []);
@@ -217,6 +219,7 @@ const Product = () => {
                   name={item.name}
                   image={item.image}
                   price={item.price}
+                  role={role}
                 />
               </Box>
             )}

@@ -10,9 +10,10 @@ import { useSelector } from 'react-redux';
 import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
 import { getHistory } from '../../utils/https/transactions';
-
+import { useIsFocused } from '@react-navigation/native';
 
 const Profile = () => {
+  const isFocused = useIsFocused();
   const id = useSelector((state) => state.user?.id);
   const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
@@ -96,8 +97,10 @@ const Profile = () => {
   // console.log('ini datahisto', dataHistory);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
 
   // useEffect(() => {
   //   // console.log('Data history updated: ', dataHistory);

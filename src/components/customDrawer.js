@@ -21,9 +21,9 @@ const CustomDrawer = () => {
 
   const handleLogout = () => {
     setIsLoading(false);
-    dispatch(userAction.authLogout());
     navigation.replace('SplashScreen');
-    return;
+    setShowModal(false);
+    dispatch(userAction.authLogout());
   };
 
   return (

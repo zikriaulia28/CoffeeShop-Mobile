@@ -77,7 +77,7 @@ const DrawerNavigator = () => {
     <Drawer.Screen name="Dashboard" component={Dashboard} options={{
       headerShown: false,
     }} />
-    <Drawer.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+    {/* <Drawer.Screen name="Profile" component={Profile} options={{ headerShown: false }} /> */}
   </Drawer.Navigator>;
 };
 

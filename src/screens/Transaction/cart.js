@@ -32,7 +32,7 @@ const Cart = () => {
 
       <Box pt={10} px={7}>
         <Box flexDirection="row" alignItems="center" gap="120px">
-          <Pressable onPress={() => navigation.goBack()} >
+          <Pressable onPress={() => navigation.navigate('Dashboard')} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
           <Text color="#6A4029" fontWeight={700} fontSize="20px">Cart</Text>

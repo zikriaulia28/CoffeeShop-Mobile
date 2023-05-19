@@ -13,8 +13,10 @@ import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 import { useRoute } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const Dashboard = () => {
+  const isFocused = useIsFocused();
   const route = useRoute();
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
@@ -71,10 +73,12 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchData();
-    fetchDataUser();
+    if (isFocused) {
+      fetchData();
+      fetchDataUser();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFocused]);
 
 
   useEffect(() => {
@@ -172,6 +176,7 @@ const Dashboard = () => {
                   <CardProduct
                     key={idx}
                     id={product.id}
+                    role={role}
                     image={product.image}
                     name={product.name}
                     price={product.price}

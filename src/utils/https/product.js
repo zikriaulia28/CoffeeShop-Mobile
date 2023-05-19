@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
 import Config from 'react-native-config';
+import mime from 'mime';
 
 const baseUrl = Config.SERVER_HOST;
 
@@ -22,14 +23,65 @@ export const getProductDetail = (id) => {
   });
 };
 
-export const createProduct = (name, price, image, category_id, controller) => {
-  const body = {
-    name,
-    price,
-    image,
-    category_id,
+
+export const deleteProduct = (token, id, controller) => {
+  const url = `${baseUrl}/products/${id}`;
+  return axios.delete(url, {
+    signal: controller.signal,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+
+export const createProduct = (token, name, price, image, category_id, delivery_info, description, controller) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('price', price);
+  formData.append('category_id', category_id);
+  formData.append('delivery_info', delivery_info);
+  formData.append('description', description);
+  if (image) {
+    const imgObject = {
+      uri: image.path,
+      name: image.path.split('/').pop(),
+      type: mime.getType(image.path),
+    };
+    formData.append('image', imgObject);
+  }
+  const url = `${baseUrl}/products`;
+  const config = {
+    signal: controller.signal,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
   };
-  const url = `${baseUrl}/auth/forgot`;
-  const config = controller ? { signal: controller.signal } : {};
-  return axios.patch(url, body, config);
+  return axios.post(url, formData, config);
+};
+
+export const updateProduct = (token, id, name, price, image, delivery_info, description, controller) => {
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('price', price);
+  formData.append('delivery_info', delivery_info);
+  formData.append('description', description);
+  if (image) {
+    const imgObject = {
+      uri: image.path,
+      name: image.path.split('/').pop(),
+      type: mime.getType(image.path),
+    };
+    formData.append('image', imgObject);
+  }
+  const url = `${baseUrl}/products/${id}`;
+  const config = {
+    signal: controller.signal,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return axios.patch(url, formData, config);
 };

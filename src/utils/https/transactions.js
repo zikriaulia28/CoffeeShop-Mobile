@@ -20,8 +20,8 @@ export const getHistory = (token, controller) => {
   });
 };
 
-export const deleteTransaction = (token, transactionId, controller) => {
-  const url = `${baseUrl}/transactions/${transactionId}`;
+export const deleteTransaction = (token, id, controller) => {
+  const url = `${baseUrl}/transactions/${id}`;
   return axios.delete(url, {
     signal: controller.signal,
     headers: { Authorization: `Bearer ${token}` },

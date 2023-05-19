@@ -14,6 +14,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
   const [invalid, setInvalid] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -50,11 +51,15 @@ const Register = () => {
         return;
       }
       const res = await register(form.email, form.password, form.phone_number, controller);
-      console.log(res.data);
+      console.log(res.data.message);
+      setMsg(res.data.message);
       setLoading(false);
+      setSuccess(true);
       handleRedirect();
     } catch (error) {
-      console.log(error.response);
+      console.log(error.response.data.msg);
+      setMsg(error.response.data.msg);
+      setInvalid(true);
       setLoading(false);
     }
   };
@@ -79,7 +84,16 @@ const Register = () => {
                 <Input variant="underlined" size="2xl" color="white" type="password" value={form.password} onChangeText={(text) => onChangeForm('password', text)} placeholder="Enter your password" placeholderTextColor="white" />
                 <Input variant="underlined" size="2xl" color="white" type="text" inputMode="numeric" value={form.phone_number} onChangeText={(text) => onChangeForm('phone_number', text)} placeholder="Enter your phone number" placeholderTextColor="white" />
               </Box>
-              <Text color="#FF3333">{invalid && msg}</Text>
+              {invalid && (
+                <Text color="red.700" fontWeight={700} fontSize="16px">
+                  {invalid && msg}
+                </Text>
+              )}
+              {success && (
+                <Text color="green.700" fontWeight={700} fontSize="16px">
+                  {success && msg}
+                </Text>
+              )}
               <Box mt="10px" gap="10px">
                 {loading ? <Button isLoading isLoadingText="Create Account" mt="10px" backgroundColor="#FFBA33" rounded="lg" >
                   Button

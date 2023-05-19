@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 const ProductDetail = ({ route }) => {
-  const storeCart = useSelector((state) => state.cart);
   const role = useSelector((state) => state.user?.role_id);
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(1);
@@ -127,9 +126,11 @@ const ProductDetail = ({ route }) => {
             <Text fontSize="28px" fontWeight={700} >{product?.name}</Text>
           </Box>}
           <Box px={7} top="-10%" >
-            {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontWeight={700} color="#6A4029">Delivery only on Monday to friday at  1 - 7 pm</Text></Box>}
-            {isLoading ? <Skeleton mt="31px" height="22%" /> : <Box><Text fontWeight={700} fontSize="16px" mt="31px" color="#6A4029">Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.</Text></Box>}
-            <Box mt="20%"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>
+            {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontSize={'17px'} fontWeight={700} color="#6A4029">{product?.delivery_info ? product?.delivery_info : 'Delivery only on Monday to friday at  1 - 7 pm'}</Text></Box>}
+
+            {isLoading ? <Skeleton mt="31px" height="31%" /> : <Box><Text fontSize={'17px'} fontWeight={700} mt="31px" color="#6A4029">{product?.description ? product?.description : 'Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.'}</Text></Box>}
+
+            <Box mt="10%"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>
             <Box justifyContent="center" flexDirection="row" gap="37px" mt="15px">
               <Pressable w="50px" h="50px" rounded="full" bg="#FFBA33" alignItems="center" justifyContent="center" onPress={() => handleClick(1)} active={selectedValue === 1}>
                 <Text fontSize="20px" fontWeight={700} position={'absolute'}>R</Text>
