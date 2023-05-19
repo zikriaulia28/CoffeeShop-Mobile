@@ -134,7 +134,7 @@ const History = () => {
                 <SkeletonHistory />
               </Box>
             ))
-          ) : <SwipeListView
+          ) : dataHistory.length > 0 && <SwipeListView
             showsVerticalScrollIndicator={false}
             data={dataHistory}
             renderItem={renderItem}
