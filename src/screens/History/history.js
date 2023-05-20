@@ -13,6 +13,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import moment from 'moment';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { deleteTransaction } from '../../utils/https/transactions';
+import { ToastAndroid } from 'react-native';
 
 const History = () => {
   const token = useSelector((state) => state.user?.token);
@@ -20,6 +21,7 @@ const History = () => {
   const [historyDataId, setHistoryDataId] = useState(null);
   const [dataHistory, setDataHistory] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
   const controller = useMemo(() => new AbortController(), []);
@@ -30,7 +32,6 @@ const History = () => {
     try {
       const resultHistory = await getHistory(token, controller);
       setDataHistory([...resultHistory.data.data]);
-      // console.log('ini history', resultHistory.data.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,39 +41,22 @@ const History = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
-  const onButtonPress = (id) => {
-    deleteTransaction(token, id, controller)
-      .then(() => {
-        setIsLoading(true);
-        getHistory(token).then(res => {
-          setDataHistory(res.data.data);
-          setIsLoading(false);
-        });
-        setShowModal(!showModal);
-      })
-      .catch(err => {
-        console.log(err.response.data);
-      });
+
+  const onButtonPress = async (id) => {
+    setIsLoading(true);
+    try {
+      const result = await deleteTransaction(token, id, controller);
+      console.log(result);
+      setIsLoading(false);
+      setShowModal(!showModal);
+      ToastAndroid.show('Delete success!', ToastAndroid.SHORT);
+      setRefresh(!refresh);
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
-
-  console.log(historyDataId);
-
-  // console.log('data history =>', dataHistory);
-
-
-  // const setSize = (size_id) => {
-  //   if (size_id === 1) {
-  //     return 'R (Reguler)';
-  //   }
-  //   if (size_id === 2) {
-  //     return 'L (Large)';
-  //   }
-  //   if (size_id === 3) {
-  //     return 'XL (Extra Large)';
-  //   }
-  // };
 
   const renderItem = ({ item }) => (
     <Box flexDir="row" mt={5} gap={7} p="16px" rounded="20px" w="315px" my={2} alignItems="center" bg="white">
@@ -93,7 +77,6 @@ const History = () => {
   );
 
   const renderHiddenItem = ({ item }) => (
-    // style={[styles.card, { justifyContent: 'flex-end', paddingRight: 25 }]}
     <Box flexDir="row" h="140px" w="315px" rounded="20px" justifyContent="flex-end" alignItems="center" position="relative" px="10px" >
       <Pressable
         onPress={() => {

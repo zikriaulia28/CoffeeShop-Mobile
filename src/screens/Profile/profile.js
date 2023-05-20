@@ -117,7 +117,7 @@ const Profile = () => {
         </Box>
       </Box>
       <ScrollView flex={1}>
-        <Box gap="9px">
+        <Box gap="20px">
           <Box bg="#FFFFFF">
             <Box alignItems="center" px={7} mt="28px">
               {isLoading ? <Skeleton w="100px" h="100px" rounded="full" mb="28px" /> : <Box position="relative" w="100px" h="100px" rounded="full">
@@ -133,10 +133,10 @@ const Profile = () => {
               {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="17px" fontSize="18px" fontWeight={700} color="#6A4029">{data.display_name ? data.display_name : 'Please Set Name'}</Text>)}
               {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mt="10px" color="#6A4029">{data.email}</Text>)}
               {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text color="#6A4029">{data.phone_number}</Text>)}
-              {isLoading ? <Skeleton h="20px" mb="10px" rounded="20px" /> : (<Text mb="28px" w="80%" textAlign="center" color="#6A4029">{data.address}</Text>)}
+              {isLoading ? <Skeleton h="20px" mb="48px" rounded="20px" /> : (<Text mb="28px" w="80%" textAlign="center" color="#6A4029">{data.address}</Text>)}
             </Box>
           </Box>
-          <Box pl={7} bg="#FFFFFF" py="24px" >
+          <Box pl={7} bg="#FFFFFF" h="130px" py="10px"  >
             <Box flexDirection="row" justifyContent="space-between" alignItems="center" pr="42px">
               <Text color="#6A4029" fontSize="18px" fontWeight={700}>Order History</Text>
               <Pressable onPress={() => navigation.navigate('History')}>
@@ -146,12 +146,12 @@ const Profile = () => {
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
               <Box mt="16px" flexDirection="row" gap="25px">
                 {isLoading ? Array.from({ length: 5 }).map((item, idx) => (
-                  <Skeleton key={idx} w="59px" h="59px" rounded="20px" />)) : (
-                  dataHistory.length > 0 && dataHistory.map((item, idx) => (
-                    <Box key={idx} w="59px" h="59px" rounded="20px" shadow={1}>
-                      <Image source={{ uri: item.image }} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
-                    </Box>
-                  )))
+                  <Skeleton key={idx} w="59px" h="59px" rounded="20px" />)) : dataHistory < 1 ? (<Box alignItems="center" w="350px"><Text fontWeight={900} fontSize="20px">No History</Text></Box>) : (
+                    dataHistory.length > 0 && dataHistory.map((item, idx) => (
+                      <Box key={idx} w="59px" h="59px" rounded="20px" shadow={1}>
+                        <Image source={{ uri: item.image }} alt="history-img" w="full" h="full" resizeMode="cover" rounded="20px" />
+                      </Box>
+                    )))
                 }
               </Box>
             </ScrollView>
@@ -168,9 +168,6 @@ const Profile = () => {
             <Pressable flexDirection="row" justifyContent="space-between" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#FFFFFF" shadow={3} rounded="20px">
               <Text color="#6A4029" fontSize="18px" fontWeight={700}>Help</Text>
               <Icon name="arrow-right" color="#6A4029" size={30} />
-            </Pressable>
-            <Pressable justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px">
-              <Text fontSize="18px" fontWeight={700} color="#FFFFFF">Save</Text>
             </Pressable>
           </Box>
         </Box>

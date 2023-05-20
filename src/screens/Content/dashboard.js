@@ -11,13 +11,10 @@ import { useSelector } from 'react-redux';
 import { getUser } from '../../utils/https/profile';
 import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
-import { debounce } from 'lodash';
-import { useRoute } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
 
 const Dashboard = () => {
   const isFocused = useIsFocused();
-  const route = useRoute();
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
   const role = useSelector((state) => state.user?.role_id);
@@ -78,13 +75,13 @@ const Dashboard = () => {
       fetchDataUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [isFocused, page, category, limit, order]);
 
 
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, category, searchInput, limit, order]);
+  // useEffect(() => {
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [page, category, searchInput, limit, order]);
 
   const handleCategory = info => {
     setPage(1);
@@ -96,10 +93,15 @@ const Dashboard = () => {
     handleCategory(category);
   };
 
-  const handleSearch = debounce(text => {
-    setPage(1);
-    setSearchInput(text);
-  }, 700);
+  // const handleSearch = debounce(text => {
+  //   setPage(1);
+  //   setSearchInput(text);
+  // }, 700);
+
+  const searchDirect = () => {
+    setSearchInput('');
+    navigation.navigate('Product');
+  };
 
   return (
     <NativeBaseProvider>
@@ -115,7 +117,7 @@ const Dashboard = () => {
           </HStack>
           <Heading fontSize={'40px'} fontWeight={'900'} marginX={'auto'} mt={'40px'}>A good coffee is a good day</Heading>
           <VStack w="100%" alignSelf="center" mt={'10px'}>
-            <Input onChangeText={handleSearch} autoFocus={route.params} placeholder="Search" size={'2xl'} inputMode={'text'} backgroundColor={'#FFFFFF'} width="100%" borderRadius="20px" py="1" px="2" InputLeftElement={<Image source={icon3} alt="menu" ml="7" />} />
+            <Input onFocus={searchDirect} placeholder="Search" size={'2xl'} inputMode={'text'} backgroundColor={'#FFFFFF'} width="100%" borderRadius="20px" py="1" px="2" value={searchInput} InputLeftElement={<Image source={icon3} alt="menu" ml="7" />} />
           </VStack>
         </Box>
         <Box pl={'70px'} h={10} mt={'10px'}>
@@ -196,19 +198,19 @@ const Dashboard = () => {
           w="full"
           h="full"
           position="absolute"
-          bg="rgba(0, 0, 0, 0.5)" // Menggunakan warna hitam dengan opacity 0.5
+          bg="rgba(0, 0, 0, 0.5)"
           top={0}
           left={0}
           // opacity={isModalVisible ? 1 : 0}
-          transition="opacity 300ms" // Animasi perubahan opacity
+          transition="opacity 300ms"
         >
-          <Pressable onPress={handleShow} w="50px" h="50px" top="90%" left="7%" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
+          <Pressable onPress={handleShow} w="50px" h="50px" top="87%" left="7%" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
             <Icon name="plus" color="#FFFFFF" size={30} />
           </Pressable>
-          <Pressable onPress={() => { navigation.navigate('AddProduct'); setShow(false); }} top="81%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
+          <Pressable onPress={() => { navigation.navigate('AddProduct'); setShow(false); }} top="78%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
             <Text color="#6A4029" textAlign="center">New Product</Text>
           </Pressable>
-          <Pressable onPress={() => { navigation.navigate('AddPromo'); setShow(false); }} top="82%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
+          <Pressable onPress={() => { navigation.navigate('AddPromo'); setShow(false); }} top="79%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
             <Text color="#6A4029" textAlign="center">New Promo</Text>
           </Pressable>
         </Box>}

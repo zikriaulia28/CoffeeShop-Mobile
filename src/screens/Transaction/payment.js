@@ -8,6 +8,7 @@ import CardPayment from '../../components/cardPayment';
 import React, { useState, useMemo } from 'react';
 import { cartAction } from '../../redux/slices/cart';
 import { addTransactions } from '../../utils/https/transactions';
+import notifee from '@notifee/react-native';
 
 const Payment = () => {
   const controller = useMemo(() => new AbortController(), []);
@@ -15,8 +16,7 @@ const Payment = () => {
   const reduxStore = useSelector(state => state);
   const token = reduxStore.user?.token;
   const cartRedux = reduxStore.cart;
-  console.log('CART REDUX', cartRedux);
-  // console.log('user', token);
+  // console.log('CART REDUX', cartRedux);
   const bri = require('../../assets/bri.jpg');
   const bni = require('../../assets/bni.jpg');
   const storeCart = useSelector((state) => state.cart.shoppingCart);
@@ -32,7 +32,7 @@ const Payment = () => {
     const { image, prodName, price, qty, ...newItem } = item;
     return { ...newItem, subtotal: price * qty, qty };
   });
-  console.log('data shoping', dataShopping);
+  // console.log('data shoping', dataShopping);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -47,15 +47,29 @@ const Payment = () => {
       };
       const result = await addTransactions(token, body, controller);
       console.log('ADD TRANSACTION', result.status);
-      setLoading(false);
-      setSuccess(true);
-      dispatch(cartAction.resetCart());
-      console.log('success');
+      if (result.status === 201) {
+        try {
+          const test = await notifee.displayNotification({
+            android: { channelId: 'urgent' },
+            title: 'Filosifi Coffee',
+            subtitle: 'Thank You',
+            body: 'Your Transaction Order success',
+          });
+          console.log(test);
+        } catch (error) {
+          console.log(error);
+        }
+        setLoading(false);
+        setSuccess(true);
+        dispatch(cartAction.resetCart());
+        console.log('success');
+      }
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
+
 
 
   const handleClick = (value) => {

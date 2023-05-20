@@ -25,7 +25,7 @@ const EditProfile = () => {
   const token = useSelector((state) => state.user?.token);
   const navigation = useNavigation();
   const placeholder = require('../../assets/placeholder-user.jpg');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -42,9 +42,13 @@ const EditProfile = () => {
     birth_day: '',
     address: '',
   });
-  const [selectedId, setSelectedId] = useState(data.length && data.gender !== 'male' ? '1' : '2');
 
-  // console.log(selectedId)
+  // const [selectedId, setSelectedId] = useState(data && data.gender === 'female' ? '1' : '2');
+  const [selectedId, setSelectedId] = useState('');
+
+  console.log(selectedId);
+  console.log(data);
+  console.log(data.gender);
 
   const onChangeForm = (name, value) => {
     // eslint-disable-next-line no-shadow
@@ -62,7 +66,6 @@ const EditProfile = () => {
       const res = await getUser(id, controller);
       const result = res.data.data[0];
       setData(result);
-
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -71,6 +74,17 @@ const EditProfile = () => {
   };
 
   // console.log(data);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+  useEffect(() => {
+    if (data && data.gender === 'female') {
+      setSelectedId('1'); // Set nilai awal menjadi "1" untuk Female
+    } else {
+      setSelectedId('2'); // Set nilai awal menjadi "2" untuk Male (default)
+    }
+  }, [data]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -235,7 +249,8 @@ const EditProfile = () => {
     }
   };
 
-  console.log(data.display_name);
+  // console.log(data.gender);
+  // console.log('selected', selectedId);
 
   return (
     <NativeBaseProvider>
@@ -270,6 +285,7 @@ const EditProfile = () => {
               layout="row"
             />
 
+
             <Box mb="21px" mt="20px">
               <Text color="#9F9F9F" fontWeight={700}>Email Address :</Text>
               {isLoading ? <Skeleton rounded="20px" mt={1} /> : (<Input isDisabled value={data.email} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" />)}
@@ -302,7 +318,7 @@ const EditProfile = () => {
               <Text color="#9F9F9F">Delivery Address :</Text>
               {isLoading ? <Skeleton rounded="20px" /> : (<Input defaultValue={data.address} onChangeText={(text) => onChangeForm('address', text)} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" multiline={true} numberOfLines={2} />)}
             </Box>
-            {isLoad ? <Button isLoading isLoadingText="Save" bg="#6A4029" /> : (<Pressable onPress={handleSubmit} justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="40px">
+            {isLoad ? <Button isLoading isLoadingText="Save" mb={10} bg="#6A4029" /> : (<Pressable onPress={handleSubmit} justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="40px">
               <Text fontSize="18px" fontWeight={700} color="#FFFFFF">Save</Text>
             </Pressable>)}
           </Box>

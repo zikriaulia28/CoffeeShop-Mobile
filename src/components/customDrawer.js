@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { NativeBaseProvider, Box, Text, Image, Divider, Pressable, Center, Button, Modal } from 'native-base';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { userAction } from '../redux/slices/auth';
 import { useSelector } from 'react-redux';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 
 const CustomDrawer = () => {
   const storeUser = useSelector((state) => state.user);
+  const role = storeUser?.role_id;
   const email = storeUser?.email;
   const name = storeUser?.name;
   const image = storeUser?.image;
@@ -18,6 +20,23 @@ const CustomDrawer = () => {
   const navigation = useNavigation();
   const placeholder = require('../assets/placeholder-user.jpg');
 
+  const createChannelNotif = async () => {
+    try {
+      await notifee.requestPermission();
+      await notifee.createChannel({
+        id: 'urgent',
+        name: 'Hight Notification',
+        sound: 'default',
+        vibration: true,
+        importance: AndroidImportance.HIGH,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    createChannelNotif();
+  }, []);
 
   const handleLogout = () => {
     setIsLoading(false);
@@ -45,7 +64,7 @@ const CustomDrawer = () => {
           <Text fontSize="17px" fontWeigt="600" color="#6A4029">Edit Pofile</Text>
         </Pressable>
         <Divider my="1" bg="#6A4029" mt="24px" mb="24px" />
-        <Pressable onPress={() => navigation.navigate('Cart')} flexDirection="row" alignItems="center" gap="13px">
+        <Pressable onPress={() => navigation.navigate(role === 1 ? 'ManageOrder' : 'Cart')} flexDirection="row" alignItems="center" gap="13px">
           <Icon name="cart-arrow-down" color="#6A4029" size={30} />
           <Text fontSize="17px" fontWeigt="600" color="#6A4029">Orders</Text>
         </Pressable>
