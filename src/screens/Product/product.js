@@ -12,6 +12,8 @@ import SkeletonProduct from '../../components/skeletonProduct';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
+
 
 const Product = () => {
   const role = useSelector((state) => state.user?.role_id);
@@ -20,6 +22,7 @@ const Product = () => {
   const controller = useMemo(() => new AbortController(), []);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const icon3 = require('../../assets/search.png');
   const [activeTab, setActiveTab] = useState(0);
   const [searchInput, setSearchInput] = useState('');
@@ -28,6 +31,7 @@ const Product = () => {
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState('');
   const [totalPage, setTotalPage] = useState(null);
+  const [isAllPagesLoaded, setIsAllPagesLoaded] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -67,24 +71,28 @@ const Product = () => {
   console.log(totalPage);
 
   const handlePage = async () => {
-    if (totalPage === page) {
+    if (totalPage.totalPage === page) {
+      setIsAllPagesLoaded(true);
       return;
     }
     const params = { limit, page: page + 1, category, search: searchInput, order };
     try {
       console.log('FETCHING NEXT, PAGE', params.page);
+      setLoad(true); // Menambahkan isLoading true sebelum permintaan API
       const result = await getProduct(params, controller);
       const newData = [...data, ...result.data.data];
       setData(newData);
       setPage(params.page);
-      setIsLoading(false);
     } catch (error) {
       console.log(error.response.data.msg);
       if (error.response && error.response.status === 404) {
-        setIsLoading(false);
+        setLoad(false);
       }
+    } finally {
+      setLoad(false); // Mengatur isLoading false setelah permintaan API selesai, terlepas dari hasilnya
     }
   };
+
 
   const debouncedHandlePage = debounce(handlePage, 1000);
 
@@ -201,7 +209,7 @@ const Product = () => {
           </Menu>
         </Box>
 
-        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={10} px={7} pb={2} alignItems={'center'}  >
+        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={10} px={7} pb={2} mt={10}  >
           {Array('', '', '', '', '', '').map((item, idx) => (
             <SkeletonProduct key={idx} />
           ))}
@@ -212,6 +220,17 @@ const Product = () => {
             numColumns={2}
             onEndReached={debouncedHandlePage}
             onEndReachedThreshold={0.2}
+            ListFooterComponent={() =>
+              load ? (
+                <ActivityIndicator color="blue" size="large" />
+              ) : isAllPagesLoaded ? (
+                <Text textAlign="center" my={10}>
+                  End pages
+                </Text>
+              ) : (
+                <></>
+              )
+            }
             renderItem={({ item }) => (
               <Box flexBasis="50%" px={4} pb={4} alignItems={'center'} mt={10} >
                 <CardAllProduct
