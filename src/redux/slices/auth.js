@@ -9,6 +9,8 @@ const initialState = {
   name: null,
   email: null,
   image: null,
+  address: null,
+  phone: null,
   role_id: null,
   token: null,
   data: null,
@@ -50,6 +52,8 @@ const userSlice = createSlice({
         name: action.payload.name,
         email: action.payload.email,
         image: action.payload.image,
+        address: action.payload.address,
+        phone: action.payload.phone,
       };
     },
     updateImage: (prevState, action) => {

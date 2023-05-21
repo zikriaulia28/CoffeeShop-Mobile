@@ -117,14 +117,17 @@ const History = () => {
                 <SkeletonHistory />
               </Box>
             ))
-          ) : dataHistory.length > 0 && <SwipeListView
+          ) : dataHistory.length > 0 ? <SwipeListView
             showsVerticalScrollIndicator={false}
             data={dataHistory}
             renderItem={renderItem}
             renderHiddenItem={renderHiddenItem}
             rightOpenValue={-75}
             swipeToOpenPercent={120}
-          />
+          /> : (<>
+            <Text fontWeight={900} fontSize={32} mt="50%">Opsss !!!</Text>
+            <Text fontWeight={900} fontSize={20} >No History</Text>
+          </>)
           }
         </Box>
         <Box>
@@ -155,7 +158,7 @@ const History = () => {
                 </Modal.Footer>
               </Modal.Content>
             </Modal>
-          </Center>;
+          </Center>
         </Box>
       </Box>
     </NativeBaseProvider>

@@ -37,3 +37,19 @@ export const updateUser = (id, token, display_name, address, birth_day, image, g
   };
   return axios.patch(url, formData, config);
 };
+
+export const updateUserDelivery = (id, token, display_name, address, controller) => {
+  const formData = new FormData();
+  formData.append('display_name', display_name);
+  formData.append('address', address);
+  const url = `${baseUrl}/users/profile/${id}`;
+  const config = {
+    signal: controller.signal,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return axios.patch(url, formData, config);
+};

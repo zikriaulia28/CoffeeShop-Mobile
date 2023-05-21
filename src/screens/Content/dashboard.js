@@ -56,8 +56,10 @@ const Dashboard = () => {
       const email = result.email;
       const name = result.display_name;
       const image = result.image;
+      const address = result.address;
+      const phone = result.phone_number;
       setData(result);
-      dispatch(userAction.dataUser({ name, email, image }));
+      dispatch(userAction.dataUser({ name, email, image, address, phone }));
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -75,7 +77,7 @@ const Dashboard = () => {
       fetchDataUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused, page, category, limit, order]);
+  }, [isFocused, category]);
 
 
   // useEffect(() => {

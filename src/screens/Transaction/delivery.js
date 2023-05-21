@@ -1,25 +1,97 @@
 /* eslint-disable prettier/prettier */
-import { NativeBaseProvider, Box, Text, Pressable, ScrollView } from 'native-base';
-import React, { useState } from 'react';
+import { NativeBaseProvider, Box, Text, Pressable, ScrollView, Input } from 'native-base';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { cartAction } from '../../redux/slices/cart';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserDelivery } from '../../utils/https/profile';
+import { userAction } from '../../redux/slices/auth';
+import { ActivityIndicator } from 'react-native';
+import { ToastAndroid } from 'react-native/Libraries/Components/ToastAndroid/ToastAndroid';
 
 const Delivery = () => {
+  const controller = useMemo(() => new AbortController(), []);
+  const id = useSelector((state) => state.user?.id);
+  const token = useSelector((state) => state.user?.token);
+  const storeUser = useSelector((state) => state.user);
+  const userName = storeUser.name;
+  const isPhone = storeUser.phone;
+  const isAddress = storeUser.address;
+  const dataEmail = storeUser.email;
+  console.log(storeUser.address);
+  console.log(storeUser.phone);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const route = useRoute();
   const [deliveryMethod, setDeliveryMethod] = useState(3);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
+  const nameInputRef = useRef(null);
+  const [form, setForm] = useState({
+    display_name: '',
+    phone_number: '',
+    address: '',
+  });
+
+  const onChangeForm = (name, value) => {
+    // eslint-disable-next-line no-shadow
+    setForm((form) => {
+      return {
+        ...form,
+        [name]: value,
+      };
+    });
+  };
+
   const handleClick = (value) => {
     setDeliveryMethod(value);
     console.log(value);
   };
 
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleSaveClick = async () => {
+    setIsLoad(true);
+    try {
+      const result = await updateUserDelivery(id, token, form.display_name, form.address, controller);
+      if (result && result.data && result.data.data && result.data.data.length > 0) {
+        const resultUpdate = result.data.data[0];
+        const image = resultUpdate.image;
+        const email = dataEmail;
+        const name = resultUpdate.display_name;
+        const address = result.address ? result.address : isAddress;
+        const phone = isPhone;
+        dispatch(userAction.dataUser({ name, email, image, address, phone }));
+        ToastAndroid.show('Update success!', ToastAndroid.SHORT);
+        setIsEditMode(false);
+      } else {
+        console.log('Invalid response format');
+      }
+    } catch (error) {
+      console.log(error.response ? error.response.data : error);
+    } finally {
+      setIsLoad(false);
+    }
+  };
+
+
+  console.log(form.display_name);
+
+
   const handleConfirm = () => {
     dispatch(cartAction.deliveryMethod(deliveryMethod));
     navigation.navigate('Payment', { subtotal: route.params.total });
   };
+
+  useEffect(() => {
+    if (isEditMode) {
+      nameInputRef.current?.focus();
+    }
+  }, [isEditMode]);
+
   return (
     <NativeBaseProvider>
       <ScrollView flex={1}>
@@ -33,16 +105,38 @@ const Delivery = () => {
           <Text fontSize="34px" fontWeight={900} mt="36px">Delivery</Text>
           <Box mt="35px" flexDir="row" justifyContent="space-between">
             <Text fontWeight={700} fontSise="17px">Address details</Text>
-            <Pressable>
-              <Text color="#6A4029">Change</Text>
-            </Pressable>
+            {!isEditMode ? (
+              <Pressable onPress={handleEditClick}>
+                <Text color="#6A4029">Change</Text>
+              </Pressable>
+            ) : isLoad ? <ActivityIndicator /> : (
+              <Pressable onPress={handleSaveClick}>
+                <Text color="#6A4029">Save</Text>
+              </Pressable>
+            )}
           </Box>
-          <Box bg="#FFFFFF" h="156px" gap="8px" rounded="20px" mt="14px" py="25px" px="30">
-            <Text borderBottomWidth={1} borderBottomColor={'#BABABA59'}>Iskandar Street</Text>
-            <Text borderBottomWidth={1} borderBottomColor={'#BABABA59'} h="60px">Km 5 refinery road oppsite re
-              public road, effurun, Jakarta  Km 5 refinery road oppsite re
-              public road, effurun, Jakarta</Text>
-            <Text borderBottomWidth={1} borderBottomColor={'#BABABA59'}>+62 81348287878</Text>
+          <Box bg="#FFFFFF" rounded="20px" mt="14px" py="25px" px="30">
+            <Input
+              fontWeight={700}
+              variant="underlined"
+              size="xl"
+              defaultValue={userName}
+              ref={nameInputRef}
+              onChangeText={(text) => onChangeForm('display_name', text)}
+            />
+            <Input
+              defaultValue={isAddress ? isAddress : 'Please Set Your Address'}
+              variant="underlined"
+              size="lg"
+              multiline={true}
+              onChangeText={(text) => onChangeForm('address', text)}
+            />
+            <Input
+              defaultValue={isPhone}
+              variant="underlined"
+              size="lg"
+              onChangeText={(text) => onChangeForm('phone_number', text)}
+            />
           </Box>
           <Text fontSize="17px" fontWeight={700} mt="15px">Delivery methods</Text>
           <Box bg="#FFFFFF" gap={5} mt="14px" rounded="20px" h="200px" px="25px" py="35px">

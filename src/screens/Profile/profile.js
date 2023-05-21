@@ -19,6 +19,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
   const [data, setData] = useState([]);
   const [dataHistory, setDataHistory] = useState([]);
   const [msg, setMsg] = useState('');
@@ -67,12 +68,12 @@ const Profile = () => {
   };
 
   const handleEditPassword = async () => {
-    setIsLoading(true);
+    setIsLoad(true);
     try {
       const result = await editPassword(token, form.oldPassword, form.newPassword, controller);
       setSuccess(true);
       setMsg(result.data.message);
-      setIsLoading(false);
+      setIsLoad(false);
       const updatedForm = {
         ...form,
         oldPassword: '',
@@ -83,7 +84,7 @@ const Profile = () => {
       console.log(error.response.data);
       setInvalid(true);
       setMsg(error.response.data.msg);
-      setIsLoading(false);
+      setIsLoad(false);
     }
   };
 
@@ -205,12 +206,12 @@ const Profile = () => {
               </Modal.Body>
               <Modal.Footer>
                 <Button.Group space={2}>
-                  <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                  {success ? <></> : <Button variant="ghost" colorScheme="blueGray" onPress={() => {
                     setShowModal(false);
                   }}>
                     Cancel
-                  </Button>
-                  {isLoading ? <Button backgroundColor="#6A4029" px="17px" py="8px" isLoading isLoadingText="Save" /> : success === true ? <Button px="30px" bg="#6A4029" onPress={handleClose}>
+                  </Button>}
+                  {isLoad ? <Button backgroundColor="#6A4029" px="17px" py="8px" isLoading isLoadingText="Save" /> : success === true ? <Button px="30px" bg="#6A4029" onPress={handleClose}>
                     Close
                   </Button> : <Button onPress={handleEditPassword} bg="#6A4029" px="30px">
                     Save
