@@ -29,8 +29,8 @@ const Promo = () => {
   const [limit] = useState(6);
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState('');
-  const [totalPage, setTotalPage] = useState(null);
-  const [isAllPagesLoaded, setIsAllPagesLoaded] = useState(false);
+  const [setTotalPage] = useState(null);
+
 
   const fetchData = async () => {
     setIsLoading(true);
