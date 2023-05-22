@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
 import { Image, Box, Text, Pressable } from 'native-base';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CardPromo = ({ id, image, name, price, role, discount }) => {
   const calculateDiscountedPrice = () => {
-    const data = discount
+    const data = discount;
     const result = parseInt(price) * (parseInt(data) / 100);
     console.log(data);
     const discountedPrice = parseFloat(price) - result;

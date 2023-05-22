@@ -1,5 +1,5 @@
-/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prettier/prettier */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

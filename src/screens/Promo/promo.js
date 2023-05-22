@@ -21,7 +21,7 @@ const Promo = () => {
   const controller = useMemo(() => new AbortController(), []);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [load, setLoad] = useState(false);
+
   const icon3 = require('../../assets/search.png');
   const [activeTab, setActiveTab] = useState(0);
   const [searchInput, setSearchInput] = useState('');
