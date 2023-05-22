@@ -46,9 +46,9 @@ const EditProfile = () => {
   // const [selectedId, setSelectedId] = useState(data && data.gender === 'female' ? '1' : '2');
   const [selectedId, setSelectedId] = useState('');
 
-  console.log(selectedId);
-  console.log(data);
-  console.log(data.gender);
+  // console.log(selectedId);
+  // console.log(data);
+  // console.log(data.gender);
 
   const onChangeForm = (name, value) => {
     // eslint-disable-next-line no-shadow

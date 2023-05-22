@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDelivery } from '../../utils/https/profile';
 import { userAction } from '../../redux/slices/auth';
 import { ActivityIndicator } from 'react-native';
-import { ToastAndroid } from 'react-native/Libraries/Components/ToastAndroid/ToastAndroid';
+import { ToastAndroid } from 'react-native';
 
 const Delivery = () => {
   const controller = useMemo(() => new AbortController(), []);

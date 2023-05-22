@@ -4,7 +4,6 @@
 import { NativeBaseProvider, Box, Text, Image, Pressable, Button, Modal, Center } from 'native-base';
 import React, { useState, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icons from 'react-native-vector-icons/EvilIcons';
 import { useNavigation } from '@react-navigation/native';
 import { getHistory } from '../../utils/https/transactions';
 import { useSelector } from 'react-redux';
@@ -107,7 +106,7 @@ const History = () => {
           <Text color="#6A4029" fontWeight={700} fontSize="20px">Order History</Text>
         </Box>
         <Box flexDir="row" alignItems="center" justifyContent="center" mt="40px" gap={2}>
-          <Icons name="pointer" size={30} />
+          <Icon name="gesture-swipe" size={30} />
           <Text>swipe on an item to delete</Text>
         </Box>
         <Box alignItems="center">

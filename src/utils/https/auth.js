@@ -57,3 +57,8 @@ export const forgot = (email, otp, password, controller) => {
   const config = controller ? { signal: controller.signal } : {};
   return axios.patch(url, body, config);
 };
+
+export const getNotificationFromAPI = (token) => {
+  const url = `${baseUrl}/notification`;
+  axios.post(url, { token: token }); // Mengirimkan token sebagai payload dalam permintaan POST
+};

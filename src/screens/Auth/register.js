@@ -3,6 +3,7 @@ import { NativeBaseProvider, Image, Box, ZStack, Text, Center, Input, Button } f
 import { useNavigation } from '@react-navigation/native';
 import { register } from '../../utils/https/auth';
 import React, { useMemo, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 
 
@@ -55,6 +56,7 @@ const Register = () => {
       setMsg(res.data.message);
       setLoading(false);
       setSuccess(true);
+      ToastAndroid.show('Register success!', ToastAndroid.SHORT);
       handleRedirect();
     } catch (error) {
       console.log(error.response.data.msg);

@@ -3,7 +3,7 @@
 import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import CardProduct from '../../components/cardProduct';
-import { getProduct } from '../../utils/https/product';
+import { getProduct, getPromo } from '../../utils/https/product';
 import React, { useEffect, useState, useMemo } from 'react';
 import Skeletons from '../../components/skeleton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,6 +12,10 @@ import { getUser } from '../../utils/https/profile';
 import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import CardPromo from '../../components/cardPromo';
+// import messaging from '@react-native-firebase/messaging';
+// import { getNotificationFromAPI } from '../../utils/https/auth';
+
 
 const Dashboard = () => {
   const isFocused = useIsFocused();
@@ -21,6 +25,7 @@ const Dashboard = () => {
   // console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [dataPromos, setDataPromos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const icon3 = require('../../assets/search.png');
@@ -31,6 +36,7 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [order] = useState('');
   const [show, setShow] = useState(false);
+  // const [saveToken, setSaveToken] = useState('');
 
 
   const fetchData = async () => {
@@ -39,6 +45,9 @@ const Dashboard = () => {
       const params = { limit, page, category, search: searchInput, order };
       const result = await getProduct(params, controller);
       setData(result.data.data);
+      const dataPromo = await getPromo(controller);
+      console.log(dataPromo.data.data);
+      setDataPromos(dataPromo.data.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -80,11 +89,6 @@ const Dashboard = () => {
   }, [isFocused, category]);
 
 
-  // useEffect(() => {
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [page, category, searchInput, limit, order]);
-
   const handleCategory = info => {
     setPage(1);
     setCategory(info);
@@ -95,15 +99,39 @@ const Dashboard = () => {
     handleCategory(category);
   };
 
-  // const handleSearch = debounce(text => {
-  //   setPage(1);
-  //   setSearchInput(text);
-  // }, 700);
-
   const searchDirect = () => {
     setSearchInput('');
     navigation.navigate('Product');
   };
+
+  // const onCreateFCMToken = async () => {
+  //   try {
+  //     if (!messaging().isDeviceRegisteredForRemoteMessages) { await messaging().registerDeviceForRemoteMessages(); }
+
+  //     const tokenFirebase = await messaging().getToken();
+  //     setSaveToken(tokenFirebase);
+  //     console.log('token FCM', tokenFirebase);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const onMessageReceived = async remoteMessage => {
+  //     console.log('FCM Payload ==>', remoteMessage);
+  //   };
+  //   messaging().onMessage(onMessageReceived);
+  // }, []);
+
+  // const handlerTrigger = async () => {
+  //   try {
+  //     await getNotificationFromAPI(saveToken);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // console.log('save', saveToken);
 
   return (
     <NativeBaseProvider>
@@ -189,6 +217,33 @@ const Dashboard = () => {
               )}
             </Box>
           </ScrollView>
+          <Box px={7}>
+            <Text fontSize="20px" mt="10px" fontWeight={700}>Promo</Text>
+            <Pressable onPress={() => navigation.navigate('Promo')} alignItems={'flex-end'}>
+              <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
+            </Pressable>
+          </Box>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+            <Box flexDirection={'row'} ml={7} mt={10} gap={8} h={'270px'}>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((item, idx) => (
+                  <Skeletons key={idx} />
+                ))
+              ) : (
+                dataPromos?.length > 0 && dataPromos.map((product, idx) => (
+                  <CardPromo
+                    key={idx}
+                    id={product.id}
+                    role={role}
+                    discount={product.discount}
+                    image={product.image}
+                    name={product.name}
+                    price={product.price}
+                  />
+                ))
+              )}
+            </Box>
+          </ScrollView>
           {role === 1 && <Box px={7} my={5}>
             <Pressable onPress={handleShow} display={show === true ? 'none' : 'flex'} w="50px" h="50px" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
               <Icon name="plus" color="#FFFFFF" size={30} />
@@ -196,6 +251,12 @@ const Dashboard = () => {
           </Box>}
           <Box w="full" flex={1} bg="#000000" size="full" />
         </ScrollView>
+        {/* <Pressable onPress={onCreateFCMToken} w="50%" py={2} bg="#FFBA33" rounded="20px">
+          <Text color="#6A4029" textAlign="center">get Token FCM</Text>
+        </Pressable>
+        <Pressable onPress={handlerTrigger} w="50%" mt={2} py={2} bg="#FFBA33" rounded="20px">
+          <Text color="#6A4029" textAlign="center">Trger notif from server</Text>
+        </Pressable> */}
         {show && <Box
           w="full"
           h="full"
@@ -216,7 +277,6 @@ const Dashboard = () => {
             <Text color="#6A4029" textAlign="center">New Promo</Text>
           </Pressable>
         </Box>}
-
       </Box >
     </NativeBaseProvider >
   );

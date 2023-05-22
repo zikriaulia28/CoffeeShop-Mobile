@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "725338194689",
+    "project_id": "filosofi-coffee",
+    "storage_bucket": "filosofi-coffee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725338194689:android:828584ae5c4a5ea824d100",
+        "android_client_info": {
+          "package_name": "com.filosoficoffee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725338194689-umet2jkuadlc0a0vhjlikhv7gsv5ll2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3201CmBNqWQRlPcf393G7ayX3rkYtlGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725338194689-umet2jkuadlc0a0vhjlikhv7gsv5ll2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

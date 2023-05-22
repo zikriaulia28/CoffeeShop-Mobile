@@ -85,3 +85,32 @@ export const updateProduct = (token, id, name, price, image, delivery_info, desc
   };
   return axios.patch(url, formData, config);
 };
+
+export const getPromo = controller => {
+  const url = `${baseUrl}/promo`;
+  return axios.get(url, { signal: controller.signal });
+};
+
+export const addPromo = (token, body, controller) => {
+  const url = `${baseUrl}/promo`;
+  return axios.post(url, body, {
+    signal: controller.signal,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const editingPromo = (token, id, body, controller) => {
+  const url = `${baseUrl}/promo/${id}`;
+  return axios.patch(url, body, {
+    signal: controller.signal,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const deletingPromo = (token, id, controller) => {
+  const url = `${baseUrl}/promo/${id}`;
+  return axios.delete(url, {
+    signal: controller.signal,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

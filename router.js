@@ -31,6 +31,7 @@ import AddProduct from './src/screens/Product/addProduct';
 import AddPromo from './src/screens/Promo/addPromo';
 import EditProduct from './src/screens/Product/editProduct';
 import ManageOrder from './src/screens/Admin/manageOrder';
+import Promo from './src/screens/Promo/promo';
 
 const Tab = createBottomTabNavigator();
 
@@ -141,6 +142,9 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="ManageOrder" component={ManageOrder} options={{
+        headerShown: false,
+      }} />
+      <Screen name="Promo" component={Promo} options={{
         headerShown: false,
       }} />
     </Navigator>
