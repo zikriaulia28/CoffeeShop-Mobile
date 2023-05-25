@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable radix */
-import { NativeBaseProvider, Box, Text, Image, Pressable, Skeleton, Button, ScrollView } from 'native-base';
+import { NativeBaseProvider, Box, Text, Image, ScrollView, Pressable, Skeleton, Button } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import { getProductDetail } from '../../utils/https/product';
+import { getPromoDetail } from '../../utils/https/product';
 import { cartAction } from '../../redux/slices/cart';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-const ProductDetail = ({ route }) => {
+const PromoDetail = ({ route }) => {
   const role = useSelector((state) => state.user?.role_id);
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(1);
@@ -23,7 +23,7 @@ const ProductDetail = ({ route }) => {
   const getProductById = async () => {
     setIsLoading(true);
     try {
-      const response = await getProductDetail(id);
+      const response = await getPromoDetail(id);
       const result = response.data.data[0];
       if (response.status === 200) {
         setIsLoading(false);
@@ -47,18 +47,18 @@ const ProductDetail = ({ route }) => {
     console.log(value);
   };
 
-  const setPrice = () => {
+  const setPrices = () => {
     if (selectedValue === 1) {
-      return parseInt(product?.price).toLocaleString('id-ID');
+      return parseInt(product?.price);
     }
     if (selectedValue === 2) {
-      return (parseInt(product?.price) * 1.3).toLocaleString('id-ID');
+      return (parseInt(product?.price) * 1.3);
     }
     if (selectedValue === 3) {
-      return (parseInt(product?.price) * 1.65).toLocaleString('id-ID');
+      return (parseInt(product?.price) * 1.65);
     }
-    return product?.price.toLocaleString('id-ID');
   };
+
 
 
   const handleAddCart = () => {
@@ -85,6 +85,15 @@ const ProductDetail = ({ route }) => {
     }
   };
 
+  const calculateDiscountedPrice = () => {
+    const data = product?.discount;
+    const result = setPrices() * (parseInt(data) / 100);
+    // console.log(data);
+    const discountedPrice = setPrices() - result;
+    return discountedPrice.toLocaleString('id-ID');
+  };
+
+  // console.log(calculateDiscountedPrice());
 
   return (
     <NativeBaseProvider>
@@ -105,10 +114,10 @@ const ProductDetail = ({ route }) => {
           {isLoading ? <Skeleton h="58px" w="140px" left={5} mt={'32%'} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" >
             <Skeleton fontSize="25px" fontWeight={700} />
           </Skeleton> : <Box w="140px" mt={'32%'} left={5} roundedTopLeft="25px" roundedTopRight="25px" alignItems="center" bg="#FFBA33" py="10px">
-            <Text fontSize="25px" fontWeight={700}>{setPrice()}</Text>
+            <Text fontSize="25px" fontWeight={700}>{calculateDiscountedPrice()}</Text>
           </Box>}
           <Box bg="#EBEBEB" roundedTopRight="40px" pb={5} pt={24}>
-            {isLoading ? <Skeleton w="180px" h="180px" top={'-20%'} left={'52%'} bg="#FFFFFF" rounded="full" position="absolute" /> : <Box w="180px" h="180px" position="absolute" top={'-32%'} left={'52%'} bg="#FFFFFF" rounded="full">
+            {isLoading ? <Skeleton w="180px" h="180px" top={'-20%'} left={'52%'} bg="#FFFFFF" rounded="full" position="absolute" /> : <Box w="180px" h="180px" position="absolute" top={'-25%'} left={'52%'} bg="#FFFFFF" rounded="full">
               {product?.image && (
                 <Image
                   source={{ uri: product.image }}
@@ -120,7 +129,7 @@ const ProductDetail = ({ route }) => {
                 />
               )}
             </Box>}
-            {isLoading ? <Skeleton px="54px" rounded={'20px'} mb={5} /> : <Box px="54px" mb={8} justifyContent="flex-end" alignItems="flex-end">
+            {isLoading ? <Skeleton px="54px" rounded={'20px'} mb={5} /> : <Box px="54px" mb={1} justifyContent="flex-end" alignItems="flex-end">
               <Text fontSize="28px" fontWeight={700} >{product?.name}</Text>
             </Box>}
 
@@ -145,7 +154,7 @@ const ProductDetail = ({ route }) => {
                 </Pressable>)}
               </Box>
 
-              <Button onPress={handleAddCart} _pressed={{ bg: '#6A4029' }} w="full" py="10px" bg="#6A4029" mt="28px" rounded="20px" alignItems="center">
+              <Button onPress={handleAddCart} w="full" py="10px" bg="#6A4029" mt="20px" rounded="20px" alignItems="center">
                 <Text color="#FFFFFF">Add to cart</Text>
               </Button>
             </Box>
@@ -156,4 +165,4 @@ const ProductDetail = ({ route }) => {
   );
 };
 
-export default ProductDetail;
+export default PromoDetail;

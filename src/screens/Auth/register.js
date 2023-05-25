@@ -32,17 +32,18 @@ const Register = () => {
     });
     if (value) {
       setInvalid(false);
+      setSuccess(false);
     }
   };
 
-  const registerHandler = async (e) => {
-    e.preventDefault();
+  const registerHandler = async () => {
     setLoading(true);
     try {
       if (form.email === '' || form.password === '' || form.phone_number === '') {
         setLoading(false);
         setInvalid(true);
         setMsg('Input is required!!!');
+        return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(form.email)) {
@@ -86,12 +87,12 @@ const Register = () => {
                 <Input variant="underlined" size="2xl" color="white" type="password" value={form.password} onChangeText={(text) => onChangeForm('password', text)} placeholder="Enter your password" placeholderTextColor="white" />
                 <Input variant="underlined" size="2xl" color="white" type="text" inputMode="numeric" value={form.phone_number} onChangeText={(text) => onChangeForm('phone_number', text)} placeholder="Enter your phone number" placeholderTextColor="white" />
               </Box>
-              {invalid && (
+              {!invalid && (
                 <Text color="red.700" fontWeight={700} fontSize="16px">
                   {invalid && msg}
                 </Text>
               )}
-              {success && (
+              {!success && (
                 <Text color="green.700" fontWeight={700} fontSize="16px">
                   {success && msg}
                 </Text>

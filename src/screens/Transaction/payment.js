@@ -90,7 +90,7 @@ const Payment = () => {
   const taxFee = cartRedux.delivery === 1 ? 10000 : 0;
   const grandTotal = route.params.subtotal + taxFee;
 
-
+  // console.log('data', dataShopping.length > 0)
 
   return (
     <NativeBaseProvider >
@@ -99,11 +99,11 @@ const Payment = () => {
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Payment</Text>
+          <Text fontWeight={700} fontSize="20px">Payment</Text>
         </Box>
         <ScrollView showsVerticalScrollIndicator={false} >
           <Text fontWeight={700} mt="36px" fontSize="20px">Product</Text>
-          <ScrollView maxH="250px" nestedScrollEnabled={true} >
+          <ScrollView maxH="250px" nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
             <Box mt="23px" bg="#FFFFFF" rounded="20px" px="20px" pt="25px">
               {storeCart.map((data, idx) => (
                 <CardPayment key={idx}
@@ -204,9 +204,9 @@ const Payment = () => {
 
           <Box mt="42px" flexDir="row" justifyContent="space-between" alignItems="center">
             <Text fontSize="17px">Total</Text>
-            <Text fontWeight={900} fontSize="22px">Rp. {dataShopping !== [] ? parseInt(grandTotal).toLocaleString('id-ID') : 0}</Text>
+            <Text fontWeight={900} fontSize="22px">Rp. {dataShopping.length > 0 ? parseInt(grandTotal).toLocaleString('id-ID') : 0}</Text>
           </Box>
-          {isLoading ? <Button isLoading isLoadingText="Proceed payment" mt="10px" mb={10} backgroundColor="#6A4029" rounded="20px" >
+          {isLoading ? <Button isLoading isLoadingText="Proceed payment" mt="37px" mb={10} backgroundColor="#6A4029" rounded="20px" py="20px" >
             <Text color="#FFFFFF" fontSize="18px" fontWeight={900}>Proceed payment</Text>
           </Button> : isSuccess ? (<Pressable onPress={() => navigation.navigate('Dashboard')} bg="#6A4029" mt="37px" alignItems="center" py="20px" mb={10} rounded="20px">
             <Text color="#FFFFFF" fontSize="18px" fontWeight={900}>Back To Dashboard</Text>

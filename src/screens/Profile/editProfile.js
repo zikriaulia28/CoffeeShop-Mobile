@@ -43,12 +43,8 @@ const EditProfile = () => {
     address: '',
   });
 
-  // const [selectedId, setSelectedId] = useState(data && data.gender === 'female' ? '1' : '2');
   const [selectedId, setSelectedId] = useState('');
 
-  // console.log(selectedId);
-  // console.log(data);
-  // console.log(data.gender);
 
   const onChangeForm = (name, value) => {
     // eslint-disable-next-line no-shadow
@@ -73,15 +69,12 @@ const EditProfile = () => {
     }
   };
 
-  // console.log(data);
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+
   useEffect(() => {
     if (data && data.gender === 'female') {
-      setSelectedId('1'); // Set nilai awal menjadi "1" untuk Female
+      setSelectedId('1');
     } else {
-      setSelectedId('2'); // Set nilai awal menjadi "2" untuk Male (default)
+      setSelectedId('2');
     }
   }, [data]);
 
@@ -180,7 +173,7 @@ const EditProfile = () => {
   };
 
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (selectedDate) => {
     const currentDate = selectedDate;
     const formattedDate = moment(currentDate).format('YYYY-MM-DD');
     setShow(false);
@@ -193,7 +186,6 @@ const EditProfile = () => {
     // eslint-disable-next-line no-undef
     if (Platform.OS === 'android') {
       setShow(false);
-      // for iOS, add a button that closes the picker
     }
     setShow(true);
     setMode(currentMode);
@@ -249,8 +241,6 @@ const EditProfile = () => {
     }
   };
 
-  // console.log(data.gender);
-  // console.log('selected', selectedId);
 
   return (
     <NativeBaseProvider>
@@ -318,7 +308,7 @@ const EditProfile = () => {
               <Text color="#9F9F9F">Delivery Address :</Text>
               {isLoading ? <Skeleton rounded="20px" /> : (<Input defaultValue={data.address} onChangeText={(text) => onChangeForm('address', text)} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" multiline={true} numberOfLines={2} />)}
             </Box>
-            {isLoad ? <Button isLoading isLoadingText="Save" mb={10} bg="#6A4029" /> : (<Pressable onPress={handleSubmit} justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="40px">
+            {isLoad ? <Button isLoading isLoadingText="Save" bg="#6A4029" py="16px" mt="25px" mb="40px" rounded="20px" /> : (<Pressable onPress={handleSubmit} justifyContent="center" alignItems="center" py="16px" px="23px" w="full" mt="25px" bg="#6A4029" shadow={3} rounded="20px" mb="40px">
               <Text fontSize="18px" fontWeight={700} color="#FFFFFF">Save</Text>
             </Pressable>)}
           </Box>

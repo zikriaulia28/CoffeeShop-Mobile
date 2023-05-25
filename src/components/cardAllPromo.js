@@ -25,7 +25,7 @@ const CardAllPromo = ({ id, image, name, price, role, discount }) => {
           {role === 1 && (<Pressable onPress={() => navigation.navigate('ProductDetail', { id })} postion="absolute" top="-45px" left={'100px'} w="35px" h="35px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center">
             <Icon name="pencil-outline" color="#FFFFFF" size={24} />
           </Pressable>)}
-          <Box w="40px" h="40px" bg="#FFFFFF" rounded="full" justifyContent="center" alignItems="center" left="10px" position="absolute" top={'-8px'}><Text>{discount}%</Text></Box>
+          <Box w="40px" h="40px" bg="#FFFFFF" rounded="full" justifyContent="center" alignItems="center" left="10px" position="absolute" top={'-8px'}><Text fontWeight={900}>{discount}%</Text></Box>
         </Box>
         <Text fontSize={'25px'} fontWeight={'900'} lineHeight={'30px'} textAlign={'center'} mt={-4} h={'52px'} w={'150px'}>{name}</Text>
         <Box width={'full'} alignItems={'center'} mt={2} mb={2}>

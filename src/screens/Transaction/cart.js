@@ -35,7 +35,7 @@ const Cart = () => {
           <Pressable onPress={() => navigation.navigate('Dashboard')} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Cart</Text>
+          <Text fontWeight={700} fontSize="20px">Cart</Text>
         </Box>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Box mt="47px" gap="15px">

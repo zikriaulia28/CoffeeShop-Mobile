@@ -108,11 +108,11 @@ const Product = () => {
     <NativeBaseProvider>
       {/* <ScrollView flex={1} > */}
       <Box flex={1}>
-        <Box px={7} flexDirection="row" alignItems="center" gap="70px" mt={10}>
+        <Box px={7} flexDirection="row" alignItems="center" gap="80px" mt={10}>
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Favorite Products</Text>
+          <Text fontWeight={700} fontSize="20px">Favorite Products</Text>
         </Box>
         <Box alignItems="center" mt={6} mb={2}>
           <Text fontSize="28px" fontWeight={900}>Everyone’s Favorite</Text>
@@ -209,8 +209,8 @@ const Product = () => {
           </Menu>
         </Box>
 
-        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={10} px={7} pb={2} mt={10}  >
-          {Array('', '', '', '', '', '').map((item, idx) => (
+        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={6} px={7} pb={2} mt={10}  >
+          {Array('', '', '', '').map((item, idx) => (
             <SkeletonProduct key={idx} />
           ))}
         </Box>) : (

@@ -114,7 +114,7 @@ const Profile = () => {
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">My profile</Text>
+          <Text fontWeight={700} fontSize="20px">My profile</Text>
         </Box>
       </Box>
       <ScrollView flex={1}>

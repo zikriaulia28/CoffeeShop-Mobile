@@ -1,17 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { NativeBaseProvider, Box, Heading, Center } from 'native-base';
+import { NativeBaseProvider, Box, Text } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Lottie from 'lottie-react-native';
-import styles from '../../styles';
 
 
 
 const SplashScreen = () => {
   // const image = require('../assets/home.png');
   const animation = require('../assets/animation.json');
-  const loader = require('../assets/loader-coffee.json');
   const navigation = useNavigation();
   const token = useSelector((state) => state.user?.token);
 
@@ -34,13 +32,13 @@ const SplashScreen = () => {
 
   return (
     <NativeBaseProvider>
-      <Box flex={1} background="#FFBA33">
-        <Center>
-          <Heading mt="40px" fontSize="40px" fontWeight={700} color="#6A4029" borderBottomWidth={4} borderBottomColor="#6A4029" italic>Filosofi Coffee</Heading>
-        </Center>
+      <Box flex={1} bg="#FFFFFF" pt="100%">
         <Lottie source={animation} autoPlay loop resizeMode="contain" />
-        <Box flex={1}>
-          <Lottie source={loader} autoPlay loop resizeMode="contain" style={styles.loader} />
+      </Box>
+      <Box flex={1} bg="#FFFFFF">
+        <Box px={10}>
+          <Text fontWeight={900} fontSize="20px" color="#6A4029" textAlign="center" italic >Selamat datang di Filosofi Coffee!</Text>
+          <Text fontWeight={900} fontSize="18px" color="#6A4029" textAlign="center" italic>Nikmati kopi bermakna</Text>
         </Box>
       </Box>
     </NativeBaseProvider >

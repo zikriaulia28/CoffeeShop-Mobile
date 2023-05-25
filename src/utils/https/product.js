@@ -114,3 +114,12 @@ export const deletingPromo = (token, id, controller) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+export const getPromoDetail = (id) => {
+  const url = `${baseUrl}/promo/${id}`;
+  return axios.get(url, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+};

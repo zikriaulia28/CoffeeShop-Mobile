@@ -48,21 +48,22 @@ const Chat = () => {
   const icon = require('../../assets/search.png');
   return (
     <NativeBaseProvider>
-      <ScrollView flex={1}>
-        <Box pt={10} >
-          <Box px={7} flexDirection="row" alignItems="center" gap="130px">
-            <Pressable onPress={() => navigation.goBack()} >
-              <Icon name="arrow-left" color="#000000" size={30} />
-            </Pressable>
-            <Text color="#6A4029" fontWeight={700} fontSize="20px">Chat</Text>
-          </Box>
-          <VStack px={7} w="100%" alignSelf="center" mt={20}>
-            <Input placeholder="Search Chat" size={'2xl'} inputMode={'text'} backgroundColor={'#EFEEEE'} width="100%" borderRadius="20px" py="4" px="2" InputLeftElement={<Image source={icon} alt="menu" ml="7" />} />
-          </VStack>
-          <Text textAlign="center" mt="27px">Choose a staff you want to talk with</Text>
+
+      <Box pt={10} >
+        <Box px={7} flexDirection="row" alignItems="center" gap="130px">
+          <Pressable onPress={() => navigation.goBack()} >
+            <Icon name="arrow-left" color="#000000" size={30} />
+          </Pressable>
+          <Text fontWeight={700} fontSize="20px">Chat</Text>
         </Box>
+        <VStack px={7} w="100%" alignSelf="center" mt={10}>
+          <Input placeholder="Search Chat" size={'2xl'} inputMode={'text'} backgroundColor={'#EFEEEE'} width="100%" borderRadius="20px" py="4" px="2" InputLeftElement={<Image source={icon} alt="menu" ml="7" />} />
+        </VStack>
+      </Box>
+      <ScrollView flex={1}>
+        <Text textAlign="center" mt="10px">Choose a staff you want to talk with</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <Box ml={7} flexDir="row" mt="30px" h={'120px'} gap={5}>
+          <Box ml={7} flexDir="row" mt="20px" h={'120px'} gap={5}>
             {dataChat.map((item, idx) => (
               <Box key={idx} w="80px" h="80px" rounded="full">
                 <Image source={{ uri: item.Image }} alt="img-chat" w="full" h="full" rounded="full" resizeMode="cover" />
@@ -71,9 +72,9 @@ const Chat = () => {
             ))}
           </Box>
         </ScrollView>
-        <Box borderBottomWidth={1} borderBottomColor={'#E0E0E2'} mt="45px" />
+        <Box borderBottomWidth={1} borderBottomColor={'#E0E0E2'} mt="25px" />
         <Box px={7} mb={5}>
-          <Text fontWeight={700} fontSize="20px" mt="33px" mb="42px">Message</Text>
+          <Text fontWeight={700} fontSize="20px" mt="10px" mb="42px">Message</Text>
           <Box gap="20px">
             {dataChat?.map((item, idx) => (
               <Pressable key={idx} onPress={() => navigation.navigate('ChatDetail')}>

@@ -103,13 +103,13 @@ const History = () => {
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Order History</Text>
+          <Text fontWeight={700} fontSize="20px">Order History</Text>
         </Box>
         <Box flexDir="row" alignItems="center" justifyContent="center" mt="40px" gap={2}>
-          <Icon name="gesture-swipe" size={30} />
+          <Icon name="gesture-swipe" color="#000000" size={30} />
           <Text>swipe on an item to delete</Text>
         </Box>
-        <Box alignItems="center">
+        <Box alignItems="center" flex={1}>
           {isLoading ? (
             Array.from({ length: 6 }).map((item, idx) => (
               <Box key={idx}>

@@ -37,17 +37,14 @@ const Promo = () => {
     const params = { limit, page, category, search: searchInput, order };
     try {
       const result = await getPromo(params, controller);
-      // console.log(result.data.data);
+      console.log(result.data.data);
       setData(result.data.data);
       setTotalPage(result.data.meta);
       // setNoData(false);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.status === 404) {
-        // setNoData(true);
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   };
 
@@ -84,10 +81,11 @@ const Promo = () => {
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Promo Products</Text>
+          <Text fontWeight={700} fontSize="20px">Promo For You</Text>
         </Box>
         <Box alignItems="center" mt={6} mb={2}>
-          <Text fontSize="28px" fontWeight={900}>Everyone’s Favorite</Text>
+          <Text fontSize="28px" fontWeight={900}>Pick your good deals</Text>
+          <Text >The price has been discounted</Text>
         </Box>
         <Box px={'42px'}>
           <VStack w="100%" alignSelf="center" mt={'10px'}>
@@ -181,7 +179,7 @@ const Promo = () => {
           </Menu>
         </Box>
 
-        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={10} px={7} pb={2} mt={10}  >
+        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={5} px={7} pb={2} mt={10}  >
           {Array('', '', '', '', '', '').map((item, idx) => (
             <SkeletonProduct key={idx} />
           ))}

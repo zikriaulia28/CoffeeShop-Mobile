@@ -94,14 +94,15 @@ const Delivery = () => {
 
   return (
     <NativeBaseProvider>
-      <ScrollView flex={1}>
-        <Box pt={10} px={7}>
-          <Box flexDirection="row" alignItems="center" gap="110px">
-            <Pressable onPress={() => navigation.goBack()} >
-              <Icon name="arrow-left" color="#000000" size={30} />
-            </Pressable>
-            <Text color="#6A4029" fontWeight={700} fontSize="20px">Checkout</Text>
-          </Box>
+
+      <Box flex={1} pt={10} px={7} >
+        <Box flexDirection="row" alignItems="center" gap="110px">
+          <Pressable onPress={() => navigation.goBack()} >
+            <Icon name="arrow-left" color="#000000" size={30} />
+          </Pressable>
+          <Text fontWeight={700} fontSize="20px">Checkout</Text>
+        </Box>
+        <ScrollView flex={1} showsVerticalScrollIndicator={false}>
           <Text fontSize="34px" fontWeight={900} mt="36px">Delivery</Text>
           <Box mt="35px" flexDir="row" justifyContent="space-between">
             <Text fontWeight={700} fontSise="17px">Address details</Text>
@@ -182,8 +183,8 @@ const Delivery = () => {
           <Pressable onPress={handleConfirm} bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'}>
             <Text color="#FFFFFF" fontSize="18px" fontWeight={900}>Proceed to payment</Text>
           </Pressable>
-        </Box>
-      </ScrollView>
+        </ScrollView>
+      </Box>
     </NativeBaseProvider >
   );
 };

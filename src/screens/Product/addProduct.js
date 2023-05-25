@@ -187,11 +187,11 @@ const AddProduct = () => {
             <Box>
               <Text mt="15px" fontWeight={900} fontSize="17px" mb={2}>Category</Text>
               <Menu
-                w="120px"
+                maxW="130px"
                 alignItems="center"
                 trigger={triggerProps => {
                   return (
-                    <Pressable {...triggerProps} bg="#6A4029" w={'35%'} h={5} alignItems="center" rounded="20px" >
+                    <Pressable {...triggerProps} bg="#6A4029" w={'35%'} h={6} alignItems="center" rounded="20px" >
                       <Text color={'#FFFFFF'} fontWeight={700}>{categoryId ? nameCategory : 'Select Category'}</Text>
                     </Pressable>
                   );
