@@ -93,11 +93,7 @@ const Product = () => {
     }
   };
 
-
   const debouncedHandlePage = debounce(handlePage, 1000);
-
-
-
 
   const handleSearch = debounce(text => {
     setPage(1);

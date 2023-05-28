@@ -25,7 +25,7 @@ const CardPromo = ({ id, image, name, price, role, discount }) => {
           ) : (
             <Image source={placeholder} alt="img-product" w={'168px'} h={'189px'} rounded={'20px'} />
           )}
-          {role === 1 && (<Pressable onPress={() => navigation.navigate('ProductDetail', { id })} postion="absolute" top="-25px" left={'145px'} w="35px" h="35px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center">
+          {role === 1 && (<Pressable onPress={() => navigation.navigate('PromoDetail', { id })} postion="absolute" top="-25px" left={'145px'} w="35px" h="35px" rounded="full" bg="#6A4029" alignItems="center" justifyContent="center">
             <Icon name="pencil-outline" color="#FFFFFF" size={24} />
           </Pressable>)}
           <Box w="40px" h="40px" bg="#FFFFFF" rounded="full" justifyContent="center" alignItems="center" position="absolute" top={'-8px'} left={'140px'}>

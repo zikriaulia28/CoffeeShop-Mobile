@@ -33,6 +33,7 @@ import EditProduct from './src/screens/Product/editProduct';
 import ManageOrder from './src/screens/Admin/manageOrder';
 import Promo from './src/screens/Promo/promo';
 import PromoDetail from './src/screens/Promo/promoDetail';
+import EditPromo from './src/screens/Promo/editPromo';
 
 const Tab = createBottomTabNavigator();
 
@@ -149,6 +150,9 @@ const StackNavigator = () => {
         headerShown: false,
       }} />
       <Screen name="PromoDetail" component={PromoDetail} options={{
+        headerShown: false,
+      }} />
+      <Screen name="EditPromo" component={EditPromo} options={{
         headerShown: false,
       }} />
     </Navigator>

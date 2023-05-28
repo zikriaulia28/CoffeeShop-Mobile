@@ -101,8 +101,9 @@ export const addPromo = (token, body, controller) => {
 
 export const editingPromo = (token, id, body, controller) => {
   const url = `${baseUrl}/promo/${id}`;
+  const config = controller ? { signal: controller.signal } : {};
   return axios.patch(url, body, {
-    signal: controller.signal,
+    config,
     headers: { Authorization: `Bearer ${token}` },
   });
 };

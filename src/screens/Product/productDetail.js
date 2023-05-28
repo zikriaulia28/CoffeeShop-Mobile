@@ -11,11 +11,14 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 const ProductDetail = ({ route }) => {
+  const storeCart = useSelector((state) => state.cart.shoppingCart);
+  console.log(storeCart.length);
   const role = useSelector((state) => state.user?.role_id);
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(1);
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [notif, setNotif] = useState(false);
   const { id } = route.params;
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
@@ -80,6 +83,7 @@ const ProductDetail = ({ route }) => {
         50,
       );
       console.log('added to cart');
+      setNotif(true);
     } catch (error) {
       console.error('Error while adding to cart:', error);
     }
@@ -91,13 +95,16 @@ const ProductDetail = ({ route }) => {
       <Box bg="#6A4029" flex={1}>
         <Box mt={10} px={7} >
           <Box flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Pressable onPress={() => navigation.goBack()} >
+            <Pressable onPress={() => navigation.goBack()}  >
               <Icon name="arrow-left" color="#FFFFFF" size={30} />
             </Pressable>
             {role === 1 ? (<Pressable onPress={() => navigation.navigate('EditProduct', { id })} >
               <Icon name="pencil-outline" color="#FFFFFF" size={30} />
-            </Pressable>) : (<Pressable onPress={() => navigation.navigate('Cart')} >
+            </Pressable>) : (<Pressable onPress={() => { navigation.navigate('Cart'); setNotif(false); }} position="relative" >
               <Icon name="cart-outline" color="#FFFFFF" size={30} />
+              {notif && <Box position="absolute" w="20px" h="20px" bg="red.600" rounded="full" justifyContent="center" alignItems="center" left={4} top={-5}>
+                <Text fontWeight={700} fontSize="12px">{storeCart.length}</Text>
+              </Box>}
             </Pressable>)}
           </Box>
         </Box>
@@ -108,7 +115,7 @@ const ProductDetail = ({ route }) => {
             <Text fontSize="25px" fontWeight={700}>{setPrice()}</Text>
           </Box>}
           <Box bg="#EBEBEB" roundedTopRight="40px" pb={5} pt={24}>
-            {isLoading ? <Skeleton w="180px" h="180px" top={'-20%'} left={'52%'} bg="#FFFFFF" rounded="full" position="absolute" /> : <Box w="180px" h="180px" position="absolute" top={'-32%'} left={'52%'} bg="#FFFFFF" rounded="full">
+            {isLoading ? <Skeleton w="180px" h="180px" top={'-18%'} left={'52%'} bg="#FFFFFF" rounded="full" position="absolute" /> : <Box w="180px" h="180px" position="absolute" top={'-25%'} left={'52%'} bg="#FFFFFF" rounded="full">
               {product?.image && (
                 <Image
                   source={{ uri: product.image }}

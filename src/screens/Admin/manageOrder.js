@@ -131,11 +131,11 @@ const ManageOrder = () => {
   return (
     <NativeBaseProvider>
       <Box pt={10} px={7} flex={1}>
-        <Box flexDirection="row" alignItems="center" gap="100px">
+        <Box flexDirection="row" alignItems="center" gap="80px">
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Order History</Text>
+          <Text fontWeight={700} fontSize="20px">Customer Order</Text>
         </Box>
         <Box flexDir="row" alignItems="center" justifyContent="center" mt="40px" gap={2}>
           <Icon name="gesture-swipe" size={30} />
@@ -157,8 +157,7 @@ const ManageOrder = () => {
             rightOpenValue={-75}
             swipeToOpenPercent={120}
           /> : (<>
-            <Text fontWeight={900} fontSize={32} mt="50%">Opsss !!!</Text>
-            <Text fontWeight={900} fontSize={20} >No History</Text>
+            <Text fontWeight={900} fontSize={20} mt="25%" >No Order Customer</Text>
           </>)
           }
         </Box>

@@ -32,10 +32,10 @@ const SplashScreen = () => {
 
   return (
     <NativeBaseProvider>
-      <Box flex={1} bg="#FFFFFF" pt="100%">
+      <Box flex={1} bg="#FFBA33" pt="100%">
         <Lottie source={animation} autoPlay loop resizeMode="contain" />
       </Box>
-      <Box flex={1} bg="#FFFFFF">
+      <Box flex={1} bg="#FFBA33">
         <Box px={10}>
           <Text fontWeight={900} fontSize="20px" color="#6A4029" textAlign="center" italic >Selamat datang di Filosofi Coffee!</Text>
           <Text fontWeight={900} fontSize="18px" color="#6A4029" textAlign="center" italic>Nikmati kopi bermakna</Text>

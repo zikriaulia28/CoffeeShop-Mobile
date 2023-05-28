@@ -22,6 +22,7 @@ const Dashboard = () => {
   const controller = useMemo(() => new AbortController(), []);
   const id = useSelector((state) => state.user?.id);
   const role = useSelector((state) => state.user?.role_id);
+  const storeCart = useSelector((state) => state.cart.shoppingCart);
   // console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
@@ -36,6 +37,7 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [order] = useState('');
   const [show, setShow] = useState(false);
+  const [notif, setNotif] = useState(false);
   // const [saveToken, setSaveToken] = useState('');
 
 
@@ -46,32 +48,19 @@ const Dashboard = () => {
       const result = await getProduct(params, controller);
       setData(result.data.data);
       const dataPromo = await getPromo(controller);
-      console.log(dataPromo.data.data);
       setDataPromos(dataPromo.data.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.status === 404) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const fetchDataUser = async () => {
-    setIsLoading(true);
-    try {
       const res = await getUser(id, controller);
-      const result = res.data.data[0];
-      const email = result.email;
-      const name = result.display_name;
-      const image = result.image;
-      const address = result.address;
-      const phone = result.phone_number;
-      setData(result);
+      const resultUser = res.data.data[0];
+      const email = resultUser.email;
+      const name = resultUser.display_name;
+      const image = resultUser.image;
+      const address = resultUser.address;
+      const phone = resultUser.phone_number;
       dispatch(userAction.dataUser({ name, email, image, address, phone }));
+      setNotif(true);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       setIsLoading(false);
     }
   };
@@ -83,7 +72,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (isFocused) {
       fetchData();
-      fetchDataUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused, category]);
@@ -141,8 +129,11 @@ const Dashboard = () => {
             <Pressable onPress={() => navigation.openDrawer()}>
               <Icon name="menu" color="#000000" size={40} />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('Cart')} >
+            <Pressable onPress={() => { navigation.navigate('Cart'); setNotif(false); }} position="relative" >
               <Icon name="cart-outline" color="#000000" size={30} />
+              {role === 2 && notif && storeCart.length > 0 && <Box position="absolute" w="20px" h="20px" bg="red.600" rounded="full" justifyContent="center" alignItems="center" left={4} top={-5}>
+                <Text fontWeight={700} fontSize="12px">{storeCart.length}</Text>
+              </Box>}
             </Pressable>
           </HStack>
           <Heading fontSize={'40px'} fontWeight={'900'} marginX={'auto'} mt={'40px'}>A good coffee is a good day</Heading>

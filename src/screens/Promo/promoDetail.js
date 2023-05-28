@@ -59,8 +59,6 @@ const PromoDetail = ({ route }) => {
     }
   };
 
-
-
   const handleAddCart = () => {
     try {
       const cart = {
@@ -93,7 +91,6 @@ const PromoDetail = ({ route }) => {
     return discountedPrice.toLocaleString('id-ID');
   };
 
-  // console.log(calculateDiscountedPrice());
 
   return (
     <NativeBaseProvider>
@@ -103,7 +100,7 @@ const PromoDetail = ({ route }) => {
             <Pressable onPress={() => navigation.goBack()} >
               <Icon name="arrow-left" color="#FFFFFF" size={30} />
             </Pressable>
-            {role === 1 ? (<Pressable onPress={() => navigation.navigate('EditProduct', { id })} >
+            {role === 1 ? (<Pressable onPress={() => navigation.navigate('EditPromo', { id })} >
               <Icon name="pencil-outline" color="#FFFFFF" size={30} />
             </Pressable>) : (<Pressable onPress={() => navigation.navigate('Cart')} >
               <Icon name="cart-outline" color="#FFFFFF" size={30} />
@@ -133,7 +130,7 @@ const PromoDetail = ({ route }) => {
               <Text fontSize="28px" fontWeight={700} >{product?.name}</Text>
             </Box>}
 
-            <Box px={7}  >
+            <Box px={7} mb={5}>
               {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontSize={'17px'} fontWeight={700} color="#6A4029">{product?.delivery_info ? product?.delivery_info : 'Delivery only on Monday to friday at  1 - 7 pm'}</Text></Box>}
 
               {isLoading ? <Skeleton mt="31px" height="31%" /> : <Box><Text fontSize={'17px'} fontWeight={700} mt="31px" color="#6A4029">{product?.description ? product?.description : 'Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.'}</Text></Box>}
@@ -154,7 +151,7 @@ const PromoDetail = ({ route }) => {
                 </Pressable>)}
               </Box>
 
-              <Button onPress={handleAddCart} w="full" py="10px" bg="#6A4029" mt="20px" rounded="20px" alignItems="center">
+              <Button onPress={handleAddCart} w="full" py="10px" bg="#6A4029" my="20px" rounded="20px" alignItems="center">
                 <Text color="#FFFFFF">Add to cart</Text>
               </Button>
             </Box>

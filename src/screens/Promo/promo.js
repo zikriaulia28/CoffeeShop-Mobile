@@ -1,13 +1,9 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable no-shadow */
 /* eslint-disable no-array-constructor */
-/* eslint-disable react/no-unstable-nested-components */
-import { NativeBaseProvider, Image, Box, VStack, Pressable, FlatList, Input, Text, ScrollView, Menu } from 'native-base';
+import { NativeBaseProvider, Box, Pressable, FlatList, Text } from 'native-base';
 import React, { useEffect, useState, useMemo } from 'react';
 import CardAllPromo from '../../components/cardAllPromo';
 import { getPromo } from '../../utils/https/product';
-import { debounce } from 'lodash';
-import { useRoute } from '@react-navigation/native';
 import SkeletonProduct from '../../components/skeletonProduct';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -16,19 +12,15 @@ import { useSelector } from 'react-redux';
 
 const Promo = () => {
   const role = useSelector((state) => state.user?.role_id);
-  const route = useRoute();
   const navigation = useNavigation();
   const controller = useMemo(() => new AbortController(), []);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const icon3 = require('../../assets/search.png');
-  const [activeTab, setActiveTab] = useState(0);
-  const [searchInput, setSearchInput] = useState('');
-  const [category, setCategory] = useState('');
+  const [searchInput] = useState('');
+  const [category] = useState('');
   const [limit] = useState(6);
-  const [page, setPage] = useState(1);
-  const [order, setOrder] = useState('');
+  const [page] = useState(1);
+  const [order] = useState('');
   const [setTotalPage] = useState(null);
 
 
@@ -54,28 +46,10 @@ const Promo = () => {
   }, []);
 
 
-  const handleCategory = info => {
-    setPage(1);
-    setCategory(info);
-  };
 
-  const handleTabPress = (index, category) => {
-    setActiveTab(index);
-    handleCategory(category);
-  };
-
-
-
-
-
-  const handleSearch = debounce(text => {
-    setPage(1);
-    setSearchInput(text);
-  }, 700);
 
   return (
     <NativeBaseProvider>
-      {/* <ScrollView flex={1} > */}
       <Box flex={1}>
         <Box px={7} flexDirection="row" alignItems="center" gap="90px" mt={10}>
           <Pressable onPress={() => navigation.goBack()} >
@@ -87,125 +61,32 @@ const Promo = () => {
           <Text fontSize="28px" fontWeight={900}>Pick your good deals</Text>
           <Text >The price has been discounted</Text>
         </Box>
-        <Box px={'42px'}>
-          <VStack w="100%" alignSelf="center" mt={'10px'}>
-            <Input onChangeText={handleSearch} autoFocus={route.params} placeholder="Search" size={'2xl'} inputMode={'text'} backgroundColor={'#FFFFFF'} width="100%" borderRadius="20px" py="1" px="2" InputLeftElement={<Image source={icon3} alt="menu" ml="7" />} />
-          </VStack>
+        <Box mt={10}>
+          {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={6} px={7} pb={2} mt={10}  >
+            {Array('', '', '', '', '', '').map((item, idx) => (
+              <SkeletonProduct key={idx} />
+            ))}
+          </Box>) : (
+            <FlatList
+              data={data}
+              keyExtractor={item => item.id}
+              numColumns={2}
+              onEndReachedThreshold={0.2}
+              renderItem={({ item }) => (
+                <Box flexBasis="50%" px={4} pb={4} alignItems={'center'} mt={10} >
+                  <CardAllPromo
+                    id={item.id}
+                    discount={item.discount}
+                    name={item.name}
+                    image={item.image}
+                    price={item.price}
+                    role={role}
+                  />
+                </Box>
+              )}
+            />)}
         </Box>
-        <Box pl={'70px'} h={10} mt={'10px'}>
-          <ScrollView horizontal={true} pr={20} showsHorizontalScrollIndicator={false} overScrollMode="always">
-            <Box flexDirection={'row'} gap={'29px'}>
-              <Text
-                fontSize={'20px'}
-                fontWeight={activeTab === 0 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(0, '')}
-              >
-                Favorite
-              </Text>
-              <Text
-                fontSize={'20px'}
-                fontWeight={activeTab === 1 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(1, 2)}
-              >
-                Coffee
-              </Text>
-              <Text
-                fontSize={'20px'}
-                fontWeight={activeTab === 2 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(2, 3)}
-              >
-                Non Coffee
-              </Text>
-              <Text
-                fontSize={'20px'}
-                fontWeight={activeTab === 3 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(3, 1)}
-              >
-                Food
-              </Text>
-              <Text
-                fontSize={'20px'}
-                fontWeight={activeTab === 4 ? 'bold' : 'normal'}
-                onPress={() => handleTabPress(4, 4)}
-              >
-                Add-on
-              </Text>
-            </Box>
-          </ScrollView>
-        </Box>
-
-        <Box alignItems="flex-end" mr="42px" mt={2} mb={5}>
-          <Menu
-            w="120px"
-            alignItems="center"
-            trigger={triggerProps => {
-              return (
-                <Pressable {...triggerProps} bg="#6A4029" w={'35%'} h={5} alignItems="center" rounded="20px" >
-                  <Text color={'#FFFFFF'} fontWeight={700}>{order ? order.toUpperCase() : 'Reset'}</Text>
-                </Pressable>
-              );
-            }}>
-            <Menu.Item bold onPress={() => setOrder('')}>
-              Reset
-            </Menu.Item>
-            <Menu.Item
-              onPress={() => {
-                setOrder('cheapest');
-                setPage(1);
-              }}>
-              Cheapest
-            </Menu.Item>
-            <Menu.Item
-              onPress={() => {
-                setOrder('priciest');
-                setPage(1);
-              }}>
-              Priciest
-            </Menu.Item>
-            <Menu.Item
-              onPress={() => {
-                setOrder('latest');
-                setPage(1);
-              }}>
-              Latest
-            </Menu.Item>
-            <Menu.Item
-              onPress={() => {
-                setOrder('oldest');
-                setPage(1);
-              }}>
-              Oldest
-            </Menu.Item>
-          </Menu>
-        </Box>
-
-        {isLoading ? (<Box flexDir="row" flexWrap="wrap" gap={5} px={7} pb={2} mt={10}  >
-          {Array('', '', '', '', '', '').map((item, idx) => (
-            <SkeletonProduct key={idx} />
-          ))}
-        </Box>) : (
-          <FlatList
-            data={data}
-            keyExtractor={item => item.id}
-            numColumns={2}
-            onEndReached={handleSearch}
-            onEndReachedThreshold={0.2}
-            renderItem={({ item }) => (
-              <Box flexBasis="50%" px={4} pb={4} alignItems={'center'} mt={10} >
-                <CardAllPromo
-                  id={item.id}
-                  discount={item.discount}
-                  name={item.name}
-                  image={item.image}
-                  price={item.price}
-                  role={role}
-                />
-              </Box>
-            )}
-          />)}
-
       </Box >
-      {/* </ScrollView> */}
     </NativeBaseProvider >
   );
 };
