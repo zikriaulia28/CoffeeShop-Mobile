@@ -9,11 +9,11 @@ This is a mobile app version for [API project](https://github.com/zikriaulia28/C
     ·
     <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/pulls">Request Feature</a>
   </p>
-<div>
+<div display="flex" flex="flex-wrap">
   <img src="/src/assets/readme/s1.png" width="300px" height="600px" />
-  <img src="/src/assets/readme/s2.png"/>
-  <img src="/src/assets/readme/s3.png"/>
-  <img src="/src/assets/readme/s4.png"/>
+  <img src="/src/assets/readme/s2.png" width="300px" height="600px"/>
+  <img src="/src/assets/readme/s3.png" width="300px" height="600px"/>
+  <img src="/src/assets/readme/s4.png" width="300px" height="600px"/>
 </div>
 
 ## Table of Contents
