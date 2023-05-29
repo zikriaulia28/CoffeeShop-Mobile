@@ -12,10 +12,12 @@ import { useSelector } from 'react-redux';
 
 const PromoDetail = ({ route }) => {
   const role = useSelector((state) => state.user?.role_id);
+  const storeCart = useSelector((state) => state.cart.shoppingCart);
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(1);
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [notif, setNotif] = useState(false);
   const { id } = route.params;
   // const placeholder = require('../../assets/placehoder-product.png');
   const navigation = useNavigation();
@@ -78,6 +80,7 @@ const PromoDetail = ({ route }) => {
         50,
       );
       console.log('added to cart');
+      setNotif(true);
     } catch (error) {
       console.error('Error while adding to cart:', error);
     }
@@ -102,8 +105,11 @@ const PromoDetail = ({ route }) => {
             </Pressable>
             {role === 1 ? (<Pressable onPress={() => navigation.navigate('EditPromo', { id })} >
               <Icon name="pencil-outline" color="#FFFFFF" size={30} />
-            </Pressable>) : (<Pressable onPress={() => navigation.navigate('Cart')} >
+            </Pressable>) : (<Pressable onPress={() => { navigation.navigate('Cart'); setNotif(false); }} position="relative">
               <Icon name="cart-outline" color="#FFFFFF" size={30} />
+              {notif && <Box position="absolute" w="20px" h="20px" bg="red.600" rounded="full" justifyContent="center" alignItems="center" left={4} top={-5}>
+                <Text fontWeight={700} fontSize="12px">{storeCart.length}</Text>
+              </Box>}
             </Pressable>)}
           </Box>
         </Box>

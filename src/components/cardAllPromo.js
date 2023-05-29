@@ -4,7 +4,8 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CardAllPromo = ({ id, image, name, price, role, discount }) => {
+
+const CardAllPromo = ({ id, image, name, price, role, discount, expired_at }) => {
   const navigation = useNavigation();
   const placeholder = require('../assets/placeholder.png');
   const setImage = () => {
@@ -17,6 +18,10 @@ const CardAllPromo = ({ id, image, name, price, role, discount }) => {
     const result = parseFloat(price) * (parseFloat(discount) / 100);
     return (parseFloat(price) - result).toLocaleString('id-ID');
   };
+  // const formattedDate = moment().format('YYYY-MM-DD');
+  // console.log('kadaluarsa', expired_at);
+  // console.log('tgl now', formattedDate);
+
   return (
     <Pressable onPress={() => role === 2 && navigation.navigate('PromoDetail', { id })}>
       <Box border="1" borderRadius="30px" alignItems={'center'} backgroundColor={'#FFFFFF'} width={'156px'} px={'25px'} shadow={'4'}>

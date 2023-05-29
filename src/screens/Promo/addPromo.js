@@ -67,7 +67,7 @@ const AddPromo = () => {
       setPick(true);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       if (error.response && error.response.status === 404) {
         setNoData(true);
         setLoading(false);
@@ -133,7 +133,7 @@ const AddPromo = () => {
       code: form.code,
       discount: form.discount,
       description: form.description,
-      expired_at: form.expire_date,
+      expired_at: form.expire_date || moment().format('YYYY-MM-DD'),
     };
     console.log('isi', body);
     setLoading(true);

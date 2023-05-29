@@ -3,7 +3,7 @@
 import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import CardProduct from '../../components/cardProduct';
-import { getProduct, getPromo } from '../../utils/https/product';
+import { getProduct, getPromo, deletingPromo } from '../../utils/https/product';
 import React, { useEffect, useState, useMemo } from 'react';
 import Skeletons from '../../components/skeleton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,6 +13,7 @@ import { userAction } from '../../redux/slices/auth';
 import { useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import CardPromo from '../../components/cardPromo';
+import moment from 'moment';
 // import messaging from '@react-native-firebase/messaging';
 // import { getNotificationFromAPI } from '../../utils/https/auth';
 
@@ -23,6 +24,8 @@ const Dashboard = () => {
   const id = useSelector((state) => state.user?.id);
   const role = useSelector((state) => state.user?.role_id);
   const storeCart = useSelector((state) => state.cart.shoppingCart);
+  console.log(storeCart.length);
+  const token = useSelector((state) => state.user?.token);
   // console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
@@ -49,6 +52,7 @@ const Dashboard = () => {
       setData(result.data.data);
       const dataPromo = await getPromo(controller);
       setDataPromos(dataPromo.data.data);
+      // console.log(dataPromo.data);
       const res = await getUser(id, controller);
       const resultUser = res.data.data[0];
       const email = resultUser.email;
@@ -120,6 +124,44 @@ const Dashboard = () => {
   // };
 
   // console.log('save', saveToken);
+  // console.log('promo', dataPromos);
+
+  const handleDelete = async (id) => {
+    try {
+      await deletingPromo(token, id, controller);
+      // console.log(result.data);
+      setDataPromos([]);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  // console.log(dataPromos);
+  const getIdAndExpiredAt = (datas) => {
+    const idAndExpiredAtList = datas.map(item => {
+      const id = item.id;
+      const expiredAt = moment(item.expired_at).format('YYYY-MM-DD');
+      const currentDate = moment().format('YYYY-MM-DD');
+      const isExpired = moment(expiredAt).isBefore(currentDate, 'day');
+      const status = isExpired ? 'telah kadaluarsa' : 'masih berlaku';
+
+      return { id, expiredAt, status };
+    });
+
+    return idAndExpiredAtList;
+  };
+
+  const idAndExpiredAt = getIdAndExpiredAt(dataPromos);
+  // console.log('id', idAndExpiredAt);
+
+  const idKadaluarsa = idAndExpiredAt
+    .filter(item => item.status === 'telah kadaluarsa')
+    .map(item => item.id);
+
+  idKadaluarsa.forEach(id => {
+    handleDelete(id);
+  });
+
 
   return (
     <NativeBaseProvider>
@@ -182,12 +224,12 @@ const Dashboard = () => {
             </Box>
           </ScrollView>
         </Box>
-        <Box px={7} alignItems={'flex-end'} mb={'10px'}>
-          <Pressable onPress={() => navigation.navigate('Product')}>
-            <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
-          </Pressable>
-        </Box>
         <ScrollView>
+          <Box px={7} alignItems={'flex-end'} mb={'10px'}>
+            <Pressable onPress={() => navigation.navigate('Product')}>
+              <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
+            </Pressable>
+          </Box>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
             <Box flexDirection={'row'} ml={7} mt={8} gap={8} h={'270px'}>
               {isLoading ? (
@@ -208,33 +250,35 @@ const Dashboard = () => {
               )}
             </Box>
           </ScrollView>
-          <Box px={7}>
-            <Text fontSize="20px" mt="10px" fontWeight={700}>Promo</Text>
-            <Pressable onPress={() => navigation.navigate('Promo')} alignItems={'flex-end'}>
-              <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
-            </Pressable>
-          </Box>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-            <Box flexDirection={'row'} ml={7} mt={10} gap={8} h={'270px'}>
-              {isLoading ? (
-                Array.from({ length: 5 }).map((item, idx) => (
-                  <Skeletons key={idx} />
-                ))
-              ) : (
-                dataPromos?.length > 0 && dataPromos.map((product, idx) => (
-                  <CardPromo
-                    key={idx}
-                    id={product.id}
-                    role={role}
-                    discount={product.discount}
-                    image={product.image}
-                    name={product.name}
-                    price={product.price}
-                  />
-                ))
-              )}
+          {dataPromos.length > 0 && <>
+            <Box px={7}>
+              <Text fontSize="20px" mt="10px" fontWeight={700}>Promo</Text>
+              <Pressable onPress={() => navigation.navigate('Promo')} alignItems={'flex-end'}>
+                <Text color={'#6A4029'} fontSize={'16px'}>See More</Text>
+              </Pressable>
             </Box>
-          </ScrollView>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+              <Box flexDirection={'row'} ml={7} mt={10} gap={8} h={'270px'}>
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((item, idx) => (
+                    <Skeletons key={idx} />
+                  ))
+                ) : (
+                  dataPromos?.length > 0 && dataPromos.map((product, idx) => (
+                    <CardPromo
+                      key={idx}
+                      id={product.id}
+                      role={role}
+                      discount={product.discount}
+                      image={product.image}
+                      name={product.name}
+                      price={product.price}
+                    />
+                  ))
+                )}
+              </Box>
+            </ScrollView>
+          </>}
           {role === 1 && <Box px={7} my={5}>
             <Pressable onPress={handleShow} display={show === true ? 'none' : 'flex'} w="50px" h="50px" rounded="full" bg="#6A4029" justifyContent="center" alignItems="center">
               <Icon name="plus" color="#FFFFFF" size={30} />

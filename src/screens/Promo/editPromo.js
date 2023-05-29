@@ -110,9 +110,9 @@ const EditPromo = ({ route }) => {
   const handleSubmit = async () => {
     const body = {
       product_id: product?.product_id,
-      code: form.code,
-      discount: form.discount,
-      description: form.description,
+      code: form.code || product?.code,
+      discount: form.discount || product?.discount,
+      description: form.description || product?.description,
       expired_at: form.expire_date || moment().format('YYYY-MM-DD'),
     };
     console.log('isi', body);
@@ -138,12 +138,11 @@ const EditPromo = ({ route }) => {
   return (
     <NativeBaseProvider>
       <Box pt={10} flex={1} bg="#FFFFFF">
-        <Box px={7} flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Box px={7} flexDirection="row" alignItems="center" gap={24}>
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
           <Text fontWeight={700} fontSize="20px">Edit Promo</Text>
-          <Icon name="trash-can-outline" color="#6A4029" size={30} />
         </Box>
         <ScrollView>
           <Box mt="40px" alignItems="center">

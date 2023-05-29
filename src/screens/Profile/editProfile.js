@@ -250,7 +250,7 @@ const EditProfile = () => {
           <Pressable onPress={() => navigation.goBack()} >
             <Icon name="arrow-left" color="#000000" size={30} />
           </Pressable>
-          <Text color="#6A4029" fontWeight={700} fontSize="20px">Edit Profile</Text>
+          <Text fontWeight={700} fontSize="20px">Edit Profile</Text>
         </Box>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="center" mt="28px">

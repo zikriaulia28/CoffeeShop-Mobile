@@ -218,7 +218,7 @@ const Product = () => {
             onEndReachedThreshold={0.2}
             ListFooterComponent={() =>
               load ? (
-                <ActivityIndicator color="blue" size="large" />
+                <ActivityIndicator color="#6A4029" size="large" />
               ) : isAllPagesLoaded ? (
                 <Text textAlign="center" my={10}>
                   End pages

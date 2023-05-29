@@ -105,7 +105,7 @@ const Payment = () => {
           <Text fontWeight={700} mt="36px" fontSize="20px">Product</Text>
           <ScrollView maxH="250px" nestedScrollEnabled={true} showsVerticalScrollIndicator={false} >
             <Box mt="23px" bg="#FFFFFF" rounded="20px" px="20px" pt="25px">
-              {storeCart.map((data, idx) => (
+              {storeCart.length > 0 ? storeCart.map((data, idx) => (
                 <CardPayment key={idx}
                   product_id={data.product_id}
                   prodName={data.prodName}
@@ -114,7 +114,9 @@ const Payment = () => {
                   qty={data.qty}
                   size_id={data.size_id}
                 />
-              ))}
+              )) : (<>
+                <Text mb={10} textAlign="center" fontWeight={900} fontSize="18px" mt={5}>No Product</Text>
+              </>)}
             </Box>
           </ScrollView>
           <Text fontWeight={700} mt="36px" fontSize="20px">Payment method</Text>

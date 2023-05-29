@@ -21,7 +21,7 @@ const SplashScreen = () => {
       if (token) {
         handleRedirect();
       }
-    }, 3500);
+    }, 2900);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
