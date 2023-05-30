@@ -14,6 +14,8 @@ import { useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import CardPromo from '../../components/cardPromo';
 import moment from 'moment';
+import { BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 // import messaging from '@react-native-firebase/messaging';
 // import { getNotificationFromAPI } from '../../utils/https/auth';
 
@@ -72,6 +74,21 @@ const Dashboard = () => {
   const handleShow = () => {
     setShow(prevShow => !prevShow);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        BackHandler.exitApp(); // Keluar dari aplikasi saat tombol "Kembali" ditekan
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', backAction);
+      };
+    }, []),
+  );
 
   useEffect(() => {
     if (isFocused) {

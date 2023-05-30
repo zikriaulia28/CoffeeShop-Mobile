@@ -40,7 +40,7 @@ const CustomDrawer = () => {
 
   const handleLogout = () => {
     setIsLoading(false);
-    navigation.replace('Login');
+    navigation.replace('Wellcome');
     setShowModal(false);
     dispatch(userAction.authLogout());
   };

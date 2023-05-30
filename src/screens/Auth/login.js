@@ -69,7 +69,7 @@ const Login = () => {
   };
 
   const handleRedirect = () => {
-    navigation.navigate('MyTabs');
+    navigation.replace('MyTabs');
   };
 
   return (
