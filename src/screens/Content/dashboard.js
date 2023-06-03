@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-shadow */
-import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView } from 'native-base';
+import { NativeBaseProvider, Image, Box, HStack, VStack, Pressable, Heading, Input, Text, ScrollView, Modal, Center, Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import CardProduct from '../../components/cardProduct';
 import { getProduct, getPromo, deletingPromo } from '../../utils/https/product';
@@ -26,7 +26,6 @@ const Dashboard = () => {
   const id = useSelector((state) => state.user?.id);
   const role = useSelector((state) => state.user?.role_id);
   const storeCart = useSelector((state) => state.cart.shoppingCart);
-  console.log(storeCart.length);
   const token = useSelector((state) => state.user?.token);
   // console.log('cek role in dashboard', role);
   const dispatch = useDispatch();
@@ -43,6 +42,7 @@ const Dashboard = () => {
   const [order] = useState('');
   const [show, setShow] = useState(false);
   const [notif, setNotif] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   // const [saveToken, setSaveToken] = useState('');
 
 
@@ -55,6 +55,16 @@ const Dashboard = () => {
       const dataPromo = await getPromo(controller);
       setDataPromos(dataPromo.data.data);
       // console.log(dataPromo.data);
+      setNotif(true);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.response.data);
+      setIsLoading(false);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
       const res = await getUser(id, controller);
       const resultUser = res.data.data[0];
       const email = resultUser.email;
@@ -63,11 +73,8 @@ const Dashboard = () => {
       const address = resultUser.address;
       const phone = resultUser.phone_number;
       dispatch(userAction.dataUser({ name, email, image, address, phone }));
-      setNotif(true);
-      setIsLoading(false);
     } catch (error) {
       console.log(error.response.data);
-      setIsLoading(false);
     }
   };
 
@@ -93,6 +100,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (isFocused) {
       fetchData();
+      fetchUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused, category]);
@@ -145,11 +153,15 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deletingPromo(token, id, controller);
-      // console.log(result.data);
+      const result = await deletingPromo(token, id, controller);
+      console.log('hasil', result.data);
       setDataPromos([]);
+      console.log('deleting success');
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.status);
+      if (error.response.status === 403 && role === 1) {
+        setShowModal(true);
+      }
     }
   };
 
@@ -178,6 +190,11 @@ const Dashboard = () => {
   idKadaluarsa.forEach(id => {
     handleDelete(id);
   });
+
+  const handleLoginAgain = () => {
+    navigation.replace('Login');
+    setShowModal(false);
+  };
 
 
   return (
@@ -325,10 +342,31 @@ const Dashboard = () => {
           <Pressable onPress={() => { navigation.navigate('AddProduct'); setShow(false); }} top="78%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
             <Text color="#6A4029" textAlign="center">New Product</Text>
           </Pressable>
-          <Pressable onPress={() => { navigation.navigate('AddPromo'); setShow(false); }} top="79%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
+          <Pressable onPress={() => { navigation.navigate('Product'); setShow(false); }} top="79%" left="20%" w="50%" py={2} bg="#FFBA33" rounded="20px">
             <Text color="#6A4029" textAlign="center">New Promo</Text>
           </Pressable>
         </Box>}
+        <Box>
+          <Center>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} _backdrop={{
+              _dark: {
+                bg: 'coolGray.800',
+              },
+              bg: 'warmGray.50',
+            }}>
+              <Modal.Content maxWidth="350" maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Token Expire</Modal.Header>
+                <Modal.Body>
+                  Please Login Again!
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button backgroundColor="#6A4029" px="30px" onPress={handleLoginAgain}>OK</Button>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
+          </Center>;
+        </Box>
       </Box >
     </NativeBaseProvider >
   );

@@ -141,7 +141,7 @@ const PromoDetail = ({ route }) => {
 
               {isLoading ? <Skeleton mt="31px" height="31%" /> : <Box><Text fontSize={'17px'} fontWeight={700} mt="31px" color="#6A4029">{product?.description ? product?.description : 'Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.'}</Text></Box>}
 
-              {isLoading ? <Skeleton mt="5%" /> : <Box mt="10%"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>}
+              {isLoading ? <Skeleton mt="5%" /> : <Box mt="10%"><Text textAlign="center" fontSize="20px" h="80px" maxH="100px" fontWeight={700}>Choose a size</Text></Box>}
 
               <Box justifyContent="center" flexDirection="row" gap="37px" mt="15px">
                 {isLoading ? <Skeleton w="50px" h="50px" mb={'32'} rounded="full" /> : (<Pressable w="50px" h="50px" rounded="full" bg={selectedValue === 1 ? '#6A4029' : '#FFBA33'} alignItems="center" justifyContent="center" onPress={() => handleClick(1)} active={selectedValue === 1}>

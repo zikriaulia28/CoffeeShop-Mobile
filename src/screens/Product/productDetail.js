@@ -134,7 +134,7 @@ const ProductDetail = ({ route }) => {
             <Box px={7}  >
               {isLoading ? <Skeleton w="100%" fontWeight={700} color="#6A4029" /> : <Box><Text w="80%" fontSize={'17px'} fontWeight={700} color="#6A4029">{product?.delivery_info ? product?.delivery_info : 'Delivery only on Monday to friday at  1 - 7 pm'}</Text></Box>}
 
-              {isLoading ? <Skeleton mt="31px" height="31%" /> : <Box><Text fontSize={'17px'} fontWeight={700} mt="31px" color="#6A4029">{product?.description ? product?.description : 'Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.'}</Text></Box>}
+              {isLoading ? <Skeleton mt="31px" height="31%" /> : <Box><Text fontSize={'17px'} h="100px" maxH="150px" fontWeight={700} mt="31px" color="#6A4029">{product?.description ? product?.description : 'Cold brewing is a method of brewing that combines ground coffee and cool water and uses time instead of heat to extract the flavor. It is brewed in small batches and steeped for as long as 48 hours.'}</Text></Box>}
 
               {isLoading ? <Skeleton mt="5%" /> : <Box mt="10%"><Text textAlign="center" fontSize="20px" fontWeight={700}>Choose a size</Text></Box>}
 

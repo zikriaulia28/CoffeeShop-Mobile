@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable radix */
-import { NativeBaseProvider, Box, Text, Pressable, ScrollView, Image, Button } from 'native-base';
+import { NativeBaseProvider, Box, Text, Pressable, ScrollView, Image, Button, Modal, Center } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ const Payment = () => {
   const [paymentMethod, setpaymentMethod] = useState(3);
   const [creditCard, setCreditCard] = useState(1);
   const [isSuccess, setSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const dataShopping = cartRedux.shoppingCart.map(item => {
     const { image, prodName, price, qty, ...newItem } = item;
@@ -65,8 +66,11 @@ const Payment = () => {
         console.log('success');
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       setLoading(false);
+      if (error.response.status === 403) {
+        setShowModal(true);
+      }
     }
   };
 
@@ -91,6 +95,10 @@ const Payment = () => {
   const grandTotal = route.params.subtotal + taxFee;
 
   // console.log('data', dataShopping.length > 0)
+  const handleLoginAgain = () => {
+    navigation.replace('Login');
+    setShowModal(false);
+  };
 
   return (
     <NativeBaseProvider >
@@ -217,6 +225,27 @@ const Payment = () => {
           </Pressable>)}
 
         </ScrollView>
+        <Box>
+          <Center>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} _backdrop={{
+              _dark: {
+                bg: 'coolGray.800',
+              },
+              bg: 'warmGray.50',
+            }}>
+              <Modal.Content maxWidth="350" maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Token Expire</Modal.Header>
+                <Modal.Body>
+                  Please Login Again!
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button backgroundColor="#6A4029" px="30px" onPress={handleLoginAgain}>OK</Button>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
+          </Center>;
+        </Box>
       </Box>
     </NativeBaseProvider >
   );

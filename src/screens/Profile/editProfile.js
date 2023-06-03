@@ -173,7 +173,7 @@ const EditProfile = () => {
   };
 
 
-  const onChange = (selectedDate) => {
+  const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     const formattedDate = moment(currentDate).format('YYYY-MM-DD');
     setShow(false);
@@ -186,6 +186,7 @@ const EditProfile = () => {
     // eslint-disable-next-line no-undef
     if (Platform.OS === 'android') {
       setShow(false);
+      // for iOS, add a button that closes the picker
     }
     setShow(true);
     setMode(currentMode);
@@ -283,13 +284,13 @@ const EditProfile = () => {
 
             <Box mb="21px">
               <Text color="#9F9F9F" fontWeight={700}>Phone Number :</Text>
-              {isLoading ? <Skeleton rounded="20px" mt={1} /> : (<Input defaultValue={data.phone_number} onChangeText={(text) => onChangeForm('phone_number', text)} variant="underlined" size="2xl" inputMode="numeric" _focus={{ borderBottomColor: '#6A4029' }} type="text" />)}
+              {isLoading ? <Skeleton rounded="20px" mt={1} /> : (<Input isDisabled defaultValue={data.phone_number} onChangeText={(text) => onChangeForm('phone_number', text)} variant="underlined" size="2xl" inputMode="numeric" _focus={{ borderBottomColor: '#6A4029' }} type="text" />)}
             </Box>
 
             <Box mb="21px">
               <Text color="#9F9F9F" fontWeight={700}>Date of Birth</Text>
               <Box position="relative">
-                {isLoading ? <Skeleton rounded="20px" mt={1} /> : (<><Input isDisabled defaultValue={data.birth_day === null ? moment().format('YYYY-MM-DD') : isChanged ? moment(date).format('YYYY-MM-DD') : moment(data.birth_day).format('YYYY-MM-DD ')} onChangeText={(text) => onChangeForm('birth_day', text)} variant="underlined" size="2xl" _focus={{ borderBottomColor: '#6A4029' }} type="text" />
+                {isLoading ? <Skeleton rounded="20px" mt={1} /> : (<><Input variant="underlined" size="2xl" type="text" value={data.birth_day === null ? moment().format('YYYY-MM-DD') : isChanged ? moment(date).format('YYYY-MM-DD') : moment(data.birth_day).format('YYYY-MM-DD ')} onChangeText={(text) => onChangeForm('expire_date', text)} />
                   <Pressable onPress={showDatepicker} position="absolute" top={3} right={15}>
                     <Fontisto name="date" color={'#6A4029'} size={24} />
                   </Pressable></>)}

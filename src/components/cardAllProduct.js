@@ -15,7 +15,13 @@ const CardAllProduct = ({ id, image, name, price, role }) => {
     return placeholder;
   };
   return (
-    <Pressable onPress={() => role === 2 && navigation.navigate('ProductDetail', { id })}>
+    <Pressable onPress={() => {
+      if (role === 1) {
+        navigation.navigate('AddPromo', { id });
+      } else if (role === 2) {
+        navigation.navigate('ProductDetail', { id });
+      }
+    }}>
       <Box border="1" borderRadius="30px" alignItems={'center'} backgroundColor={'#FFFFFF'} width={'156px'} px={'25px'} shadow={'4'}>
         <Box position="relative" w={'128.98px'} h={'128.98px'} top={'-30px'} rounded="full">
           <Image source={setImage()} alt="img-product" w="full" h="full" rounded="full" resizeMode="cover" />

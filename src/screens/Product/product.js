@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-array-constructor */
 /* eslint-disable react/no-unstable-nested-components */
-import { NativeBaseProvider, Image, Box, VStack, Pressable, FlatList, Input, Text, ScrollView, Menu } from 'native-base';
+import { NativeBaseProvider, Image, Box, VStack, Pressable, FlatList, Input, Text, ScrollView, Menu, Modal, Center } from 'native-base';
 import React, { useEffect, useState, useMemo } from 'react';
 import CardAllProduct from '../../components/cardAllProduct';
 import { getProduct } from '../../utils/https/product';
@@ -32,6 +32,7 @@ const Product = () => {
   const [order, setOrder] = useState('');
   const [totalPage, setTotalPage] = useState(null);
   const [isAllPagesLoaded, setIsAllPagesLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -43,6 +44,9 @@ const Product = () => {
       setTotalPage(result.data.meta);
       // setNoData(false);
       setIsLoading(false);
+      if (role === 1) {
+        setShowModal(true);
+      }
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 404) {
@@ -68,7 +72,7 @@ const Product = () => {
     handleCategory(category);
   };
 
-  console.log(totalPage);
+  // console.log(totalPage.totalPage === page);
 
   const handlePage = async () => {
     if (totalPage.totalPage === page) {
@@ -98,6 +102,7 @@ const Product = () => {
   const handleSearch = debounce(text => {
     setPage(1);
     setSearchInput(text);
+    handleTabPress(0, '');
   }, 700);
 
   return (
@@ -167,7 +172,7 @@ const Product = () => {
             trigger={triggerProps => {
               return (
                 <Pressable {...triggerProps} bg="#6A4029" w={'35%'} h={5} alignItems="center" rounded="20px" >
-                  <Text color={'#FFFFFF'} fontWeight={700}>{order ? order.toUpperCase() : 'Reset'}</Text>
+                  <Text color={'#FFFFFF'} fontWeight={700}>{order ? order.toUpperCase() : 'No Criteria'}</Text>
                 </Pressable>
               );
             }}>
@@ -239,6 +244,25 @@ const Product = () => {
               </Box>
             )}
           />)}
+
+        <Box>
+          <Center>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} _backdrop={{
+              _dark: {
+                bg: 'coolGray.800',
+              },
+              bg: 'warmGray.50',
+            }}>
+              <Modal.Content maxWidth="350" maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Add Promo</Modal.Header>
+                <Modal.Body>
+                  Select Product for Promo
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
+          </Center>;
+        </Box>
 
       </Box >
       {/* </ScrollView> */}

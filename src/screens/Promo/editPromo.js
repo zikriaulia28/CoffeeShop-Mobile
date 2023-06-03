@@ -50,7 +50,7 @@ const EditPromo = ({ route }) => {
     try {
       const response = await getPromoDetail(id);
       const result = response.data.data[0];
-      console.log(result);
+      console.log('getPromo', response.data.data);
       if (response.status === 200) {
         setLoading(false);
         setProduct(result);
@@ -157,12 +157,12 @@ const EditPromo = ({ route }) => {
             <Text mt="15px" fontWeight={900} fontSize="17px">Price</Text>
             <Input variant="underlined" size="2xl" type="text" value={setDiscount()} isDisabled onChangeText={(text) => onChangeForm('price', text)} />
             <Text mt="15px" fontWeight={900} fontSize="17px">Discount</Text>
-            <Input variant="underlined" size="2xl" type="text" value={form.discount} onChangeText={(text) => onChangeForm('discount', text)} placeholder="Input the discount" />
+            <Input variant="underlined" size="2xl" type="text" defaultValue={form.discount ? form.discount : String(product?.discount)} onChangeText={(text) => onChangeForm('discount', text)} placeholder="Input the discount" />
             <Text mt="15px" fontWeight={900} fontSize="17px">Code</Text>
-            <Input variant="underlined" size="2xl" type="text" onChangeText={(text) => onChangeForm('code', text)} placeholder="Input the code" />
+            <Input variant="underlined" defaultValue={form.code ? form.code : product?.code} size="2xl" type="text" onChangeText={(text) => onChangeForm('code', text)} placeholder="Input the code" />
             <Box position="relative">
               <Text mt="15px" fontWeight={900} fontSize="17px">Expired Date </Text>
-              <Input variant="underlined" size="2xl" type="text" value={prodPick === null ? moment().format('YYYY-MM-DD') : isChanged ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD ')} onChangeText={(text) => onChangeForm('expire_date', text)} />
+              <Input variant="underlined" size="2xl" type="text" defaultValue={prodPick === null ? moment().format('YYYY-MM-DD') : isChanged ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD ')} onChangeText={(text) => onChangeForm('expire_date', text)} />
               <Pressable onPress={showDatepicker} position="absolute" top={10} right={15}>
                 <Fontisto name="date" color={'#6A4029'} size={24} />
               </Pressable>
@@ -177,7 +177,7 @@ const EditPromo = ({ route }) => {
               />
             )}
             <Text mt="15px" fontWeight={900} fontSize="17px">Description</Text>
-            <Input variant="underlined" size="2xl" type="text" value={form.description} onChangeText={(text) => onChangeForm('description', text)} placeholder="Describe your product" />
+            <Input variant="underlined" defaultValue={form.description ? form.description : product?.description} size="2xl" type="text" onChangeText={(text) => onChangeForm('description', text)} placeholder="Describe your product" />
             {loading ? <Button isLoading bg="#6A4029" my="20px" py="20px" rounded="20px" /> : (<Pressable onPress={handleSubmit} bg="#6A4029" my="20px" alignItems="center" py="20px" rounded="20px" justifyContent={'center'}>
               <Text color="#FFFFFF" fontSize="18px" fontWeight={900}>Save Promo</Text>
             </Pressable>)}
