@@ -80,10 +80,10 @@ This is a mobile app version for [API project](https://github.com/zikriaulia28/C
 ## Documentation
 
 <div display="flex" flex="flex-wrap" justifyContent="space-between">
-  <img src="/src/assets/readme/s1.png" width="24%" height="600px" />
-  <img src="/src/assets/readme/s2.png" width="24%" height="600px"/>
-  <img src="/src/assets/readme/s3.png" width="24%" height="600px"/>
-  <img src="/src/assets/readme/s4.png" width="24%" height="600px"/>
+  <img src="/src/assets/readme/s1.png" width="24%"  />
+  <img src="/src/assets/readme/s2.png" width="24%" />
+  <img src="/src/assets/readme/s3.png" width="24%" />
+  <img src="/src/assets/readme/s4.png" width="24%" />
 </div>
 
 ## License
