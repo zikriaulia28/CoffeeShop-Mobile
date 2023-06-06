@@ -1,20 +1,8 @@
 # <h1 align="center">COFFEE SHOP MOBILE</h1>
 
-This is a mobile app version for [API project](https://github.com/zikriaulia28/Coffeeshop-be) and you can view the web version [here](https://github.com/zikriaulia28/Coffeshop-fe).
+## About The Project
 
- <p align="center">
-    <a href="https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=share_link">View Demo</a>
-    ·
-    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/pulls">Request Feature</a>
-  </p>
-<div display="flex" flex="flex-wrap" justifyContent="space-between">
-  <img src="/src/assets/readme/s1.png" width="300px" height="600px" />
-  <img src="/src/assets/readme/s2.png" width="300px" height="600px"/>
-  <img src="/src/assets/readme/s3.png" width="300px" height="600px"/>
-  <img src="/src/assets/readme/s4.png" width="300px" height="600px"/>
-</div>
+Coffee Shop is a cross platform mobile application (Android & iOS) for ordering foods and beverages. This project was developed using a framework/library React Native and Redux.
 
 ## Table of Contents
 
@@ -27,10 +15,6 @@ This is a mobile app version for [API project](https://github.com/zikriaulia28/C
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
-
-## About The Project
-
-Coffee Shop is a cross platform mobile application (Android & iOS) for ordering foods and beverages. This project was developed using a framework/library React Native and Redux.
 
 ### Built With
 
@@ -78,6 +62,29 @@ npm run android
 ```sh
 npm run ios
 ```
+
+## Demo
+
+<p align="center">
+    <a href="https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing">View Demo</a>
+    ·
+    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/pulls">Request Feature</a>
+  </p>
+
+## Related Projects
+
+This is a mobile app version for [API project](https://github.com/zikriaulia28/Coffeeshop-be) and you can view the web version [here](https://github.com/zikriaulia28/Coffeshop-fe).
+
+## Documentation
+
+<div display="flex" flex="flex-wrap" justifyContent="space-between">
+  <img src="/src/assets/readme/s1.png" width="24%" height="600px" />
+  <img src="/src/assets/readme/s2.png" width="24%" height="600px"/>
+  <img src="/src/assets/readme/s3.png" width="24%" height="600px"/>
+  <img src="/src/assets/readme/s4.png" width="24%" height="600px"/>
+</div>
 
 ## License
 
