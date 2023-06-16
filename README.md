@@ -10,7 +10,7 @@
 
 <h3 align="center">COFFEE SHOP</h3>
 
-[Demo](https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing) · [Related Projects](#related-projects) · [Report Bug](#report-bug) · [Request Feature](#request-feature)
+[Demo](https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing) · [Related Projects](#related-projects) · [Report Bug](#report-bug)
 
 </div>
 
