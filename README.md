@@ -1,25 +1,56 @@
-# <h1 align="center">COFFEE SHOP MOBILE</h1>
+<div align="center">
+ <a href="#">
+<img src="/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" alt="Logo" width="80" height="80">
+</a>
+
+<br/>
+<br/>
+
+[![Tech Stack](https://skillicons.dev/icons?i=react,redux,firebase,babel)](#tech-stack)
+
+<h3 align="center">COFFEE SHOP</h3>
+
+[Demo](https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing) · [Related Projects](#related-projects) · [Report Bug](#report-bug) · [Request Feature](#request-feature)
+
+</div>
+
+## Table of Contents
+
+- [About the Project](#about-the-project)
+  - [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Related Projects](#related-projects)
+- [License](#license)
+- [Report Bug](#report-bug)
+- [Contributor](#contributor)
 
 ## About The Project
 
 Coffee Shop is a cross platform mobile application (Android & iOS) for ordering foods and beverages. This project was developed using a framework/library React Native and Redux.
 
-## Table of Contents
+### Features
 
-- [About the Project](#about-the-project)
-  - [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- Login, Register, Forgot Password, Logout
+- Profile
+- History Order
+- Products (Search, Sort, Filter)
+- Cart
+- Transactions
+- Manage Order (Admin)
+- Notifications
+- etc.
 
-### Built With
+## Tech Stack
 
 - [React Native](https://reactnative.dev/)
-- [Redux](https://github.com/reduxjs/redux)
+- [Redux](https://redux.js.org/) & [Redux Persist](https://www.npmjs.com/package/redux-persist) (Async Storage)
+- [Notifee](https://notifee.app/)
+- [Native Base](https://nativebase.io/)
+- [React Navigation](https://reactnavigation.org/)
+- [Firebase Messaging](https://firebase.google.com/docs/cloud-messaging)
 
 ## Getting Started
 
@@ -73,10 +104,6 @@ npm run ios
     <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/pulls">Request Feature</a>
   </p>
 
-## Related Projects
-
-This is a mobile app version for [API project](https://github.com/zikriaulia28/Coffeeshop-be) and you can view the web version [here](https://github.com/zikriaulia28/Coffeshop-fe).
-
 ## Documentation
 
 <div display="flex" flex="flex-wrap" justifyContent="space-between">
@@ -86,6 +113,31 @@ This is a mobile app version for [API project](https://github.com/zikriaulia28/C
   <img src="/src/assets/readme/s4.png" width="24%" />
 </div>
 
+## Related Projects
+
+- [API project](https://github.com/zikriaulia28/Coffeeshop-be)
+- [here](https://github.com/zikriaulia28/Coffeshop-fe).
+
+## Report Bug
+
+Any error report you can pull request
+or contact: <zikriaulia98@gmail.com>
+
 ## License
 
-This project is licensed under the ISC license
+This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
+
+## Contributor
+
+  <table>
+    <tr>
+      <td >
+        <a href="https://github.com/zikriaulia28">
+          <img width="100" src="https://avatars.githubusercontent.com/u/103765843?v=4" alt=""><br/> 
+          <div align="center">
+          <sub><b>Zikri Aulia</b></sub>
+          </div>
+        </a>
+        </td>
+    </tr>
+  </table>
