@@ -10,7 +10,7 @@
 
 <h3 align="center">COFFEE SHOP</h3>
 
-[Demo](https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing) · [Related Projects](#related-projects) · [Report Bug](#report-bug)
+[Demo](https://tinyurl.com/bd4sbsxw) · [Related Projects](#related-projects) · [Report Bug](#report-bug)
 
 </div>
 
@@ -94,16 +94,6 @@ npm run android
 npm run ios
 ```
 
-## Demo
-
-<p align="center">
-    <a href="https://drive.google.com/drive/folders/16Eb3R9u5VDahCyqJOUPepLWds2N8thGu?usp=sharing">View Demo</a>
-    ·
-    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/zikriaulia28/CoffeeShop-Mobile/pulls">Request Feature</a>
-  </p>
-
 ## Documentation
 
 <div display="flex" flex="flex-wrap" justifyContent="space-between">
@@ -115,8 +105,8 @@ npm run ios
 
 ## Related Projects
 
-- [API project](https://github.com/zikriaulia28/Coffeeshop-be)
-- [here](https://github.com/zikriaulia28/Coffeshop-fe).
+- [Backend Coffee Shop](https://github.com/zikriaulia28/Coffeeshop-be)
+- [Coffee Shop Web](https://github.com/zikriaulia28/Coffeshop-fe).
 
 ## Report Bug
 
